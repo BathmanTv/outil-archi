@@ -1,6 +1,7 @@
 // outil-archi/js/planEditor.js
 import {
   GRID_M, snapToGrid, roomAreaM2, totalAreaM2, metersToPixels, pixelsToMeters,
+  snapToNeighbors, resolveNoOverlap,
 } from './geometry.js';
 import { newId } from './storage.js';
 
@@ -46,6 +47,17 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     if (onChange) onChange(project, totalAreaM2(project.pieces));
   }
 
+  // Grid-snap a proposed position (meters), magnetize to neighbour edges, then
+  // guarantee it does not overlap any other room. Returns resolved {x,y}.
+  function settlePosition(piece, xMeters, yMeters) {
+    const others = project.pieces.filter((p) => p.id !== piece.id);
+    const box = { w: piece.w, h: piece.h };
+    let pos = { x: snapToGrid(xMeters), y: snapToGrid(yMeters) };
+    pos = snapToNeighbors({ ...pos, ...box }, others);
+    pos = resolveNoOverlap({ ...pos, ...box }, others);
+    return pos;
+  }
+
   function buildRoom(piece) {
     const group = new Konva.Group({
       id: piece.id, x: metersToPixels(piece.x), y: metersToPixels(piece.y), draggable: true,
@@ -70,8 +82,9 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     });
 
     group.on('dragend', () => {
-      piece.x = snapToGrid(pixelsToMeters(group.x()));
-      piece.y = snapToGrid(pixelsToMeters(group.y()));
+      const pos = settlePosition(piece, pixelsToMeters(group.x()), pixelsToMeters(group.y()));
+      piece.x = pos.x;
+      piece.y = pos.y;
       group.position({ x: metersToPixels(piece.x), y: metersToPixels(piece.y) });
       roomLayer.draw();
       notify();
@@ -84,8 +97,10 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
       const absY = group.y() + rect.y();
       piece.w = Math.max(GRID_M, snapToGrid(pixelsToMeters(rect.width() * rect.scaleX())));
       piece.h = Math.max(GRID_M, snapToGrid(pixelsToMeters(rect.height() * rect.scaleY())));
-      piece.x = snapToGrid(pixelsToMeters(absX));
-      piece.y = snapToGrid(pixelsToMeters(absY));
+      // A resize can push into a neighbour — re-settle so it stays non-overlapping.
+      const pos = settlePosition(piece, pixelsToMeters(absX), pixelsToMeters(absY));
+      piece.x = pos.x;
+      piece.y = pos.y;
       rect.scale({ x: 1, y: 1 });
       rect.position({ x: 0, y: 0 });
       rect.size({ width: metersToPixels(piece.w), height: metersToPixels(piece.h) });
@@ -123,6 +138,10 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
       h: Math.max(GRID_M, snapToGrid(+h || 3)),
       couleur: ROOM_COLORS[t] || ROOM_COLORS.defaut,
     };
+    // Spawn without overlapping existing rooms.
+    const pos = settlePosition(piece, off, off);
+    piece.x = pos.x;
+    piece.y = pos.y;
     project.pieces.push(piece);
     render();
     return piece;

@@ -21,3 +21,58 @@ export function metersToPixels(m, scale = 1) {
 export function pixelsToMeters(px, scale = 1) {
   return px / (PX_PER_M * scale);
 }
+
+// Axis-aligned bounding-box overlap test for two rects {x,y,w,h} (meters).
+// Touching edges (flush) does NOT count as overlap.
+export function rectsOverlap(a, b) {
+  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+}
+
+// Magnetism: when `moved` lands within `thr` meters of aligning flush with a
+// neighbour's edge, snap it to that edge so rooms sit cleanly side by side.
+export function snapToNeighbors(moved, others, thr = 0.4) {
+  let { x, y } = moved;
+  const { w, h } = moved;
+  for (const o of others) {
+    const xCandidates = [o.x, o.x + o.w - w, o.x - w, o.x + o.w]; // align-left, align-right, left-of, right-of
+    for (const cx of xCandidates) { if (Math.abs(x - cx) <= thr) { x = cx; break; } }
+    const yCandidates = [o.y, o.y + o.h - h, o.y - h, o.y + o.h]; // align-top, align-bottom, above, below
+    for (const cy of yCandidates) { if (Math.abs(y - cy) <= thr) { y = cy; break; } }
+  }
+  return { x, y };
+}
+
+// Push `moved` out of any overlap so it ends up flush against the nearest edge
+// of whatever it overlaps. Exits the WHOLE group of overlapping rooms at once
+// (so a room squeezed between two flush neighbours escapes instead of getting
+// stuck oscillating). Returns resolved {x,y}; rooms can never end up overlapping.
+export function resolveNoOverlap(moved, others, maxIter = 12) {
+  let p = { x: moved.x, y: moved.y, w: moved.w, h: moved.h };
+  const seen = new Set();
+  for (let i = 0; i < maxIter; i++) {
+    const hits = others.filter((r) => rectsOverlap(p, r));
+    if (!hits.length) break;
+    const key = `${p.x},${p.y}`;
+    if (seen.has(key)) break; // no progress — bail to best effort
+    seen.add(key);
+
+    const minX = Math.min(...hits.map((o) => o.x));
+    const maxX = Math.max(...hits.map((o) => o.x + o.w));
+    const minY = Math.min(...hits.map((o) => o.y));
+    const maxY = Math.max(...hits.map((o) => o.y + o.h));
+    const candidates = [
+      { x: minX - p.w, y: p.y }, // exit left of the group
+      { x: maxX, y: p.y },       // exit right
+      { x: p.x, y: minY - p.h }, // exit above
+      { x: p.x, y: maxY },       // exit below
+    ];
+    // Nearest edge first = smallest displacement from current position.
+    candidates.sort((a, b) =>
+      (Math.abs(a.x - p.x) + Math.abs(a.y - p.y)) - (Math.abs(b.x - p.x) + Math.abs(b.y - p.y)));
+    // Prefer a move that clears every room; otherwise take the nearest and loop.
+    const clear = candidates.find((c) => !others.some((r) => rectsOverlap({ x: c.x, y: c.y, w: p.w, h: p.h }, r)));
+    const next = clear || candidates[0];
+    p = { x: next.x, y: next.y, w: p.w, h: p.h };
+  }
+  return { x: p.x, y: p.y };
+}
