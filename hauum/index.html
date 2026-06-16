@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Hauum — comparateur de directions design</title>
+  <style>
+    :root { --sand:#F4EFE9; --ink:#2B2622; --muted:#6B6157; --clay:#B0764F; --line:rgba(43,38,34,.14); }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--sand); color:var(--ink); }
+    header { max-width:1000px; margin:0 auto; padding:48px 24px 8px; }
+    h1 { font-size:28px; margin:0 0 6px; }
+    p.lead { color:var(--muted); margin:0 0 8px; max-width:60ch; line-height:1.5; }
+    .grid { max-width:1000px; margin:0 auto; padding:24px; display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
+    a.card { display:block; text-decoration:none; color:inherit; background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px; transition:transform .2s, box-shadow .2s; }
+    a.card:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(43,38,34,.10); }
+    a.card h2 { margin:0 0 6px; font-size:19px; }
+    a.card .tag { display:inline-block; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--clay); margin-bottom:10px; }
+    a.card p { margin:0; color:var(--muted); font-size:14px; line-height:1.5; }
+    footer { max-width:1000px; margin:0 auto; padding:8px 24px 56px; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hauum — 5 directions design</h1>
+    <p class="lead">Maquettes de la page d'accueil, contenu réel + SEO local Bordeaux / Arcachon. Clique pour ouvrir chaque version. On en choisit une, je la finalise (vraies photos, polish, déploiement).</p>
+  </header>
+  <main class="grid">
+    <a class="card" href="warm-organic/"><span class="tag">Coup de cœur</span><h2>1 · Warm Organic</h2><p>Chaud, artisanal, âme du lieu. Serif Fraunces + grain. Colle à l'ADN Hauum.</p></a>
+    <a class="card" href="dark-luxe/"><span class="tag">Luxe</span><h2>2 · Dark Luxe</h2><p>Sombre, cinématographique, laiton. Fort impact hôtellerie/restaurant haut de gamme.</p></a>
+    <a class="card" href="editorial-mag/"><span class="tag">Raffiné</span><h2>3 · Éditorial</h2><p>Magazine déco, gros serif, grille asymétrique, sections numérotées. Sobre et lisible.</p></a>
+    <a class="card" href="kinetic/"><span class="tag">Moderne</span><h2>4 · Kinetic</h2><p>Énergique, fond animé, galerie horizontale, curseur custom. Le plus "wow".</p></a>
+    <a class="card" href="brutalist-chic/"><span class="tag">Audacieux</span><h2>5 · Brutalist-chic</h2><p>Typo géante, contraste fort, accent orange. Caractère affirmé, créatif.</p></a>
+  </main>
+  <footer>Comparateur interne — non indexé. Une seule direction sera retenue et finalisée.</footer>
+</body>
+</html>
