@@ -1,6 +1,6 @@
 // outil-archi/sw.js
 // NOTE: bump this version string on every deploy so clients pick up new code.
-const CACHE = 'outil-archi-v2';
+const CACHE = 'outil-archi-v3';
 const ASSETS = [
   './', './index.html', './css/styles.css',
   './js/app.js', './js/geometry.js', './js/prompt.js', './js/storage.js',
