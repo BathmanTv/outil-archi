@@ -10,6 +10,12 @@ const ROOM_COLORS = {
   'salle de bain': '#c2f0e8', bureau: '#ffd9e0', defaut: '#e9ecef',
 };
 
+// Display label used when no name is typed: the chosen type becomes the name.
+const TYPE_LABELS = {
+  salon: 'Salon', cuisine: 'Cuisine', chambre: 'Chambre',
+  'salle de bain': 'Salle de bain', bureau: 'Bureau', defaut: 'Pièce',
+};
+
 export function createPlanEditor(containerId, project, { onChange } = {}) {
   const Konva = window.Konva;
   const container = document.getElementById(containerId);
@@ -81,6 +87,17 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
       roomLayer.draw();
     });
 
+    // Double-click / double-tap a room to rename it on the plan.
+    group.on('dblclick dbltap', () => {
+      const v = window.prompt('Nom de la pièce :', piece.nom);
+      if (v != null && v.trim()) {
+        piece.nom = v.trim();
+        label.text(`${piece.nom}\n${roomAreaM2(piece)} m²`);
+        roomLayer.draw();
+        notify();
+      }
+    });
+
     group.on('dragend', () => {
       const pos = settlePosition(piece, pixelsToMeters(group.x()), pixelsToMeters(group.y()));
       piece.x = pos.x;
@@ -131,7 +148,7 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     const off = snapToGrid(0.5 * project.pieces.length);
     const piece = {
       id: newId(),
-      nom: nom || 'Pièce',
+      nom: (nom && nom.trim()) || TYPE_LABELS[t] || 'Pièce',
       type: t,
       x: off, y: off,
       w: Math.max(GRID_M, snapToGrid(+w || 3)),
