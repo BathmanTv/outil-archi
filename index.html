@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plans & Ambiances</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+  <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img id="brandLogo" alt="" /> <span>Plans &amp; Ambiances</span></div>
+    <nav>
+      <button data-view="accueil" class="navbtn active">Projets</button>
+      <button data-view="plan" class="navbtn">Plan 2D</button>
+      <button data-view="ambiance" class="navbtn">Ambiance</button>
+    </nav>
+  </header>
+
+  <!-- VIEW: ACCUEIL -->
+  <section id="view-accueil" class="view active">
+    <div class="row">
+      <button id="btnNew" class="primary">+ Nouveau projet</button>
+      <label class="ghost">Importer .json <input id="importJson" type="file" accept="application/json" hidden /></label>
+    </div>
+    <div id="projectList" class="cards"></div>
+  </section>
+
+  <!-- VIEW: PLAN -->
+  <section id="view-plan" class="view">
+    <div class="editor">
+      <aside class="panel">
+        <h3 id="planProjectName">—</h3>
+        <fieldset>
+          <legend>Ajouter une pièce</legend>
+          <label>Nom <input id="rNom" type="text" placeholder="Salon" /></label>
+          <label>Type
+            <select id="rType">
+              <option value="salon">Salon</option>
+              <option value="cuisine">Cuisine</option>
+              <option value="chambre">Chambre</option>
+              <option value="salle de bain">Salle de bain</option>
+              <option value="bureau">Bureau</option>
+              <option value="defaut">Autre</option>
+            </select>
+          </label>
+          <label>Largeur (m) <input id="rW" type="number" min="0.5" step="0.5" value="4" /></label>
+          <label>Hauteur (m) <input id="rH" type="number" min="0.5" step="0.5" value="3" /></label>
+          <button id="btnAddRoom" class="primary">Ajouter</button>
+        </fieldset>
+        <div class="toolbar">
+          <button id="btnZoomIn">+</button>
+          <button id="btnZoomOut">−</button>
+          <button id="btnDelRoom" class="danger">Supprimer sélection</button>
+        </div>
+        <p class="total">Surface totale : <strong id="totalArea">0</strong> m²</p>
+        <div class="toolbar">
+          <button id="btnExportPlan" class="primary">Plan (PDF)</button>
+          <button id="btnExportPng">Plan (PNG)</button>
+          <button id="btnExportProject">Projet complet (PDF)</button>
+        </div>
+      </aside>
+      <div id="planCanvas" class="canvas"></div>
+    </div>
+  </section>
+
+  <!-- VIEW: AMBIANCE -->
+  <section id="view-ambiance" class="view">
+    <div class="editor">
+      <aside class="panel">
+        <h3>Générer une ambiance</h3>
+        <label>Pièce
+          <select id="aRoom">
+            <option>salon</option><option>cuisine</option><option>chambre</option>
+            <option>salle de bain</option><option>bureau</option><option>salle a manger</option>
+          </select>
+        </label>
+        <label>Style
+          <select id="aStyle">
+            <option>scandinave</option><option>moderne</option><option>industriel</option>
+            <option>boheme</option><option>contemporain</option><option>minimaliste</option><option>classique</option>
+          </select>
+        </label>
+        <label>Couleurs (séparées par virgule) <input id="aColors" placeholder="beige, vert sauge" /></label>
+        <label>Matériaux (séparés par virgule) <input id="aMaterials" placeholder="bois clair, lin" /></label>
+        <label>Détails libres <input id="aExtra" placeholder="grande fenêtre" /></label>
+        <div class="toolbar">
+          <button id="btnGenerate" class="primary">Générer</button>
+          <button id="btnRegen">Régénérer</button>
+          <button id="btnSaveAmb">Ajouter au projet</button>
+        </div>
+        <p id="ambStatus" class="status"></p>
+      </aside>
+      <div class="canvas amb">
+        <img id="ambImage" alt="Ambiance générée" />
+        <div id="ambGallery" class="gallery"></div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/pwa.js"></script>
+</body>
+</html>
