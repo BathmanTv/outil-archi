@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projets web — hub</title>
+  <meta name="description" content="Hub des projets web réalisés : outil de plans 2D + ambiances IA, et site vitrine Hauum (architecture commerciale Bordeaux & Arcachon)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --sand:#F4EFE9; --surface:#EAE3D9; --ink:#2B2622; --muted:#6B6157;
+      --clay:#B0764F; --line:rgba(43,38,34,.14); --ok:#3f7d56;
+    }
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;background:var(--sand);color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      line-height:1.6;-webkit-font-smoothing:antialiased;}
+    a{color:inherit;}
+    .skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:50;}
+    .skip:focus{left:12px;top:12px;}
+    .wrap{max-width:1040px;margin:0 auto;padding:0 24px;}
+    header{padding:64px 0 8px;}
+    .eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--clay);margin:0 0 14px;}
+    h1{font-family:Fraunces,serif;font-weight:500;font-size:clamp(2rem,5vw,3.4rem);
+      line-height:1.05;letter-spacing:-.02em;margin:0 0 14px;}
+    h1 em{font-style:italic;color:var(--clay);}
+    .lead{color:var(--muted);max-width:62ch;font-size:17px;margin:0 0 8px;}
+    main{padding:32px 0 12px;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
+    .card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;
+      display:flex;flex-direction:column;transition:transform .25s ease,box-shadow .25s ease;}
+    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(43,38,34,.10);}
+    .badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+    .badge{font-size:11px;letter-spacing:.04em;padding:4px 10px;border-radius:999px;
+      background:var(--surface);color:var(--muted);}
+    .badge.live{background:rgba(63,125,86,.14);color:var(--ok);}
+    .badge.preview{background:rgba(176,118,79,.16);color:var(--clay);}
+    .card h2{font-family:Fraunces,serif;font-weight:500;font-size:24px;margin:0 0 8px;}
+    .card p{color:var(--muted);margin:0 0 18px;font-size:15px;flex:1;}
+    .links{display:flex;flex-wrap:wrap;gap:10px;}
+    .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+      font-size:14px;font-weight:500;padding:11px 18px;border-radius:999px;
+      border:1px solid var(--line);transition:background .2s,color .2s,border-color .2s;}
+    .btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+    .btn.primary:hover{background:var(--clay);border-color:var(--clay);}
+    .btn:hover{border-color:var(--ink);}
+    .btn:focus-visible,a:focus-visible{outline:2px solid var(--clay);outline-offset:3px;}
+    .meta{font-size:13px;color:var(--muted);margin-top:14px;}
+    footer{padding:40px 0 64px;color:var(--muted);font-size:13px;}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto;}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#projets">Aller au contenu</a>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Atelier web</p>
+      <h1>Projets <em>réalisés</em>.</h1>
+      <p class="lead">Hub des sites et outils web construits. Chaque bloc mène au projet en ligne. (Titre à personnaliser.)</p>
+    </header>
+
+    <main id="projets">
+      <div class="grid">
+
+        <article class="card">
+          <div class="badges">
+            <span class="badge live">● En ligne</span>
+            <span class="badge">Outil web</span>
+            <span class="badge">PWA</span>
+          </div>
+          <h2>Plans &amp; Ambiances</h2>
+          <p>Outil pour architecte d'intérieur : plans 2D (pièces aimantées, cotes, surfaces, export PDF/PNG) et génération d'ambiances par IA à partir d'une description. 100% navigateur, gratuit, installable.</p>
+          <div class="links">
+            <a class="btn primary" href="../" target="_blank" rel="noopener">Ouvrir l'outil →</a>
+          </div>
+          <p class="meta">Vanilla JS · Konva · Pollinations · localStorage · GitHub Pages</p>
+        </article>
+
+        <article class="card">
+          <div class="badges">
+            <span class="badge preview">● Aperçu</span>
+            <span class="badge">Site vitrine</span>
+            <span class="badge">SEO local</span>
+          </div>
+          <h2>Hauum — Site vitrine</h2>
+          <p>Page d'accueil pour le studio d'architecture commerciale Hauum (Bordeaux &amp; Bassin d'Arcachon). 5 directions design au choix, contenu réel, SEO local et accessibilité. Une direction sera retenue et finalisée.</p>
+          <div class="links">
+            <a class="btn primary" href="../hauum/" target="_blank" rel="noopener">Comparer les 5 styles →</a>
+          </div>
+          <p class="meta">HTML/CSS/JS · JSON-LD · a11y · Bordeaux / Arcachon</p>
+        </article>
+
+      </div>
+    </main>
+
+    <footer>
+      <p>Hub interne · mis à jour au fil des projets.</p>
+    </footer>
+  </div>
+</body>
+</html>
