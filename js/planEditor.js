@@ -180,7 +180,9 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     group.add(chip);
     group.add(txt);
 
-    group.on('mousedown touchstart click tap', (e) => {
+    // Select on click/tap only — NOT mousedown: re-rendering on mousedown would
+    // destroy this group right as a drag begins, blocking the drag.
+    group.on('click tap', (e) => {
       e.cancelBubble = true;
       selectedConsId = c.id;
       selectedId = null;
