@@ -54,7 +54,7 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   drawGrid();
   // click empty space clears selection
   stage.on('click tap', (e) => {
-    if (e.target === stage) { selectedId = null; selectedConsId = null; transformer.nodes([]); roomLayer.draw(); renderConstraints(); }
+    if (e.target === stage) { selectedId = null; selectedConsId = null; transformer.nodes([]); roomLayer.draw(); highlightConstraints(); }
   });
 
   function drawGrid() {
@@ -103,7 +103,7 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
       selectedConsId = null;
       transformer.nodes([rect]);
       roomLayer.draw();
-      renderConstraints();
+      highlightConstraints();
     });
 
     // Double-click / double-tap a room to rename it on the plan.
@@ -168,11 +168,12 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     const text = `${def.emoji} ${c.label || def.label}`;
     const selected = c.id === selectedConsId;
     const group = new Konva.Group({
-      id: c.id, name: 'consGroup',
+      id: c.id, name: 'consGroup', kind: c.kind,
       x: metersToPixels(c.x), y: metersToPixels(c.y), draggable: true,
     });
     const txt = new Konva.Text({ text, fontSize: 13, fill: '#222', x: 10, y: 6 });
     const chip = new Konva.Rect({
+      name: 'consChip',
       width: txt.width() + 20, height: 26, cornerRadius: 13,
       fill: '#fff', stroke: selected ? def.color : '#9aa0a6', strokeWidth: selected ? 3 : 1.5,
       shadowColor: '#000', shadowOpacity: 0.15, shadowBlur: 4, shadowOffset: { x: 0, y: 1 },
@@ -180,15 +181,15 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     group.add(chip);
     group.add(txt);
 
-    // Select on click/tap only — NOT mousedown: re-rendering on mousedown would
-    // destroy this group right as a drag begins, blocking the drag.
+    // Select on click — highlight IN PLACE (no destroy) so the node survives,
+    // keeping drag AND double-click (rename) working.
     group.on('click tap', (e) => {
       e.cancelBubble = true;
       selectedConsId = c.id;
       selectedId = null;
       transformer.nodes([]);
       roomLayer.draw();
-      renderConstraints();
+      highlightConstraints();
     });
     // Only "note" markers are renamable (others are labelled by their type).
     if (c.kind === 'note') {
@@ -205,6 +206,19 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
       notify();
     });
     return group;
+  }
+
+  // Update selection outline on existing chips without rebuilding them.
+  function highlightConstraints() {
+    consLayer.find('.consGroup').forEach((g) => {
+      const rect = g.findOne('.consChip');
+      if (!rect) return;
+      const def = CONSTRAINT_DEFS[g.getAttr('kind')] || CONSTRAINT_DEFS.note;
+      const sel = g.id() === selectedConsId;
+      rect.stroke(sel ? def.color : '#9aa0a6');
+      rect.strokeWidth(sel ? 3 : 1.5);
+    });
+    consLayer.draw();
   }
 
   function renderConstraints() {
