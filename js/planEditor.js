@@ -190,10 +190,13 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
       roomLayer.draw();
       renderConstraints();
     });
-    group.on('dblclick dbltap', () => {
-      const v = window.prompt('Libellé de la contrainte :', c.label || def.label);
-      if (v != null && v.trim()) { c.label = v.trim(); renderConstraints(); notify(); }
-    });
+    // Only "note" markers are renamable (others are labelled by their type).
+    if (c.kind === 'note') {
+      group.on('dblclick dbltap', () => {
+        const v = window.prompt('Texte de la note :', c.label || def.label);
+        if (v != null && v.trim()) { c.label = v.trim(); renderConstraints(); notify(); }
+      });
+    }
     group.on('dragend', () => {
       c.x = snapToGrid(pixelsToMeters(group.x()));
       c.y = snapToGrid(pixelsToMeters(group.y()));
