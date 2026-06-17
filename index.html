@@ -50,6 +50,19 @@
           <label>Hauteur (m) <input id="rH" type="number" min="0.5" step="0.5" value="3" /></label>
           <button id="btnAddRoom" class="primary">Ajouter</button>
         </fieldset>
+        <fieldset>
+          <legend>Contraintes techniques</legend>
+          <div class="palette">
+            <button class="cbtn" data-kind="eau">💧 Eau</button>
+            <button class="cbtn" data-kind="elec">⚡ Élec</button>
+            <button class="cbtn" data-kind="gaine">🌀 Gaine/VMC</button>
+            <button class="cbtn" data-kind="secours">🚪 Sortie secours</button>
+            <button class="cbtn" data-kind="poteau">⬛ Poteau</button>
+            <button class="cbtn" data-kind="porteur">🧱 Mur porteur</button>
+            <button class="cbtn" data-kind="fenetre">🪟 Fenêtre</button>
+            <button class="cbtn" data-kind="note">📝 Note</button>
+          </div>
+        </fieldset>
         <div class="toolbar">
           <button id="btnZoomIn">+</button>
           <button id="btnZoomOut">−</button>
@@ -57,6 +70,13 @@
         </div>
         <p class="hint">Astuce : double-cliquez une pièce pour la renommer. Les pièces ne se chevauchent pas (aimantation au bord le plus proche).</p>
         <p class="total">Surface totale : <strong id="totalArea">0</strong> m²</p>
+        <div class="checks">
+          <div class="checks-head">
+            <strong>Points de vigilance</strong>
+            <label class="toggle"><input type="checkbox" id="commercialToggle" checked /> ERP / commercial</label>
+          </div>
+          <ul id="checksList" class="checks-list"><li class="ok">Aucun point de vigilance.</li></ul>
+        </div>
         <div class="toolbar">
           <button id="btnExportPlan" class="primary">Plan (PDF)</button>
           <button id="btnExportPng">Plan (PNG)</button>

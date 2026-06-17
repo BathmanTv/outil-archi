@@ -1,10 +1,10 @@
 // outil-archi/sw.js
 // NOTE: bump this version string on every deploy so clients pick up new code.
-const CACHE = 'outil-archi-v4';
+const CACHE = 'outil-archi-v5';
 const ASSETS = [
   './', './index.html', './css/styles.css',
   './js/app.js', './js/geometry.js', './js/prompt.js', './js/storage.js',
-  './js/planEditor.js', './js/ambiance.js', './js/exportPdf.js', './js/pwa.js',
+  './js/planEditor.js', './js/ambiance.js', './js/exportPdf.js', './js/checks.js', './js/pwa.js',
   'https://unpkg.com/konva@9/konva.min.js',
   'https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js',
 ];

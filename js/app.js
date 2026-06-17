@@ -6,6 +6,7 @@ import {
 import { createPlanEditor } from './planEditor.js';
 import { setupAmbiance } from './ambiance.js';
 import { exportPlanPdf, exportPlanPng, exportProjectPdf } from './exportPdf.js';
+import { analyzeLayout } from './checks.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -116,15 +117,39 @@ function autosave() {
   catch (e) { if (e.code === 'QUOTA') handleQuota(); else throw e; }
 }
 
+function renderChecks() {
+  const list = $('checksList');
+  if (!currentProject) return;
+  const commercial = $('commercialToggle') ? $('commercialToggle').checked : true;
+  const issues = analyzeLayout(currentProject, { commercial });
+  list.innerHTML = '';
+  if (!issues.length) {
+    list.innerHTML = '<li class="ok">Aucun point de vigilance.</li>';
+    return;
+  }
+  issues.forEach((it) => {
+    const li = document.createElement('li');
+    li.className = it.level === 'warn' ? 'warn' : 'info';
+    li.textContent = it.message;
+    if (it.roomId) {
+      li.classList.add('clickable');
+      li.title = 'Voir la pièce concernée';
+      li.addEventListener('click', () => editor && editor.selectRoom(it.roomId));
+    }
+    list.appendChild(li);
+  });
+}
+
 function mountPlan() {
   ensureProject();
   $('planProjectName').textContent = currentProject.nom;
   // (re)create editor bound to current project
   $('planCanvas').innerHTML = '';
   editor = createPlanEditor('planCanvas', currentProject, {
-    onChange: (proj, total) => { $('totalArea').textContent = total; autosave(); },
+    onChange: (proj, total) => { $('totalArea').textContent = total; autosave(); renderChecks(); },
   });
   $('totalArea').textContent = editor.getTotal();
+  renderChecks();
 }
 
 $('btnAddRoom').addEventListener('click', () => {
@@ -135,6 +160,9 @@ $('btnAddRoom').addEventListener('click', () => {
   });
   $('rNom').value = '';
 });
+document.querySelectorAll('.cbtn').forEach((b) =>
+  b.addEventListener('click', () => editor && editor.addConstraint(b.dataset.kind)));
+$('commercialToggle').addEventListener('change', renderChecks);
 $('btnDelRoom').addEventListener('click', () => editor && editor.deleteSelected());
 $('btnZoomIn').addEventListener('click', () => editor && editor.zoom(1.2));
 $('btnZoomOut').addEventListener('click', () => editor && editor.zoom(1 / 1.2));

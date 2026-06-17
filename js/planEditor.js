@@ -16,6 +16,19 @@ const TYPE_LABELS = {
   'salle de bain': 'Salle de bain', bureau: 'Bureau', defaut: 'Pièce',
 };
 
+// Technical-constraint markers placeable on the plan (Phase 1).
+const CONSTRAINT_DEFS = {
+  eau:     { emoji: '💧', label: 'Eau',            color: '#2f81f7' },
+  elec:    { emoji: '⚡', label: 'Élec',           color: '#d4a017' },
+  gaine:   { emoji: '🌀', label: 'Gaine/VMC',      color: '#6b7280' },
+  secours: { emoji: '🚪', label: 'Sortie secours', color: '#2e9e5b' },
+  poteau:  { emoji: '⬛', label: 'Poteau',          color: '#111827' },
+  porteur: { emoji: '🧱', label: 'Mur porteur',    color: '#8a5a2b' },
+  fenetre: { emoji: '🪟', label: 'Fenêtre',        color: '#3aa0a0' },
+  note:    { emoji: '📝', label: 'Note',            color: '#6b6157' },
+};
+export const CONSTRAINT_KINDS = Object.keys(CONSTRAINT_DEFS);
+
 export function createPlanEditor(containerId, project, { onChange } = {}) {
   const Konva = window.Konva;
   const container = document.getElementById(containerId);
@@ -25,19 +38,23 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     height: container.clientHeight || 600,
     draggable: true,
   });
+  project.contraintes = project.contraintes || [];
   const gridLayer = new Konva.Layer();
   const roomLayer = new Konva.Layer();
+  const consLayer = new Konva.Layer(); // technical constraints, drawn above rooms
   stage.add(gridLayer);
   stage.add(roomLayer);
+  stage.add(consLayer);
 
   const transformer = new Konva.Transformer({ rotateEnabled: false, keepRatio: false });
   roomLayer.add(transformer);
-  let selectedId = null;
+  let selectedId = null;       // selected room id
+  let selectedConsId = null;   // selected constraint id
 
   drawGrid();
   // click empty space clears selection
   stage.on('click tap', (e) => {
-    if (e.target === stage) { selectedId = null; transformer.nodes([]); roomLayer.draw(); }
+    if (e.target === stage) { selectedId = null; selectedConsId = null; transformer.nodes([]); roomLayer.draw(); renderConstraints(); }
   });
 
   function drawGrid() {
@@ -83,8 +100,10 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
 
     group.on('mousedown touchstart click tap', () => {
       selectedId = piece.id;
+      selectedConsId = null;
       transformer.nodes([rect]);
       roomLayer.draw();
+      renderConstraints();
     });
 
     // Double-click / double-tap a room to rename it on the plan.
@@ -139,7 +158,83 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     project.pieces.forEach((piece) => roomLayer.add(buildRoom(piece)));
     transformer.moveToTop();
     roomLayer.draw();
+    renderConstraints();
     notify();
+  }
+
+  // ---- technical constraints (markers) ----
+  function buildConstraint(c) {
+    const def = CONSTRAINT_DEFS[c.kind] || CONSTRAINT_DEFS.note;
+    const text = `${def.emoji} ${c.label || def.label}`;
+    const selected = c.id === selectedConsId;
+    const group = new Konva.Group({
+      id: c.id, name: 'consGroup',
+      x: metersToPixels(c.x), y: metersToPixels(c.y), draggable: true,
+    });
+    const txt = new Konva.Text({ text, fontSize: 13, fill: '#222', x: 10, y: 6 });
+    const chip = new Konva.Rect({
+      width: txt.width() + 20, height: 26, cornerRadius: 13,
+      fill: '#fff', stroke: selected ? def.color : '#9aa0a6', strokeWidth: selected ? 3 : 1.5,
+      shadowColor: '#000', shadowOpacity: 0.15, shadowBlur: 4, shadowOffset: { x: 0, y: 1 },
+    });
+    group.add(chip);
+    group.add(txt);
+
+    group.on('mousedown touchstart click tap', (e) => {
+      e.cancelBubble = true;
+      selectedConsId = c.id;
+      selectedId = null;
+      transformer.nodes([]);
+      roomLayer.draw();
+      renderConstraints();
+    });
+    group.on('dblclick dbltap', () => {
+      const v = window.prompt('Libellé de la contrainte :', c.label || def.label);
+      if (v != null && v.trim()) { c.label = v.trim(); renderConstraints(); notify(); }
+    });
+    group.on('dragend', () => {
+      c.x = snapToGrid(pixelsToMeters(group.x()));
+      c.y = snapToGrid(pixelsToMeters(group.y()));
+      group.position({ x: metersToPixels(c.x), y: metersToPixels(c.y) });
+      consLayer.draw();
+      notify();
+    });
+    return group;
+  }
+
+  function renderConstraints() {
+    consLayer.destroyChildren();
+    (project.contraintes || []).forEach((c) => consLayer.add(buildConstraint(c)));
+    consLayer.draw();
+  }
+
+  function addConstraint(kind) {
+    const def = CONSTRAINT_DEFS[kind] || CONSTRAINT_DEFS.note;
+    project.contraintes = project.contraintes || [];
+    const n = project.contraintes.length;
+    const c = {
+      id: newId(), kind, label: def.label,
+      x: snapToGrid(0.5 + 0.5 * n), y: snapToGrid(0.5 + 0.5 * n),
+    };
+    project.contraintes.push(c);
+    renderConstraints();
+    notify();
+    return c;
+  }
+
+  // Highlight a room from outside (e.g. clicking an issue in the checks panel).
+  function selectRoom(id) {
+    const piece = project.pieces.find((p) => p.id === id);
+    if (!piece) return;
+    selectedId = id;
+    selectedConsId = null;
+    const g = roomLayer.findOne((n) => n.getClassName() === 'Group' && n.id() === id);
+    if (g) {
+      const rect = g.findOne('.roomRect');
+      if (rect) transformer.nodes([rect]);
+    }
+    roomLayer.draw();
+    renderConstraints();
   }
 
   function addRoom({ nom, w, h, type }) {
@@ -165,6 +260,13 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   }
 
   function deleteSelected() {
+    if (selectedConsId) {
+      project.contraintes = (project.contraintes || []).filter((c) => c.id !== selectedConsId);
+      selectedConsId = null;
+      renderConstraints();
+      notify();
+      return;
+    }
     if (!selectedId) return;
     project.pieces = project.pieces.filter((p) => p.id !== selectedId);
     selectedId = null;
@@ -181,6 +283,8 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   return {
     stage,
     addRoom,
+    addConstraint,
+    selectRoom,
     deleteSelected,
     zoom,
     render,
