@@ -15,6 +15,7 @@
     <nav>
       <button data-view="accueil" class="navbtn active">Projets</button>
       <button data-view="plan" class="navbtn">Plan 2D</button>
+      <button data-view="assistant" class="navbtn">Assistant</button>
       <button data-view="ambiance" class="navbtn">Ambiance</button>
     </nav>
   </header>
@@ -84,6 +85,29 @@
         </div>
       </aside>
       <div id="planCanvas" class="canvas"></div>
+    </div>
+  </section>
+
+  <!-- VIEW: ASSISTANT -->
+  <section id="view-assistant" class="view">
+    <div class="editor">
+      <aside class="panel">
+        <h3>Assistant d'agencement</h3>
+        <label>Projet
+          <select id="asgProject"></select>
+        </label>
+        <label class="toggle"><input type="checkbox" id="asgCommercial" checked /> ERP / commercial</label>
+        <label>Programme / besoins (optionnel)
+          <textarea id="asgProgram" rows="4" placeholder="Ex : boutique 60 m² — vitrine, zone vente, 2 cabines, caisse, réserve"></textarea>
+        </label>
+        <label class="ghost">Plan de référence (optionnel) <input id="asgImage" type="file" accept="image/*" hidden /></label>
+        <button id="asgRun" class="primary">Proposer un agencement</button>
+        <p class="hint">Suggestions par règles (contraintes + programme). Déterministe, hors-ligne, sans IA.</p>
+      </aside>
+      <div class="canvas asg">
+        <img id="asgRef" alt="Plan de référence" hidden />
+        <div id="asgOutput" class="asg-output"><p class="muted">Choisissez un projet et cliquez « Proposer un agencement ».</p></div>
+      </div>
     </div>
   </section>
 

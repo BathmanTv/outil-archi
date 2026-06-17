@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { analyzeLayout, pointRoomDistance } from '../js/checks.js';
+import { analyzeLayout, pointRoomDistance, suggestAgencement } from '../js/checks.js';
 
 const room = (over = {}) => ({ id: 'r1', nom: 'Pièce', type: 'defaut', x: 0, y: 0, w: 4, h: 3, ...over });
 const con = (kind, x, y, over = {}) => ({ id: `c-${kind}-${x}-${y}`, kind, x, y, ...over });
@@ -65,5 +65,36 @@ describe('analyzeLayout — ERP exits', () => {
     const p = { pieces: [room()], contraintes: [] };
     const issues = analyzeLayout(p, { commercial: false });
     expect(issues.some((i) => /sortie de secours/.test(i.message))).toBe(false);
+  });
+});
+
+describe('suggestAgencement', () => {
+  it('summarises the plan', () => {
+    const p = { pieces: [room(), room({ id: 'r2' })], contraintes: [con('eau', 1, 1)] };
+    const s = suggestAgencement(p, { commercial: true });
+    expect(s.summary).toContain('2 pièce(s)');
+    expect(s.summary).toContain('ERP');
+  });
+  it('recommends grouping wet rooms when there are 2+', () => {
+    const p = { pieces: [room({ type: 'cuisine' }), room({ id: 'r2', type: 'salle de bain' })], contraintes: [] };
+    const s = suggestAgencement(p, { commercial: false });
+    expect(s.recommendations.some((r) => /pièces d’eau/.test(r.text))).toBe(true);
+  });
+  it('gives commercial flow advice in commercial mode', () => {
+    const s = suggestAgencement({ pieces: [room()], contraintes: [] }, { commercial: true });
+    expect(s.recommendations.some((r) => r.theme === 'Flux client')).toBe(true);
+  });
+  it('gives jour/nuit zoning in residential mode', () => {
+    const s = suggestAgencement({ pieces: [room()], contraintes: [] }, { commercial: false });
+    expect(s.recommendations.some((r) => /jour|nuit/i.test(r.theme + r.text))).toBe(true);
+  });
+  it('adds CHR advice when programme mentions a restaurant', () => {
+    const s = suggestAgencement({ pieces: [room()], contraintes: [] }, { commercial: true, program: 'restaurant 80m2' });
+    expect(s.recommendations.some((r) => r.theme === 'CHR')).toBe(true);
+  });
+  it('handles an empty plan gracefully', () => {
+    const s = suggestAgencement({ pieces: [], contraintes: [] }, { commercial: true });
+    expect(s.recommendations.length).toBe(1);
+    expect(s.recommendations[0].theme).toBe('Démarrage');
   });
 });

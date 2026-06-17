@@ -6,7 +6,7 @@ import {
 import { createPlanEditor } from './planEditor.js';
 import { setupAmbiance } from './ambiance.js';
 import { exportPlanPdf, exportPlanPng, exportProjectPdf } from './exportPdf.js';
-import { analyzeLayout } from './checks.js';
+import { analyzeLayout, suggestAgencement } from './checks.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -21,6 +21,7 @@ function showView(name) {
   $(`view-${name}`).classList.add('active');
   if (name === 'accueil') renderProjects();
   if (name === 'plan') mountPlan();
+  if (name === 'assistant') mountAssistant();
   if (name === 'ambiance') mountAmbiance();
 }
 document.querySelectorAll('.navbtn').forEach((b) =>
@@ -186,6 +187,78 @@ $('btnExportProject').addEventListener('click', async (e) => {
     btn.disabled = false;
     btn.textContent = label;
   }
+});
+
+// ---------- assistant view ----------
+function mountAssistant() {
+  const sel = $('asgProject');
+  const projects = loadProjects();
+  sel.innerHTML = '';
+  if (!projects.length) {
+    sel.innerHTML = '<option value="">(aucun projet)</option>';
+  } else {
+    projects.forEach((p) => {
+      const o = document.createElement('option');
+      o.value = p.id;
+      o.textContent = `${p.nom} — ${p.pieces.length} pièce(s)`;
+      sel.appendChild(o);
+    });
+    if (currentProject) sel.value = currentProject.id;
+  }
+}
+
+function renderAgencement(result) {
+  const out = $('asgOutput');
+  out.innerHTML = '';
+  const sum = document.createElement('p');
+  sum.className = 'asg-summary';
+  sum.textContent = result.summary;
+  out.appendChild(sum);
+
+  result.recommendations.forEach((r) => {
+    const card = document.createElement('div');
+    card.className = 'asg-card';
+    const h = document.createElement('span');
+    h.className = 'asg-theme';
+    h.textContent = r.theme;
+    const p = document.createElement('p');
+    p.textContent = r.text;
+    card.appendChild(h);
+    card.appendChild(p);
+    out.appendChild(card);
+  });
+
+  if (result.issues.length) {
+    const t = document.createElement('p');
+    t.className = 'asg-subtitle';
+    t.textContent = 'Points de vigilance';
+    out.appendChild(t);
+    result.issues.forEach((it) => {
+      const li = document.createElement('div');
+      li.className = `asg-issue ${it.level === 'warn' ? 'warn' : 'info'}`;
+      li.textContent = it.message;
+      out.appendChild(li);
+    });
+  }
+}
+
+$('asgRun').addEventListener('click', () => {
+  const id = $('asgProject').value;
+  const project = loadProjects().find((p) => p.id === id) || currentProject;
+  if (!project) { $('asgOutput').innerHTML = '<p class="muted">Aucun projet à analyser.</p>'; return; }
+  const result = suggestAgencement(project, {
+    commercial: $('asgCommercial').checked,
+    program: $('asgProgram').value,
+  });
+  renderAgencement(result);
+});
+
+$('asgImage').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => { const img = $('asgRef'); img.src = reader.result; img.hidden = false; };
+  reader.readAsDataURL(f);
 });
 
 // ---------- ambiance view ----------
