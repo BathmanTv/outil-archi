@@ -1,0 +1,34 @@
+# HANDOFF — Projet interior-design (Hauum) — reprise sur une autre machine
+
+But : pouvoir continuer le projet sur un autre poste (ex. Mac) avec tout le contexte.
+
+## Ce qui compose le projet
+- **`interior-design/`** (CE repo) = l'outil web **« Plans & Ambiances »** pour archi d'intérieur.
+  - Repo GitHub : `https://github.com/BathmanTv/outil-archi` (le nom public reste `outil-archi`).
+  - En ligne : https://bathmantv.github.io/outil-archi/ · hub `/hub/` · previews Hauum `/hauum/`.
+- **`hauum-site/`** (repo séparé, **local seulement, pas encore poussé**) = la landing vitrine Hauum, 5 directions design (warm-organic, dark-luxe, editorial-mag, kinetic, brutalist-chic).
+
+## Reprendre sur Mac (méthode simple)
+1. Installer Claude Code : `npm i -g @anthropic-ai/claude-code` (ou l'app desktop). Lancer `claude` une fois pour se connecter.
+2. Récupérer le code :
+   - `git clone https://github.com/BathmanTv/outil-archi.git interior-design`
+   - Pour `hauum-site` (non poussé) : soit le pousser sur GitHub avant de quitter le PC, soit copier le dossier `E:\Projets\hauum-site` sur le Mac.
+3. Ouvrir le dossier dans Claude Code (`cd interior-design && claude`). Il lit `CLAUDE.md` + ce `HANDOFF.md` → contexte chargé.
+4. (Optionnel) Mémoire : copier le contenu de `C:\Users\darkb\.claude\projects\E--Clause\memory\` vers `~/.claude/projects/<dossier-projet>/memory/` sur le Mac. La reprise du **chat brut** d'une machine à l'autre n'est pas garantie (liée au chemin) — ce HANDOFF + la mémoire suffisent à continuer.
+
+## État actuel (fait)
+Outil Plans & Ambiances (statique vanilla JS, Konva/jsPDF, PWA, 39 tests vitest) :
+- Plan 2D : pièces aimantées non-chevauchantes, renommage double-clic (pièces + notes), nom = type par défaut, zone de travail plein écran, lien « ↩ Accueil » vers le hub.
+- Phase 1 Contraintes techniques : palette (eau, élec, gaine/VMC, sortie secours, poteau, mur porteur, fenêtre, note) → marqueurs déplaçables + panneau « Points de vigilance » (`analyzeLayout`), toggle ERP. Rename = notes uniquement.
+- Phase 2 Assistant agencement : onglet dédié, `suggestAgencement` déterministe (règles, pas d'IA) + tuto intégré.
+- Ambiances IA image = Pollinations (sans clé). ⚠️ **Pollinations TEXTE bloqué (Turnstile)** → l'assistant est volontairement déterministe. IA texte plus tard = BYO-key / Puter.js / proxy Cloudflare.
+- Hub `/hub/` = lanceur listant les projets.
+
+## Workflow dev
+- Tests : `npm install` puis `npm test`.
+- Lancer en local : `npx serve` (ou `python -m http.server`).
+- Déployer : `git push` (GitHub Pages). **Bumper `CACHE` dans `sw.js` à chaque déploiement** (sinon cache navigateur).
+
+## En attente / prochaine étape
+- **Choisir UNE direction pour la landing Hauum** (reco : Warm Organic ou Dark Luxe) → finaliser : vraies photos, retrait du `noindex`, repo + domaine `hauum.fr` pour le SEO réel.
+- Les 5 previews Hauum sont en `noindex` (preview interne, pas indexées).
