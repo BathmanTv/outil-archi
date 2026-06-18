@@ -32,6 +32,11 @@ Outil Plans & Ambiances (statique vanilla JS, Konva/jsPDF, PWA, 39 tests vitest)
 - Lancer en local : `npx serve` (ou `python -m http.server`).
 - Déployer : `git push` (GitHub Pages). **Bumper `CACHE` dans `sw.js` à chaque déploiement** (sinon cache navigateur).
 
+## Skill design — UI/UX Pro Max
+Installée **globalement** (`~/.claude/skills/ui-ux-pro-max`, via `uipro-cli`) pour TOUS les projets site web — génère des design systems (palettes, typographies, styles, anti-patterns, 161 règles métier). S'auto-active sur les demandes de design web ; à utiliser pour finaliser la landing Hauum + futurs sites.
+- Source : https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
+- **Sur le Mac** : `npm i -g uipro-cli` puis `uipro init --ai claude` (depuis le home `~` pour une install globale, ou dans un projet précis). **Restart Claude Code** pour l'activer.
+
 ## En attente / prochaine étape
 - **Choisir UNE direction pour la landing Hauum** (reco : Warm Organic ou Dark Luxe) → finaliser : vraies photos, retrait du `noindex`, repo + domaine `hauum.fr` pour le SEO réel.
 - Les 5 previews Hauum sont en `noindex` (preview interne, pas indexées).
