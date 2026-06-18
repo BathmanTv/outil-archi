@@ -6,7 +6,10 @@ But : pouvoir continuer le projet sur un autre poste (ex. Mac) avec tout le cont
 - **`interior-design/`** (CE repo) = l'outil web **« Plans & Ambiances »** pour archi d'intérieur.
   - Repo GitHub : `https://github.com/BathmanTv/outil-archi` (le nom public reste `outil-archi`).
   - En ligne : https://bathmantv.github.io/outil-archi/ · hub `/hub/` · previews Hauum `/hauum/`.
-- **`hauum-site/`** (repo séparé, **local seulement, pas encore poussé**) = la landing vitrine Hauum, 5 directions design (warm-organic, dark-luxe, editorial-mag, kinetic, brutalist-chic).
+- **Landing Hauum** = vitrine, 5 directions design (warm-organic, dark-luxe, editorial-mag, kinetic, brutalist-chic). Présente DEUX fois dans ce repo :
+  - `hauum/` = previews déployées (noindex) → en ligne sur `/hauum/`.
+  - `hauum-source/` = originaux/source de la landing (mirror, noindex).
+  - (Le dossier de travail d'origine `E:\Projets\hauum-site` reste en local sur le PC ; tout son contenu est ici dans `hauum-source/`.)
 
 ## Reprendre sur Mac (méthode simple)
 1. Installer Claude Code : `npm i -g @anthropic-ai/claude-code` (ou l'app desktop). Lancer `claude` une fois pour se connecter.

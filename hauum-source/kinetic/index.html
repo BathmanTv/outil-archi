@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<!--
+  Hauum — Studio d'architecture commerciale
+  Direction "Kinetic modern" — page d'accueil statique, autonome (vanilla JS, aucun build).
+  NB: Les visuels sont des placeholders (picsum.photos). Remplacer par les vraies photos
+      de réalisations Hauum (boutiques, restaurants, hôtels) + conserver des alt text descriptifs.
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Architecte d'intérieur &amp; architecture commerciale à Bordeaux et Arcachon | Hauum</title>
+<meta name="description" content="Studio d'architecture commerciale &amp; design d'intérieur à Bordeaux et sur le Bassin d'Arcachon. Concevons et transformons commerces, hôtels et restaurants en Gironde." />
+<meta name="keywords" content="architecte d'intérieur Bordeaux, architecture commerciale Bordeaux, agencement commercial Bordeaux, architecte d'intérieur Arcachon, architecture commerciale Bassin d'Arcachon, agencement magasin Bordeaux, agencement restaurant Bordeaux, architecte d'intérieur Gironde, design d'intérieur commercial Bordeaux, aménagement boutique Bordeaux, mobilier sur-mesure commerce Bordeaux, studio architecture commerciale Nouvelle-Aquitaine, architecte d'intérieur Cap Ferret" />
+<meta name="author" content="Hauum" />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="canonical" href="https://www.hauum.fr/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:site_name" content="Hauum" />
+<meta property="og:title" content="Hauum | Architecte d'intérieur commercial à Bordeaux &amp; Arcachon" />
+<meta property="og:description" content="Studio d'architecture commerciale &amp; design d'intérieur à Bordeaux et sur le Bassin d'Arcachon. Concevons et transformons commerces, hôtels et restaurants." />
+<meta property="og:url" content="https://www.hauum.fr/" />
+<meta property="og:image" content="https://picsum.photos/seed/hauum-og-studio/1200/630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Hauum | Architecte d'intérieur commercial à Bordeaux &amp; Arcachon" />
+<meta name="twitter:description" content="Studio d'architecture commerciale &amp; design d'intérieur à Bordeaux et sur le Bassin d'Arcachon. Concevons et transformons commerces, hôtels et restaurants." />
+<meta name="twitter:image" content="https://picsum.photos/seed/hauum-og-studio/1200/630" />
+
+<meta name="theme-color" content="#f5f1ea" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "additionalType": "https://schema.org/InteriorDesignService",
+  "name": "Hauum",
+  "alternateName": "Hauum — Studio d'architecture commerciale",
+  "description": "Studio d'architecture commerciale et de design d'intérieur à Bordeaux et sur le Bassin d'Arcachon. Hauum conçoit et transforme des commerces, hôtels et restaurants pour attirer, fidéliser et créer du lien par l'expérience client.",
+  "url": "https://www.hauum.fr/",
+  "telephone": "+33785744521",
+  "email": "hauum.studio@gmail.com",
+  "image": "https://picsum.photos/seed/hauum-og-studio/1200/630",
+  "priceRange": "€€€",
+  "knowsLanguage": "fr",
+  "areaServed": [
+    { "@type": "City", "name": "Bordeaux" },
+    { "@type": "City", "name": "Arcachon" },
+    { "@type": "Place", "name": "Bassin d'Arcachon" },
+    { "@type": "AdministrativeArea", "name": "Gironde" },
+    { "@type": "AdministrativeArea", "name": "Nouvelle-Aquitaine" }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bordeaux",
+    "addressRegion": "Nouvelle-Aquitaine",
+    "addressCountry": "FR"
+  },
+  "sameAs": [
+    "https://www.instagram.com/hauum.studio",
+    "https://www.linkedin.com/company/hauum"
+  ],
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "name": "Création",
+      "description": "Concevoir de nouveaux établissements : commerces, hôtels, restaurants."
+    },
+    {
+      "@type": "Offer",
+      "name": "Évolution",
+      "description": "Transformer un lieu existant pour révéler son potentiel et son image de marque."
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Expertise Hauum",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Stratégie & identité de marque" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Concepts architecturaux & design d'intérieur" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Études de marché & audits" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Stratégie marketing" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mobilier sur-mesure & finitions artisanales" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gestion de projet & suivi de chantier" } }
+    ]
+  }
+}
+</script>
+
+<style>
+  :root{
+    --bg:#f5f1ea;            /* sable clair */
+    --bg-2:#efe9df;
+    --ink:#1a1714;          /* presque noir chaud */
+    --ink-soft:#4a443c;
+    --muted:#8a8278;
+    --line:#ddd4c6;
+    --paper:#fffdf9;
+    --accent:#d8552f;       /* terracotta vif */
+    --accent-2:#e8b04a;     /* ocre */
+    --accent-3:#1f6f5c;     /* vert profond */
+    --max:1280px;
+    --r:18px;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:"Inter",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    cursor:auto;
+  }
+
+  h1,h2,h3,.display{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;line-height:1.04;letter-spacing:-.02em}
+
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  ::selection{background:var(--accent);color:#fff}
+
+  .wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+
+  /* ---------- Skip link ---------- */
+  .skip{position:absolute;left:-999px;top:0;z-index:200;background:var(--ink);color:#fff;padding:12px 18px;border-radius:0 0 10px 0;font-weight:600}
+  .skip:focus{left:0}
+
+  /* ---------- Focus ---------- */
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid var(--accent);outline-offset:3px;border-radius:4px
+  }
+
+  /* ---------- Eyebrow / kicker ---------- */
+  .kicker{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Space Grotesk",sans-serif;font-weight:500;
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+
+  /* ---------- Header ---------- */
+  header.site{position:fixed;inset:0 0 auto 0;z-index:90;transition:background .4s var(--ease),box-shadow .4s var(--ease),padding .4s var(--ease)}
+  header.site.scrolled{background:rgba(245,241,234,.85);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:84px;transition:height .4s var(--ease)}
+  header.site.scrolled .nav{height:68px}
+  .brand{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:-.03em;display:flex;align-items:center;gap:9px}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);display:inline-block}
+  .brand small{font-family:"Inter";font-weight:500;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-top:2px}
+
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{font-size:.92rem;font-weight:500;color:var(--ink-soft);position:relative;padding:4px 0}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--accent);transition:width .35s var(--ease)}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a:hover::after{width:100%}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:.95rem;
+    padding:14px 24px;border-radius:100px;border:1.5px solid var(--ink);
+    background:var(--ink);color:var(--bg);cursor:pointer;
+    transition:transform .35s var(--ease),background .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease);
+  }
+  .btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:translateY(-3px);box-shadow:0 12px 28px -10px rgba(216,85,47,.6)}
+  .btn .arr{transition:transform .35s var(--ease)}
+  .btn:hover .arr{transform:translate(4px,-4px)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .btn.lg{padding:18px 34px;font-size:1.05rem}
+
+  .nav-cta{display:inline-flex}
+  .burger{display:none;width:46px;height:46px;border:1.5px solid var(--ink);border-radius:50%;background:transparent;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+  .burger span{display:block;width:20px;height:2px;background:var(--ink);transition:transform .35s var(--ease),opacity .25s}
+  .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* ---------- Mobile menu ---------- */
+  .mobile-menu{position:fixed;inset:0;z-index:80;background:var(--bg);transform:translateY(-100%);transition:transform .55s var(--ease);display:flex;flex-direction:column;justify-content:center;padding:0 clamp(24px,8vw,64px)}
+  .mobile-menu.open{transform:translateY(0)}
+  .mobile-menu a{font-family:"Space Grotesk";font-weight:600;font-size:clamp(2rem,9vw,3.4rem);color:var(--ink);padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  .mobile-menu a .i{font-size:1.2rem;color:var(--accent)}
+  .mobile-menu .mm-foot{margin-top:38px;display:flex;flex-direction:column;gap:6px;color:var(--ink-soft);font-size:1rem}
+  .mobile-menu .mm-foot a{font-family:"Inter";font-size:1rem;border:0;padding:2px 0;display:inline;color:var(--accent)}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding-top:84px}
+  #hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.9}
+  .hero-grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.05;
+    background-image:radial-gradient(var(--ink) 1px,transparent 1px);background-size:4px 4px}
+  .hero .wrap{position:relative;z-index:2;width:100%}
+  .hero-inner{max-width:980px}
+  .hero h1{
+    font-size:clamp(2.6rem,8.2vw,7rem);
+    margin:26px 0 30px;letter-spacing:-.035em;
+  }
+  .hero h1 .em{font-style:italic;font-weight:400;color:var(--accent)}
+  .hero h1 .line{display:block;overflow:hidden}
+  .hero h1 .line > span{display:block;transform:translateY(110%);transition:transform 1s var(--ease)}
+  .hero.ready h1 .line > span{transform:translateY(0)}
+  .hero h1 .line:nth-child(2) > span{transition-delay:.09s}
+  .hero h1 .line:nth-child(3) > span{transition-delay:.18s}
+
+  .hero-sub{font-size:clamp(1.05rem,2.1vw,1.45rem);color:var(--ink-soft);max-width:620px;font-weight:400;line-height:1.45;
+    opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease) .5s,transform .9s var(--ease) .5s}
+  .hero.ready .hero-sub{opacity:1;transform:none}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:38px;
+    opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease) .65s,transform .9s var(--ease) .65s}
+  .hero.ready .hero-actions{opacity:1;transform:none}
+  .hero-actions .note{font-size:.92rem;color:var(--muted);max-width:230px}
+
+  .hero-tags{position:absolute;bottom:34px;left:0;right:0;z-index:2}
+  .hero-tags .wrap{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:.82rem;color:var(--ink-soft);
+    opacity:0;transition:opacity 1s var(--ease) .9s}
+  .hero.ready .hero-tags .wrap{opacity:1}
+  .hero-tags b{font-family:"Space Grotesk";font-weight:600;color:var(--ink)}
+  .hero-tags .sep{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block}
+
+  /* ---------- Section shell ---------- */
+  section{position:relative}
+  .pad{padding:clamp(80px,12vh,150px) 0}
+  .sec-head{max-width:760px;margin-bottom:clamp(48px,7vh,80px)}
+  .sec-head h2{font-size:clamp(2rem,5vw,3.6rem);margin:20px 0 0;letter-spacing:-.03em}
+  .sec-head p{margin-top:22px;font-size:1.12rem;color:var(--ink-soft);max-width:620px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(38px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}
+
+  /* ---------- Offres ---------- */
+  #offres{background:var(--bg-2)}
+  .offers{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,32px)}
+  .offer{
+    position:relative;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+    padding:clamp(30px,4vw,52px);overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s var(--ease);
+  }
+  .offer:hover{transform:translateY(-8px);box-shadow:0 28px 60px -34px rgba(26,23,20,.4);border-color:var(--accent)}
+  .offer .num{font-family:"Space Grotesk";font-weight:700;font-size:.85rem;letter-spacing:.2em;color:var(--accent)}
+  .offer h3{font-size:clamp(2.2rem,4.5vw,3.4rem);margin:18px 0 6px;letter-spacing:-.03em}
+  .offer .verb{font-family:"Space Grotesk";font-style:italic;color:var(--accent-3);font-size:1.1rem;font-weight:400}
+  .offer p{margin-top:20px;color:var(--ink-soft);font-size:1.05rem;max-width:42ch}
+  .offer .go{margin-top:28px;display:inline-flex;align-items:center;gap:10px;font-family:"Space Grotesk";font-weight:600;font-size:.95rem;color:var(--ink)}
+  .offer .go .arr{transition:transform .35s var(--ease)}
+  .offer:hover .go .arr{transform:translateX(6px)}
+  .offer .glyph{position:absolute;right:-30px;bottom:-50px;font-family:"Space Grotesk";font-weight:700;font-size:13rem;line-height:1;color:var(--bg-2);z-index:0;transition:color .5s var(--ease)}
+  .offer:hover .glyph{color:#f4dccf}
+  .offer > *{position:relative;z-index:1}
+
+  .mid-cta{margin-top:clamp(48px,7vh,72px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;
+    border-top:1px solid var(--line);padding-top:clamp(36px,5vh,52px)}
+  .mid-cta .t{font-family:"Space Grotesk";font-weight:600;font-size:clamp(1.4rem,3vw,2.1rem);letter-spacing:-.02em;max-width:18ch}
+
+  /* ---------- Expertise ---------- */
+  .grid-svc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .svc{background:var(--bg);padding:clamp(28px,3vw,42px);min-height:260px;display:flex;flex-direction:column;transition:background .4s var(--ease)}
+  .svc:hover{background:var(--paper)}
+  .svc .n{font-family:"Space Grotesk";font-weight:600;font-size:.82rem;color:var(--accent);letter-spacing:.12em}
+  .svc h3{font-size:1.5rem;margin:auto 0 0;letter-spacing:-.02em}
+  .svc p{margin-top:14px;color:var(--ink-soft);font-size:.98rem}
+  .svc .bar{height:2px;width:34px;background:var(--accent);margin-top:18px;transition:width .45s var(--ease)}
+  .svc:hover .bar{width:64px}
+
+  /* ---------- Réalisations marquee ---------- */
+  #realisations{background:var(--ink);color:var(--bg);overflow:hidden}
+  #realisations .kicker{color:var(--accent-2)}
+  #realisations .kicker::before{background:var(--accent-2)}
+  #realisations .sec-head h2{color:var(--bg)}
+  #realisations .sec-head p{color:#c9c0b3}
+  .marquee-wrap{margin-top:8px}
+  .marquee{display:flex;gap:24px;width:max-content;animation:scroll 46s linear infinite;will-change:transform}
+  .marquee:hover{animation-play-state:paused}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .card-proj{width:clamp(280px,34vw,440px);flex:0 0 auto}
+  .card-proj .ph{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:4/5;background:#2a2620}
+  .card-proj .ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);filter:saturate(.92)}
+  .card-proj:hover .ph img{transform:scale(1.06)}
+  .card-proj .tag{position:absolute;top:14px;left:14px;background:rgba(245,241,234,.92);color:var(--ink);font-family:"Space Grotesk";font-weight:600;font-size:.74rem;letter-spacing:.04em;padding:7px 13px;border-radius:100px}
+  .card-proj .meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;gap:12px}
+  .card-proj .meta h3{font-size:1.25rem;color:var(--bg)}
+  .card-proj .meta .loc{font-size:.88rem;color:var(--accent-2);font-family:"Space Grotesk";font-weight:500;white-space:nowrap}
+  .card-proj .meta p{font-size:.9rem;color:#a9a094;width:100%;margin-top:4px}
+  .marq-foot{margin-top:clamp(36px,5vh,56px);display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+  .marq-foot p{color:#a9a094;max-width:46ch;font-size:.98rem}
+  #realisations .btn.ghost{color:var(--bg);border-color:var(--bg)}
+  #realisations .btn.ghost:hover{background:var(--accent-2);border-color:var(--accent-2);color:var(--ink)}
+
+  /* ---------- Citation ---------- */
+  #citation{background:var(--bg-2)}
+  .quote-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px);align-items:center}
+  .quote-grid blockquote{font-family:"Space Grotesk";font-weight:500;font-size:clamp(1.8rem,4vw,3.1rem);line-height:1.12;letter-spacing:-.025em}
+  .quote-grid blockquote .em{font-style:italic;font-weight:400;color:var(--accent)}
+  .quote-grid .mark{font-family:"Space Grotesk";font-size:5rem;color:var(--accent);line-height:.5;display:block;height:.5em}
+  .quote-grid .by{margin-top:32px;font-size:1rem;color:var(--ink-soft)}
+  .quote-grid .by b{font-family:"Space Grotesk";color:var(--ink)}
+  .quote-side .card-arti{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:clamp(28px,3vw,40px)}
+  .quote-side .card-arti h3{font-size:1.5rem;letter-spacing:-.02em}
+  .quote-side .card-arti p{margin-top:14px;color:var(--ink-soft);font-size:1.02rem}
+  .arti-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .arti-row span{font-family:"Space Grotesk";font-weight:500;font-size:.82rem;border:1px solid var(--line);border-radius:100px;padding:8px 15px;color:var(--ink-soft)}
+  .quote-side .img-arti{margin-top:18px;border-radius:14px;overflow:hidden;aspect-ratio:16/10}
+  .quote-side .img-arti img{width:100%;height:100%;object-fit:cover}
+
+  /* ---------- Contact ---------- */
+  #contact{background:var(--accent);color:#fff}
+  #contact .kicker{color:#fff}
+  #contact .kicker::before{background:#fff}
+  #contact .sec-head h2{color:#fff}
+  .contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,6vw,80px)}
+  .contact-info p.lead{font-size:1.2rem;color:#ffe7dd;max-width:38ch}
+  .ci-list{margin-top:38px;display:flex;flex-direction:column;gap:2px}
+  .ci-list a{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;border-top:1px solid rgba(255,255,255,.32);font-family:"Space Grotesk";font-weight:500;font-size:clamp(1.1rem,2.4vw,1.6rem);transition:padding-left .35s var(--ease)}
+  .ci-list a:last-child{border-bottom:1px solid rgba(255,255,255,.32)}
+  .ci-list a:hover{padding-left:12px}
+  .ci-list a .lbl{font-family:"Inter";font-weight:500;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#ffcdbd;display:block;margin-bottom:4px}
+  .ci-list a .arr{opacity:0;transform:translateX(-8px);transition:all .35s var(--ease)}
+  .ci-list a:hover .arr{opacity:1;transform:none}
+
+  /* form */
+  form.frm{background:var(--paper);color:var(--ink);border-radius:var(--r);padding:clamp(26px,3vw,40px)}
+  .frm h3{font-size:1.6rem;letter-spacing:-.02em}
+  .frm .sub{color:var(--ink-soft);margin-top:8px;font-size:.98rem}
+  .field{margin-top:20px}
+  .field label{display:block;font-family:"Space Grotesk";font-weight:500;font-size:.82rem;letter-spacing:.04em;color:var(--ink-soft);margin-bottom:8px}
+  .field input,.field select,.field textarea{
+    width:100%;font-family:"Inter";font-size:1rem;color:var(--ink);
+    background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:border-color .3s,box-shadow .3s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(216,85,47,.18)}
+  .field textarea{resize:vertical;min-height:120px}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .frm .btn{width:100%;justify-content:center;margin-top:24px}
+  .frm .legal{margin-top:14px;font-size:.8rem;color:var(--muted);text-align:center}
+  .frm .ok{margin-top:16px;background:#e7f3ee;border:1px solid #bfe0d4;color:#1f6f5c;border-radius:12px;padding:14px 16px;font-size:.95rem;display:none}
+  .frm .ok.show{display:block}
+
+  /* ---------- Footer ---------- */
+  footer.site{background:var(--ink);color:var(--bg);padding:clamp(60px,9vh,100px) 0 40px}
+  .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.16)}
+  .foot-brand .brand{color:var(--bg)}
+  .foot-brand p{margin-top:20px;color:#a9a094;max-width:42ch;font-size:1rem}
+  .foot-col h4{font-family:"Space Grotesk";font-weight:600;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin-bottom:18px}
+  .foot-col a,.foot-col p{display:block;color:#cfc6b9;font-size:.98rem;padding:5px 0;transition:color .3s}
+  .foot-col a:hover{color:var(--bg)}
+  .zone{margin:40px 0 0;color:#a9a094;font-size:.95rem;max-width:88ch;line-height:1.7}
+  .zone b{color:var(--bg);font-family:"Space Grotesk";font-weight:500}
+  .foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;margin-top:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.16);color:#8f877b;font-size:.86rem}
+  .foot-bottom a{color:#8f877b}.foot-bottom a:hover{color:var(--bg)}
+
+  /* ---------- Cursor ---------- */
+  .cursor-dot{position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:300;transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease),background .25s}
+  .cursor-ring{position:fixed;top:0;left:0;width:42px;height:42px;border:1.5px solid rgba(216,85,47,.55);border-radius:50%;pointer-events:none;z-index:300;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),border-color .3s,background .3s}
+  body.cursor-active{cursor:none}
+  body.cursor-active a,body.cursor-active button,body.cursor-active input,body.cursor-active select,body.cursor-active textarea,body.cursor-active label{cursor:none}
+  .cursor-ring.hover{width:62px;height:62px;background:rgba(216,85,47,.08);border-color:var(--accent)}
+  .cursor-dot.hover{width:5px;height:5px}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:1024px){
+    .grid-svc{grid-template-columns:repeat(2,1fr)}
+    .foot-top{grid-template-columns:1fr 1fr}
+    .foot-brand{grid-column:1 / -1}
+  }
+  @media (max-width:860px){
+    .nav-links,.nav-cta{display:none}
+    .burger{display:flex}
+    .offers{grid-template-columns:1fr}
+    .quote-grid{grid-template-columns:1fr}
+    .contact-grid{grid-template-columns:1fr}
+    .marquee{animation-duration:34s}
+  }
+  @media (max-width:560px){
+    .grid-svc{grid-template-columns:1fr}
+    .row-2{grid-template-columns:1fr}
+    .foot-top{grid-template-columns:1fr}
+    .mid-cta{flex-direction:column;align-items:flex-start}
+    .hero-actions{flex-direction:column;align-items:flex-start}
+  }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+    .reveal{opacity:1 !important;transform:none !important}
+    .hero h1 .line > span{transform:none !important}
+    .hero-sub,.hero-actions,.hero-tags .wrap{opacity:1 !important;transform:none !important}
+    .marquee{transform:none !important}
+    .cursor-dot,.cursor-ring{display:none !important}
+    #hero-canvas{display:none}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Aller au contenu principal</a>
+
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site" id="header">
+  <div class="wrap">
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#main" class="brand" aria-label="Hauum — accueil">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Hauum<small>Studio d'architecture commerciale</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#offres">Offres</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#realisations">Réalisations</a>
+        <a href="#citation">Studio</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a href="#contact" class="btn nav-cta">Discutons de votre projet <span class="arr" aria-hidden="true">↗</span></a>
+      <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== MOBILE MENU ===================== -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#offres">Offres <span class="i" aria-hidden="true">↗</span></a>
+  <a href="#expertise">Expertise <span class="i" aria-hidden="true">↗</span></a>
+  <a href="#realisations">Réalisations <span class="i" aria-hidden="true">↗</span></a>
+  <a href="#citation">Studio <span class="i" aria-hidden="true">↗</span></a>
+  <a href="#contact">Contact <span class="i" aria-hidden="true">↗</span></a>
+  <div class="mm-foot">
+    <span>07 85 74 45 21</span>
+    <a href="mailto:hauum.studio@gmail.com">hauum.studio@gmail.com</a>
+    <a href="https://www.instagram.com/hauum.studio" target="_blank" rel="noopener">Instagram @hauum.studio</a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero-inner">
+        <span class="kicker">Architecture commerciale &amp; design d'intérieur</span>
+        <h1 id="hero-title">
+          <span class="line"><span>Studio d'architecture</span></span>
+          <span class="line"><span>commerciale à Bordeaux</span></span>
+          <span class="line"><span>&amp; sur le <span class="em">Bassin d'Arcachon</span></span></span>
+        </h1>
+        <p class="hero-sub">Attirer, fidéliser et créer du lien par l'expérience que vous offrez. Nous concevons et transformons commerces, hôtels et restaurants en lieux qui font revenir.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn lg">Discutons de votre projet <span class="arr" aria-hidden="true">↗</span></a>
+          <a href="#realisations" class="btn ghost lg">Voir nos réalisations</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-tags" aria-hidden="false">
+      <div class="wrap">
+        <span><b>Commerces &amp; boutiques</b></span><span class="sep" aria-hidden="true"></span>
+        <span><b>Hôtellerie &amp; restauration</b></span><span class="sep" aria-hidden="true"></span>
+        <span><b>Tourisme</b></span><span class="sep" aria-hidden="true"></span>
+        <span>Bordeaux · Arcachon · Gironde · Nouvelle-Aquitaine</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== OFFRES ===================== -->
+  <section class="pad" id="offres" aria-labelledby="offres-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Deux façons de travailler ensemble</span>
+        <h2 id="offres-title">Création ou Évolution — un cap clair pour votre lieu.</h2>
+        <p>Que vous lanciez un nouvel établissement ou que vous repensiez un lieu existant, notre approche reste la même : un agencement pensé comme un outil business, au service de votre image de marque et de votre clientèle.</p>
+      </div>
+
+      <div class="offers">
+        <article class="offer reveal d1">
+          <span class="glyph" aria-hidden="true">01</span>
+          <span class="num">01 — Nouveau lieu</span>
+          <h3>Création</h3>
+          <span class="verb">concevoir</span>
+          <p>Vous ouvrez un commerce, un restaurant ou un hôtel. Nous construisons une identité forte et un espace cohérent, de la stratégie de marque jusqu'au mobilier sur-mesure — un lieu qui attire dès le premier regard.</p>
+          <a href="#contact" class="go">Lancer une création <span class="arr" aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="offer reveal d2">
+          <span class="glyph" aria-hidden="true">02</span>
+          <span class="num">02 — Lieu existant</span>
+          <h3>Évolution</h3>
+          <span class="verb">transformer</span>
+          <p>Votre établissement a du potentiel mais ne raconte plus la bonne histoire. Nous le réinventons pour révéler son âme, moderniser l'expérience client et relancer la fréquentation, sans repartir de zéro.</p>
+          <a href="#contact" class="go">Faire évoluer un lieu <span class="arr" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+
+      <div class="mid-cta reveal">
+        <p class="t">Un projet de commerce, d'hôtel ou de restaurant en tête&nbsp;?</p>
+        <a href="#contact" class="btn lg">Prendre rendez-vous <span class="arr" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERTISE ===================== -->
+  <section class="pad" id="expertise" aria-labelledby="expertise-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Notre expertise</span>
+        <h2 id="expertise-title">Une offre intégrée, de la stratégie au chantier.</h2>
+        <p>Tout sous un même toit : nous orchestrons l'ensemble des étapes pour un projet clé-en-main, où chaque décision sert l'expérience client et la performance de votre établissement.</p>
+      </div>
+
+      <div class="grid-svc">
+        <div class="svc reveal d1">
+          <span class="n">01</span>
+          <h3>Stratégie &amp; identité de marque</h3>
+          <p>Positionnement, ton et univers visuel pour une marque qui se distingue et se mémorise.</p>
+          <span class="bar" aria-hidden="true"></span>
+        </div>
+        <div class="svc reveal d2">
+          <span class="n">02</span>
+          <h3>Concepts architecturaux &amp; design d'intérieur</h3>
+          <p>Des espaces dessinés pour guider le parcours client et donner envie de rester.</p>
+          <span class="bar" aria-hidden="true"></span>
+        </div>
+        <div class="svc reveal d3">
+          <span class="n">03</span>
+          <h3>Études de marché &amp; audits</h3>
+          <p>Comprendre votre clientèle et votre lieu avant de dessiner — des choix fondés, pas instinctifs.</p>
+          <span class="bar" aria-hidden="true"></span>
+        </div>
+        <div class="svc reveal d1">
+          <span class="n">04</span>
+          <h3>Stratégie marketing</h3>
+          <p>Faire rayonner le lieu et son ouverture pour transformer le passage en fidélité.</p>
+          <span class="bar" aria-hidden="true"></span>
+        </div>
+        <div class="svc reveal d2">
+          <span class="n">05</span>
+          <h3>Mobilier sur-mesure &amp; finitions artisanales</h3>
+          <p>Des pièces uniques façonnées avec des artisans locaux, pour une montée en gamme assumée.</p>
+          <span class="bar" aria-hidden="true"></span>
+        </div>
+        <div class="svc reveal d3">
+          <span class="n">06</span>
+          <h3>Gestion de projet &amp; suivi de chantier</h3>
+          <p>Un interlocuteur unique, des délais tenus et un chantier piloté jusqu'à l'ouverture.</p>
+          <span class="bar" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RÉALISATIONS ===================== -->
+  <section class="pad" id="realisations" aria-labelledby="real-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Réalisations</span>
+        <h2 id="real-title">Des lieux qui attirent, et qui fidélisent.</h2>
+        <p>Un aperçu de notre approche en commerce, hôtellerie-restauration et tourisme, à Bordeaux, sur le Bassin d'Arcachon et en Gironde.</p>
+      </div>
+    </div>
+
+    <div class="marquee-wrap" aria-label="Galerie de réalisations">
+      <div class="marquee" id="marquee">
+        <!-- set A -->
+        <article class="card-proj">
+          <div class="ph"><span class="tag">Boutique</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-boutique-arcachon/800/1000" alt="Aménagement d'une boutique de prêt-à-porter à Arcachon : agencement commercial épuré, étagères en bois clair et éclairage chaleureux." /></div>
+          <div class="meta"><h3>Boutique mode</h3><span class="loc">Arcachon</span></div>
+          <p>Concept retail &amp; mobilier sur-mesure</p>
+        </article>
+        <article class="card-proj">
+          <div class="ph"><span class="tag">Restaurant</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-restaurant-bordeaux/800/1000" alt="Design d'intérieur d'un restaurant à Bordeaux : salle conviviale, banquettes en velours et matériaux naturels." /></div>
+          <div class="meta"><h3>Restaurant bistronomique</h3><span class="loc">Bordeaux</span></div>
+          <p>Identité &amp; scénographie de salle</p>
+        </article>
+        <article class="card-proj">
+          <div class="ph"><span class="tag">Hôtel</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-hotel-capferret/800/1000" alt="Architecture commerciale d'un hôtel sur le Cap Ferret : lobby lumineux, tons sable et bois flotté pour une ambiance bord de bassin." /></div>
+          <div class="meta"><h3>Hôtel de charme</h3><span class="loc">Cap Ferret</span></div>
+          <p>Lobby, chambres &amp; expérience client</p>
+        </article>
+        <article class="card-proj">
+          <div class="ph"><span class="tag">Concept store</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-conceptstore-bordeaux/800/1000" alt="Aménagement d'un concept store à Bordeaux : agencement modulable et parcours client mis en scène." /></div>
+          <div class="meta"><h3>Concept store</h3><span class="loc">Bordeaux</span></div>
+          <p>Stratégie de marque &amp; agencement</p>
+        </article>
+        <article class="card-proj">
+          <div class="ph"><span class="tag">Café</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-cafe-latestedebuch/800/1000" alt="Rénovation d'un café à La Teste-de-Buch : comptoir sur-mesure, finitions artisanales et ambiance chaleureuse." /></div>
+          <div class="meta"><h3>Café-torréfaction</h3><span class="loc">La Teste-de-Buch</span></div>
+          <p>Évolution d'un lieu existant</p>
+        </article>
+        <article class="card-proj">
+          <div class="ph"><span class="tag">Boutique tourisme</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-tourisme-gironde/800/1000" alt="Espace d'accueil touristique en Gironde : agencement accueillant valorisant les produits et l'identité du territoire." /></div>
+          <div class="meta"><h3>Espace tourisme</h3><span class="loc">Gironde</span></div>
+          <p>Accueil &amp; mise en valeur produits</p>
+        </article>
+
+        <!-- set B (duplicate for seamless loop, hidden from SR) -->
+        <article class="card-proj" aria-hidden="true">
+          <div class="ph"><span class="tag">Boutique</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-boutique-arcachon/800/1000" alt="" /></div>
+          <div class="meta"><h3>Boutique mode</h3><span class="loc">Arcachon</span></div>
+          <p>Concept retail &amp; mobilier sur-mesure</p>
+        </article>
+        <article class="card-proj" aria-hidden="true">
+          <div class="ph"><span class="tag">Restaurant</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-restaurant-bordeaux/800/1000" alt="" /></div>
+          <div class="meta"><h3>Restaurant bistronomique</h3><span class="loc">Bordeaux</span></div>
+          <p>Identité &amp; scénographie de salle</p>
+        </article>
+        <article class="card-proj" aria-hidden="true">
+          <div class="ph"><span class="tag">Hôtel</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-hotel-capferret/800/1000" alt="" /></div>
+          <div class="meta"><h3>Hôtel de charme</h3><span class="loc">Cap Ferret</span></div>
+          <p>Lobby, chambres &amp; expérience client</p>
+        </article>
+        <article class="card-proj" aria-hidden="true">
+          <div class="ph"><span class="tag">Concept store</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-conceptstore-bordeaux/800/1000" alt="" /></div>
+          <div class="meta"><h3>Concept store</h3><span class="loc">Bordeaux</span></div>
+          <p>Stratégie de marque &amp; agencement</p>
+        </article>
+        <article class="card-proj" aria-hidden="true">
+          <div class="ph"><span class="tag">Café</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-cafe-latestedebuch/800/1000" alt="" /></div>
+          <div class="meta"><h3>Café-torréfaction</h3><span class="loc">La Teste-de-Buch</span></div>
+          <p>Évolution d'un lieu existant</p>
+        </article>
+        <article class="card-proj" aria-hidden="true">
+          <div class="ph"><span class="tag">Boutique tourisme</span>
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-tourisme-gironde/800/1000" alt="" /></div>
+          <div class="meta"><h3>Espace tourisme</h3><span class="loc">Gironde</span></div>
+          <p>Accueil &amp; mise en valeur produits</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="marq-foot reveal">
+        <p>Chaque image est une mise en situation. Vos futures réalisations Hauum prendront ici toute leur place.</p>
+        <a href="#contact" class="btn ghost lg">Démarrer votre projet <span class="arr" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CITATION / ARTISANS ===================== -->
+  <section class="pad" id="citation" aria-labelledby="cit-title">
+    <div class="wrap">
+      <div class="quote-grid">
+        <div class="reveal">
+          <span class="mark" aria-hidden="true">“</span>
+          <blockquote id="cit-title">Chaque lieu et chaque marque a une <span class="em">âme particulière</span> qui mérite d'être révélée et sublimée.</blockquote>
+          <p class="by"><b>Fondatrice — Hauum</b><br />Studio d'architecture commerciale, entre Bordeaux et le Bassin d'Arcachon.</p>
+        </div>
+
+        <div class="quote-side reveal d2">
+          <div class="card-arti">
+            <span class="kicker">Ancrage local</span>
+            <h3 style="margin-top:14px">Un savoir-faire porté par des artisans girondins.</h3>
+            <p>Du mobilier sur-mesure aux finitions, nous travaillons main dans la main avec des artisans locaux de Gironde et du Bassin d'Arcachon. Une exigence artisanale qui donne à chaque projet sa singularité et sa qualité haut de gamme.</p>
+            <div class="arti-row" aria-label="Métiers partenaires">
+              <span>Ébénisterie</span><span>Métallerie</span><span>Tapisserie</span><span>Éclairage</span><span>Verrerie</span>
+            </div>
+            <div class="img-arti">
+              <img loading="lazy" src="https://picsum.photos/seed/hauum-artisan-atelier/900/560" alt="Atelier d'un artisan ébéniste en Gironde : fabrication de mobilier sur-mesure pour un projet d'agencement commercial Hauum." />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="pad" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="sec-head reveal" style="margin-bottom:clamp(36px,5vh,56px)">
+        <span class="kicker">Contact</span>
+        <h2 id="contact-title">Discutons de votre projet.</h2>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <p class="lead">Parlons de votre commerce, votre hôtel ou votre restaurant. On vous répond vite, avec des conseils concrets et une vraie vision.</p>
+          <div class="ci-list">
+            <a href="tel:+33785744521">
+              <span><span class="lbl">Téléphone</span>07 85 74 45 21</span>
+              <span class="arr" aria-hidden="true">↗</span>
+            </a>
+            <a href="mailto:hauum.studio@gmail.com">
+              <span><span class="lbl">Email</span>hauum.studio@gmail.com</span>
+              <span class="arr" aria-hidden="true">↗</span>
+            </a>
+            <a href="https://www.instagram.com/hauum.studio" target="_blank" rel="noopener">
+              <span><span class="lbl">Instagram</span>@hauum.studio</span>
+              <span class="arr" aria-hidden="true">↗</span>
+            </a>
+            <a href="https://www.linkedin.com/company/hauum" target="_blank" rel="noopener">
+              <span><span class="lbl">LinkedIn</span>Hauum Studio</span>
+              <span class="arr" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal d2">
+          <form class="frm" id="contact-form" novalidate>
+            <h3>Parlez-nous de votre lieu</h3>
+            <p class="sub">Quelques détails suffisent pour démarrer la conversation.</p>
+
+            <div class="row-2">
+              <div class="field">
+                <label for="f-nom">Nom</label>
+                <input type="text" id="f-nom" name="nom" autocomplete="name" placeholder="Votre nom" required />
+              </div>
+              <div class="field">
+                <label for="f-email">Email</label>
+                <input type="email" id="f-email" name="email" autocomplete="email" placeholder="vous@exemple.fr" required />
+              </div>
+            </div>
+
+            <div class="row-2">
+              <div class="field">
+                <label for="f-type">Type de projet</label>
+                <select id="f-type" name="type" required>
+                  <option value="" selected disabled>Choisir…</option>
+                  <option value="creation">Création — nouveau lieu</option>
+                  <option value="evolution">Évolution — lieu existant</option>
+                  <option value="conseil">Je ne sais pas encore</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="f-secteur">Secteur</label>
+                <select id="f-secteur" name="secteur" required>
+                  <option value="" selected disabled>Choisir…</option>
+                  <option value="commerce">Commerce / boutique</option>
+                  <option value="restauration">Restaurant / café (CHR)</option>
+                  <option value="hotellerie">Hôtellerie</option>
+                  <option value="tourisme">Tourisme</option>
+                  <option value="autre">Autre</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-msg">Votre message</label>
+              <textarea id="f-msg" name="message" placeholder="Décrivez votre lieu, vos envies, votre échéance…" required></textarea>
+            </div>
+
+            <button type="submit" class="btn">Envoyer ma demande <span class="arr" aria-hidden="true">↗</span></button>
+            <p class="legal">Vos informations restent confidentielles et ne servent qu'à vous recontacter.</p>
+            <div class="ok" id="form-ok" role="status">Merci&nbsp;! Votre demande a bien été préparée. Pour l'instant ce formulaire ouvre votre messagerie — finalisez l'envoi à hauum.studio@gmail.com.</div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <span class="brand"><span class="dot" aria-hidden="true"></span> Hauum</span>
+        <p>Studio d'architecture commerciale &amp; design d'intérieur. Nous révélons l'âme des commerces, hôtels et restaurants pour qu'ils attirent, fidélisent et créent du lien.</p>
+      </div>
+      <nav class="foot-col" aria-label="Plan du site">
+        <h4>Explorer</h4>
+        <a href="#offres">Offres</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#realisations">Réalisations</a>
+        <a href="#citation">Le studio</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <a href="tel:+33785744521">07 85 74 45 21</a>
+        <a href="mailto:hauum.studio@gmail.com">hauum.studio@gmail.com</a>
+        <a href="https://www.instagram.com/hauum.studio" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/company/hauum" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <p class="zone">
+      <b>Zone d'intervention —</b> Studio basé entre <b>Bordeaux</b> et le <b>Bassin d'Arcachon</b>, intervenant en <b>Gironde</b> et en <b>Nouvelle-Aquitaine</b> (Cap Ferret, Lège-Cap-Ferret, La Teste-de-Buch, Pyla-sur-Mer, Gujan-Mestras, Andernos-les-Bains, Mérignac, Pessac, Talence, Libourne, Saint-Émilion), en <b>Occitanie</b> et en projets à distance. Spécialiste de l'agencement commercial pour commerces &amp; boutiques, hôtellerie-restauration (CHR) et tourisme.
+    </p>
+
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> Hauum — Studio d'architecture commerciale. Tous droits réservés.</span>
+      <span>Bordeaux · Bassin d'Arcachon · Gironde · Nouvelle-Aquitaine</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Year ---------- */
+  var y = document.getElementById("year");
+  if (y) y.textContent = new Date().getFullYear();
+
+  /* ---------- Header scroll state ---------- */
+  var header = document.getElementById("header");
+  var onScroll = function(){
+    if (window.scrollY > 24) header.classList.add("scrolled");
+    else header.classList.remove("scrolled");
+  };
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- Mobile menu ---------- */
+  var burger = document.getElementById("burger");
+  var menu = document.getElementById("mobile-menu");
+  var open = false;
+  function setMenu(state){
+    open = state;
+    burger.setAttribute("aria-expanded", String(state));
+    burger.setAttribute("aria-label", state ? "Fermer le menu" : "Ouvrir le menu");
+    menu.classList.toggle("open", state);
+    menu.setAttribute("aria-hidden", String(!state));
+    document.body.style.overflow = state ? "hidden" : "";
+  }
+  burger.addEventListener("click", function(){ setMenu(!open); });
+  menu.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ setMenu(false); });
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && open){ setMenu(false); burger.focus(); }
+  });
+
+  /* ---------- Hero entrance ---------- */
+  var hero = document.getElementById("hero");
+  window.requestAnimationFrame(function(){
+    window.requestAnimationFrame(function(){ hero.classList.add("ready"); });
+  });
+
+  /* ---------- Scroll reveals ---------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if (reduce || !("IntersectionObserver" in window)){
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, {threshold:0.14, rootMargin:"0px 0px -8% 0px"});
+    reveals.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- Custom cursor (desktop, fine pointer only) ---------- */
+  var finePointer = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (finePointer && !reduce){
+    var dot = document.querySelector(".cursor-dot");
+    var ring = document.querySelector(".cursor-ring");
+    document.body.classList.add("cursor-active");
+    var mx=0,my=0,rx=0,ry=0;
+    document.addEventListener("mousemove", function(e){
+      mx=e.clientX; my=e.clientY;
+      dot.style.transform = "translate(" + mx + "px," + my + "px) translate(-50%,-50%)";
+    });
+    (function loop(){
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)";
+      window.requestAnimationFrame(loop);
+    })();
+    var hot = "a, button, input, select, textarea, label, .offer, .card-proj, .svc";
+    document.querySelectorAll(hot).forEach(function(el){
+      el.addEventListener("mouseenter", function(){ ring.classList.add("hover"); dot.classList.add("hover"); });
+      el.addEventListener("mouseleave", function(){ ring.classList.remove("hover"); dot.classList.remove("hover"); });
+    });
+    document.addEventListener("mouseleave", function(){ dot.style.opacity="0"; ring.style.opacity="0"; });
+    document.addEventListener("mouseenter", function(){ dot.style.opacity="1"; ring.style.opacity="1"; });
+  }
+
+  /* ---------- Contact form (mailto fallback, no backend) ---------- */
+  var form = document.getElementById("contact-form");
+  if (form){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      if (!form.checkValidity()){ form.reportValidity(); return; }
+      var get = function(id){ return (document.getElementById(id).value || "").trim(); };
+      var nom = get("f-nom"), email = get("f-email");
+      var type = document.getElementById("f-type"), secteur = document.getElementById("f-secteur");
+      var typeTxt = type.options[type.selectedIndex] ? type.options[type.selectedIndex].text : "";
+      var secTxt = secteur.options[secteur.selectedIndex] ? secteur.options[secteur.selectedIndex].text : "";
+      var msg = get("f-msg");
+      var body =
+        "Nom : " + nom + "\n" +
+        "Email : " + email + "\n" +
+        "Type de projet : " + typeTxt + "\n" +
+        "Secteur : " + secTxt + "\n\n" +
+        "Message :\n" + msg + "\n";
+      var subject = "Demande de projet — " + (nom || "Nouveau contact");
+      var ok = document.getElementById("form-ok");
+      if (ok) ok.classList.add("show");
+      window.location.href = "mailto:hauum.studio@gmail.com?subject=" +
+        encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    });
+  }
+
+  /* ---------- Animated hero background (lightweight canvas blobs) ---------- */
+  if (!reduce){
+    var canvas = document.getElementById("hero-canvas");
+    if (canvas && canvas.getContext){
+      var ctx = canvas.getContext("2d");
+      var W=0, H=0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var palette = [
+        [216,85,47],   /* terracotta */
+        [232,176,74],  /* ocre */
+        [31,111,92],   /* vert profond */
+        [216,85,47]
+      ];
+      var blobs = [];
+      function rand(a,b){ return a + Math.random()*(b-a); }
+      function makeBlobs(){
+        blobs = [];
+        var count = W < 720 ? 3 : 5;
+        for (var i=0;i<count;i++){
+          var c = palette[i % palette.length];
+          blobs.push({
+            x: rand(0.1,0.9)*W, y: rand(0.1,0.9)*H,
+            r: rand(0.28,0.5) * Math.min(W,H),
+            dx: rand(-0.16,0.16), dy: rand(-0.16,0.16),
+            col: c, a: rand(0.18,0.32)
+          });
+        }
+      }
+      function resize(){
+        var rect = canvas.getBoundingClientRect();
+        W = rect.width; H = rect.height;
+        canvas.width = Math.floor(W*dpr); canvas.height = Math.floor(H*dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        makeBlobs();
+      }
+      var running = true, visible = true;
+      function draw(){
+        if (!running){ return; }
+        ctx.clearRect(0,0,W,H);
+        ctx.globalCompositeOperation = "multiply";
+        for (var i=0;i<blobs.length;i++){
+          var b = blobs[i];
+          b.x += b.dx; b.y += b.dy;
+          if (b.x < -b.r*0.5 || b.x > W + b.r*0.5) b.dx *= -1;
+          if (b.y < -b.r*0.5 || b.y > H + b.r*0.5) b.dy *= -1;
+          var g = ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+          g.addColorStop(0, "rgba("+b.col[0]+","+b.col[1]+","+b.col[2]+","+b.a+")");
+          g.addColorStop(1, "rgba("+b.col[0]+","+b.col[1]+","+b.col[2]+",0)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+          ctx.fill();
+        }
+        ctx.globalCompositeOperation = "source-over";
+        window.requestAnimationFrame(draw);
+      }
+      resize();
+      window.addEventListener("resize", resize);
+      /* Pause when hero off-screen to save CPU */
+      if ("IntersectionObserver" in window){
+        var hio = new IntersectionObserver(function(en){
+          visible = en[0].isIntersecting;
+          if (visible && !running){ running = true; window.requestAnimationFrame(draw); }
+          else if (!visible){ running = false; }
+        }, {threshold:0});
+        hio.observe(canvas);
+      }
+      document.addEventListener("visibilitychange", function(){
+        if (document.hidden){ running = false; }
+        else if (visible && !running){ running = true; window.requestAnimationFrame(draw); }
+      });
+      window.requestAnimationFrame(draw);
+    }
+  }
+})();
+</script>
+</body>
+</html>
