@@ -35,7 +35,7 @@
 <meta name="twitter:description" content="Studio d'architecture commerciale &amp; design d'intérieur à Bordeaux et sur le Bassin d'Arcachon. Concevons et transformons commerces, hôtels et restaurants.">
 <meta name="twitter:image" content="https://picsum.photos/seed/hauum-interieur-signature/1200/630">
 
-<meta name="theme-color" content="#14110F">
+<meta name="theme-color" content="#1A1613">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,15 +93,15 @@
 
 <style>
   :root{
-    --bg:#14110F;
-    --bg-soft:#1B1714;
-    --bg-card:#1E1A16;
+    --bg:#1A1613;
+    --bg-soft:#221C18;
+    --bg-card:#26201B;
     --ivory:#EFE8DE;
-    --ivory-dim:#C7BEB1;
+    --ivory-dim:#C9BCA9;
     --muted:#9B9183;
-    --gold:#C9A36B;
-    --gold-soft:#E0C79C;
-    --line:rgba(201,163,107,0.22);
+    --gold:#A9763F;
+    --gold-soft:#C79A6B;
+    --line:rgba(169,118,63,0.22);
     --line-soft:rgba(239,232,222,0.10);
     --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --sans:'Inter', system-ui, -apple-system, sans-serif;
@@ -125,7 +125,7 @@
   }
   img{display:block;max-width:100%;height:auto;}
   a{color:inherit;text-decoration:none;}
-  ::selection{background:var(--gold);color:#14110F;}
+  ::selection{background:var(--gold);color:#1A1613;}
 
   /* ---------- typography ---------- */
   h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;letter-spacing:0.005em;}
@@ -154,7 +154,7 @@
   /* ---------- skip link ---------- */
   .skip{
     position:absolute;left:1rem;top:-100px;z-index:2000;
-    background:var(--gold);color:#14110F;font-family:var(--sans);font-weight:500;
+    background:var(--gold);color:#1A1613;font-family:var(--sans);font-weight:500;
     padding:0.7rem 1.2rem;border-radius:2px;transition:top .2s var(--ease);
   }
   .skip:focus{top:1rem;}
@@ -199,7 +199,7 @@
     border:1px solid var(--line);color:var(--gold-soft);padding:0.68rem 1.3rem;border-radius:2px;
     transition:background .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease);
   }
-  .nav-cta:hover,.nav-cta:focus-visible{background:var(--gold);color:#14110F;border-color:var(--gold);}
+  .nav-cta:hover,.nav-cta:focus-visible{background:var(--gold);color:#1A1613;border-color:var(--gold);}
 
   .nav-toggle{
     display:none;background:none;border:none;color:var(--ivory);cursor:pointer;
@@ -215,13 +215,13 @@
     display:inline-flex;align-items:center;gap:0.7rem;
     font-family:var(--sans);font-size:0.82rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
     padding:1.05rem 2.1rem;border-radius:2px;cursor:pointer;transition:all .45s var(--ease);
-    border:1px solid var(--gold);background:var(--gold);color:#14110F;
+    border:1px solid var(--gold);background:var(--gold);color:#1A1613;
   }
   .btn:hover,.btn:focus-visible{background:transparent;color:var(--gold-soft);transform:translateY(-2px);}
   .btn .arr{transition:transform .4s var(--ease);}
   .btn:hover .arr{transform:translateX(5px);}
   .btn-ghost{background:transparent;color:var(--ivory);border-color:var(--line);}
-  .btn-ghost:hover,.btn-ghost:focus-visible{background:var(--ivory);color:#14110F;border-color:var(--ivory);}
+  .btn-ghost:hover,.btn-ghost:focus-visible{background:var(--ivory);color:#1A1613;border-color:var(--ivory);}
 
   /* ---------- hero ---------- */
   .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;}
@@ -355,7 +355,7 @@
   .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--gold);background:rgba(239,232,222,0.06);}
   .field textarea{resize:vertical;min-height:130px;}
   .field select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23C9A36B' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.6rem;}
-  .field select option{background:#1E1A16;color:var(--ivory);}
+  .field select option{background:#26201B;color:var(--ivory);}
   .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
   .form-note{font-size:0.82rem;color:var(--muted);margin:1.2rem 0 0;}
   .contact-form .btn{width:100%;justify-content:center;margin-top:0.4rem;}
@@ -368,7 +368,7 @@
   .zone strong{color:var(--ivory);font-weight:500;}
 
   /* ---------- footer ---------- */
-  footer{background:#100D0B;border-top:1px solid var(--line-soft);}
+  footer{background:#120F0D;border-top:1px solid var(--line-soft);}
   .foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem;padding:clamp(3.5rem,7vw,5rem) 0 3rem;}
   .foot-brand .brand{font-size:2rem;margin-bottom:1.2rem;display:inline-block;}
   .foot-brand p{color:var(--muted);font-size:0.95rem;max-width:38ch;}
@@ -845,7 +845,7 @@
     var message = form.message.value.trim();
     if(!name || !type || !message){
       status.textContent = 'Merci de renseigner votre nom, le type de projet et votre message.';
-      status.style.color = '#E0A07A';
+      status.style.color = '#C79A6B';
       return;
     }
     var typeLabel = type === 'creation' ? 'Création (nouvel établissement)' : 'Évolution (lieu existant)';

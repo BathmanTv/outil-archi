@@ -122,7 +122,8 @@ function renderChecks() {
   const list = $('checksList');
   if (!currentProject) return;
   const commercial = $('commercialToggle') ? $('commercialToggle').checked : true;
-  const issues = analyzeLayout(currentProject, { commercial });
+  const effectif = $('erpEffectif') ? +$('erpEffectif').value || 0 : 0;
+  const issues = analyzeLayout(currentProject, { commercial, effectif });
   list.innerHTML = '';
   if (!issues.length) {
     list.innerHTML = '<li class="ok">Aucun point de vigilance.</li>';
@@ -149,6 +150,16 @@ function mountPlan() {
   editor = createPlanEditor('planCanvas', currentProject, {
     onChange: (proj, total) => { $('totalArea').textContent = total; autosave(); renderChecks(); },
   });
+  // Re-apply drawing toggles to the freshly created editor instance.
+  editor.setOrtho($('orthoToggle').checked);
+  editor.setSnap($('snapToggle').checked);
+  // Reflect any existing background-plan state in the controls.
+  const fond = currentProject.fond;
+  $('fondLock').checked = !!(fond && fond.locked);
+  $('fondOpacity').value = fond && fond.opacity != null ? fond.opacity : 0.6;
+  $('fondStatus').textContent = fond && fond.image
+    ? 'Fond de plan chargé.'
+    : 'Importez un plan scanné/PDF (en image), puis « Caler l’échelle ».';
   $('totalArea').textContent = editor.getTotal();
   renderChecks();
 }
@@ -163,7 +174,42 @@ $('btnAddRoom').addEventListener('click', () => {
 });
 document.querySelectorAll('.cbtn').forEach((b) =>
   b.addEventListener('click', () => editor && editor.addConstraint(b.dataset.kind)));
+
+// AutoCAD-style precise drawing + scaled columns + layers
+$('btnDrawRoom').addEventListener('click', () => editor && editor.startDrawRoom());
+$('btnDrawCeil').addEventListener('click', () => editor && editor.startDrawFauxPlafond());
+$('btnAddPoteau').addEventListener('click', () => {
+  if (!editor) return;
+  editor.addPoteau({ forme: $('poteauForme').value, taille: (+$('poteauTaille').value || 20) / 100 });
+});
+$('orthoToggle').addEventListener('change', (e) => editor && editor.setOrtho(e.target.checked));
+$('snapToggle').addEventListener('change', (e) => editor && editor.setSnap(e.target.checked));
+[['layRooms', 'rooms'], ['layPoteaux', 'poteaux'], ['layCeil', 'fauxplafond']].forEach(([id, name]) =>
+  $(id).addEventListener('change', (e) => editor && editor.setLayerVisible(name, e.target.checked)));
+
 $('commercialToggle').addEventListener('change', renderChecks);
+$('erpEffectif').addEventListener('change', renderChecks);
+
+// Background floor-plan import + scale calibration (ERP study)
+$('fondInput').addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (!f || !editor) return;
+  const reader = new FileReader();
+  reader.onload = () => { editor.setFond(reader.result); $('fondStatus').textContent = 'Fond importé. Cliquez « Caler l’échelle » pour le mettre à la bonne taille.'; };
+  reader.readAsDataURL(f);
+  e.target.value = '';
+});
+$('btnCalibrate').addEventListener('click', () => {
+  if (!editor) return;
+  if (!editor.hasFond()) { $('fondStatus').textContent = 'Importez d’abord un fond de plan.'; return; }
+  const started = editor.startCalibrate((ok) => {
+    $('fondStatus').textContent = ok ? 'Échelle calée. Vous pouvez dessiner par-dessus.' : 'Calage annulé.';
+  });
+  if (started) $('fondStatus').textContent = 'Cliquez 2 points de distance connue sur le plan…';
+});
+$('btnRemoveFond').addEventListener('click', () => { if (editor) { editor.removeFond(); $('fondStatus').textContent = 'Fond retiré.'; } });
+$('fondLock').addEventListener('change', (e) => editor && editor.setFondLocked(e.target.checked));
+$('fondOpacity').addEventListener('input', (e) => editor && editor.setFondOpacity(e.target.value));
 $('btnDelRoom').addEventListener('click', () => editor && editor.deleteSelected());
 $('btnZoomIn').addEventListener('click', () => editor && editor.zoom(1.2));
 $('btnZoomOut').addEventListener('click', () => editor && editor.zoom(1 / 1.2));

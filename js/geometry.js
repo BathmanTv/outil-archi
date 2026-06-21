@@ -6,12 +6,129 @@ export function snapToGrid(value, grid = GRID_M) {
   return Math.round(value / grid) * grid;
 }
 
+// A room is either a rectangle ({x,y,w,h}) or a polygon ({points:[{x,y}...]}).
+// roomPolygon returns the room outline as a list of vertices (meters) for EITHER
+// shape, so the rest of the geometry can treat every room uniformly.
+export function roomPolygon(room) {
+  if (room.points && room.points.length >= 3) return room.points;
+  return [
+    { x: room.x, y: room.y },
+    { x: room.x + room.w, y: room.y },
+    { x: room.x + room.w, y: room.y + room.h },
+    { x: room.x, y: room.y + room.h },
+  ];
+}
+
+// Signed-area / shoelace formula → absolute area in m².
+export function polygonAreaM2(points) {
+  let a = 0;
+  for (let i = 0; i < points.length; i++) {
+    const p = points[i];
+    const q = points[(i + 1) % points.length];
+    a += p.x * q.y - q.x * p.y;
+  }
+  return Math.abs(a) / 2;
+}
+
+// Area-weighted centroid (used to place the room label). Falls back to the
+// bounding-box centre for degenerate (zero-area) polygons.
+export function polygonCentroid(points) {
+  let a = 0;
+  let cx = 0;
+  let cy = 0;
+  for (let i = 0; i < points.length; i++) {
+    const p = points[i];
+    const q = points[(i + 1) % points.length];
+    const cross = p.x * q.y - q.x * p.y;
+    a += cross;
+    cx += (p.x + q.x) * cross;
+    cy += (p.y + q.y) * cross;
+  }
+  if (Math.abs(a) < 1e-9) {
+    const b = polygonBBox(points);
+    return { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+  }
+  return { x: cx / (3 * a), y: cy / (3 * a) };
+}
+
+// Axis-aligned bounding box {x,y,w,h} of a polygon.
+export function polygonBBox(points) {
+  const xs = points.map((p) => p.x);
+  const ys = points.map((p) => p.y);
+  const x = Math.min(...xs);
+  const y = Math.min(...ys);
+  return { x, y, w: Math.max(...xs) - x, h: Math.max(...ys) - y };
+}
+
+// Ray-casting point-in-polygon test (point + polygon in meters).
+export function pointInPolygon(pt, points) {
+  let inside = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+    const pi = points[i];
+    const pj = points[j];
+    const intersect = (pi.y > pt.y) !== (pj.y > pt.y)
+      && pt.x < ((pj.x - pi.x) * (pt.y - pi.y)) / (pj.y - pi.y) + pi.x;
+    if (intersect) inside = !inside;
+  }
+  return inside;
+}
+
+// Shortest distance from a point to a segment [a,b] (all in meters).
+export function pointSegmentDistance(pt, a, b) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len2 = dx * dx + dy * dy;
+  let t = len2 ? ((pt.x - a.x) * dx + (pt.y - a.y) * dy) / len2 : 0;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(pt.x - (a.x + t * dx), pt.y - (a.y + t * dy));
+}
+
+// Distance from a point to a polygon outline; 0 if the point is inside.
+export function pointPolyDistance(pt, points) {
+  if (pointInPolygon(pt, points)) return 0;
+  let min = Infinity;
+  for (let i = 0; i < points.length; i++) {
+    const d = pointSegmentDistance(pt, points[i], points[(i + 1) % points.length]);
+    if (d < min) min = d;
+  }
+  return min;
+}
+
 export function roomAreaM2(room) {
+  if (room.points && room.points.length >= 3) return +polygonAreaM2(room.points).toFixed(2);
   return +(room.w * room.h).toFixed(2);
 }
 
 export function totalAreaM2(rooms) {
-  return +rooms.reduce((sum, r) => sum + r.w * r.h, 0).toFixed(2);
+  return +rooms.reduce((sum, r) => sum + roomAreaM2(r), 0).toFixed(2);
+}
+
+// --- AutoCAD-style drawing helpers -----------------------------------------
+
+// Snap a free point {x,y} (meters) to the grid.
+export function snapPointToGrid(pt, grid = GRID_M) {
+  return { x: snapToGrid(pt.x, grid), y: snapToGrid(pt.y, grid) };
+}
+
+// ORTHO: constrain `pt` to lie exactly horizontal OR vertical from `anchor`
+// (whichever axis the cursor moved most along), like AutoCAD's ortho mode.
+export function applyOrtho(anchor, pt) {
+  if (!anchor) return pt;
+  return Math.abs(pt.x - anchor.x) >= Math.abs(pt.y - anchor.y)
+    ? { x: pt.x, y: anchor.y }
+    : { x: anchor.x, y: pt.y };
+}
+
+// OSNAP-style vertex snap: if `pt` is within `thr` meters of any candidate
+// vertex, return that vertex (so new geometry latches onto existing corners).
+export function snapToVertices(pt, vertices, thr = 0.3) {
+  let best = null;
+  let bestD = thr;
+  for (const v of vertices) {
+    const d = Math.hypot(pt.x - v.x, pt.y - v.y);
+    if (d <= bestD) { bestD = d; best = v; }
+  }
+  return best ? { x: best.x, y: best.y } : pt;
 }
 
 export function metersToPixels(m, scale = 1) {

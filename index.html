@@ -53,6 +53,37 @@
           <button id="btnAddRoom" class="primary">Ajouter</button>
         </fieldset>
         <fieldset>
+          <legend>Dessin précis (façon AutoCAD)</legend>
+          <div class="toolbar">
+            <button id="btnDrawRoom">✏️ Dessiner une pièce</button>
+            <button id="btnDrawCeil">▱ Faux plafond</button>
+          </div>
+          <label class="toggle-inline"><input type="checkbox" id="orthoToggle" /> ORTHO (verrouille horizontal / vertical)</label>
+          <label class="toggle-inline"><input type="checkbox" id="snapToggle" checked /> Accrochage aux sommets existants</label>
+          <div class="poteau-row">
+            <select id="poteauForme">
+              <option value="carre">Poteau carré</option>
+              <option value="rond">Poteau rond</option>
+            </select>
+            <label>Dim. (cm) <input id="poteauTaille" type="number" min="5" step="5" value="20" /></label>
+            <button id="btnAddPoteau">+ Poteau</button>
+          </div>
+          <p class="hint">Dessin : clic pour poser chaque point · <strong>Entrée</strong> ou clic sur le 1ᵉʳ point = fermer la forme · <strong>Retour arr.</strong> = annuler le dernier point · <strong>Échap</strong> = tout annuler. Recoins et formes en L : déplacez les sommets d'une pièce sélectionnée (clic droit sur un sommet = le supprimer).</p>
+        </fieldset>
+        <fieldset>
+          <legend>Fond de plan (étude rapide)</legend>
+          <label class="filebtn">Importer un plan (image)
+            <input id="fondInput" type="file" accept="image/*" hidden />
+          </label>
+          <div class="toolbar">
+            <button id="btnCalibrate">📏 Caler l'échelle</button>
+            <button id="btnRemoveFond" class="danger">Retirer</button>
+          </div>
+          <label class="toggle-inline"><input type="checkbox" id="fondLock" /> Verrouiller le fond</label>
+          <label>Opacité du fond <input id="fondOpacity" type="range" min="0" max="1" step="0.05" value="0.6" /></label>
+          <p id="fondStatus" class="hint">Importez un plan scanné/PDF (en image), puis « Caler l'échelle » : cliquez 2 points dont vous connaissez la distance réelle. Redessinez ensuite les pièces et sorties par-dessus.</p>
+        </fieldset>
+        <fieldset>
           <legend>Contraintes techniques</legend>
           <div class="palette">
             <button class="cbtn" data-kind="eau">💧 Eau</button>
@@ -64,6 +95,12 @@
             <button class="cbtn" data-kind="fenetre">🪟 Fenêtre</button>
             <button class="cbtn" data-kind="note">📝 Note</button>
           </div>
+        </fieldset>
+        <fieldset>
+          <legend>Calques</legend>
+          <label class="toggle-inline"><input type="checkbox" id="layRooms" checked /> Pièces</label>
+          <label class="toggle-inline"><input type="checkbox" id="layPoteaux" checked /> Poteaux</label>
+          <label class="toggle-inline"><input type="checkbox" id="layCeil" checked /> Faux plafonds</label>
         </fieldset>
         <div class="toolbar">
           <button id="btnZoomIn">+</button>
@@ -77,6 +114,7 @@
             <strong>Points de vigilance</strong>
             <label class="toggle"><input type="checkbox" id="commercialToggle" checked /> ERP / commercial</label>
           </div>
+          <label class="toggle-inline">Effectif ERP (pers.) <input id="erpEffectif" type="number" min="0" step="1" value="0" style="width:80px" /></label>
           <ul id="checksList" class="checks-list"><li class="ok">Aucun point de vigilance.</li></ul>
         </div>
         <div class="toolbar">

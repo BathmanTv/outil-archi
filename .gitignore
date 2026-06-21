@@ -1,1 +1,4 @@
 node_modules/
+# local dev helpers (machine-specific, not part of the product)
+serve.py
+.claude/launch.json

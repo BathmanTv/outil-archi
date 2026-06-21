@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { analyzeLayout, pointRoomDistance, suggestAgencement } from '../js/checks.js';
+import {
+  analyzeLayout, pointRoomDistance, suggestAgencement, erpExitRequirements,
+} from '../js/checks.js';
 
 const room = (over = {}) => ({ id: 'r1', nom: 'Pièce', type: 'defaut', x: 0, y: 0, w: 4, h: 3, ...over });
 const con = (kind, x, y, over = {}) => ({ id: `c-${kind}-${x}-${y}`, kind, x, y, ...over });
@@ -65,6 +67,27 @@ describe('analyzeLayout — ERP exits', () => {
     const p = { pieces: [room()], contraintes: [] };
     const issues = analyzeLayout(p, { commercial: false });
     expect(issues.some((i) => /sortie de secours/.test(i.message))).toBe(false);
+  });
+  it('warns when marked exits are fewer than required for the effectif', () => {
+    const p = { pieces: [room()], contraintes: [con('secours', 1, 1)] };
+    const issues = analyzeLayout(p, { commercial: true, effectif: 120 });
+    expect(issues.some((i) => i.level === 'warn' && /2 sortie/.test(i.message))).toBe(true);
+  });
+  it('always appends the non-certifying disclaimer in ERP mode', () => {
+    const issues = analyzeLayout({ pieces: [room()], contraintes: [] }, { commercial: true });
+    expect(issues.some((i) => /pas attestation|ne vaut pas attestation/i.test(i.message))).toBe(true);
+  });
+});
+
+describe('erpExitRequirements', () => {
+  it('1 exit / 1 UP under 20 people', () => {
+    expect(erpExitRequirements(15)).toEqual({ sorties: 1, up: 1, largeur: 0.9 });
+  });
+  it('2 exits / 2 UP (1.40 m) for 51–100', () => {
+    expect(erpExitRequirements(80)).toEqual({ sorties: 2, up: 2, largeur: 1.4 });
+  });
+  it('cumulative width is up × 0.60 m for 3+ UP', () => {
+    expect(erpExitRequirements(150)).toEqual({ sorties: 2, up: 3, largeur: 1.8 });
   });
 });
 

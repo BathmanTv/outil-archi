@@ -25,7 +25,8 @@ export function createProject(nom = 'Nouveau projet', client = '') {
   return {
     id: newId(), nom, client,
     date: new Date().toISOString().slice(0, 10),
-    logo: '', pieces: [], ouvertures: [], contraintes: [], ambiances: [],
+    logo: '', pieces: [], ouvertures: [], contraintes: [],
+    poteaux: [], fauxPlafonds: [], ambiances: [],
   };
 }
 
@@ -53,6 +54,8 @@ export function importProjectJson(json) {
   p.id = newId();
   p.ouvertures = p.ouvertures || [];
   p.contraintes = p.contraintes || [];
+  p.poteaux = p.poteaux || [];
+  p.fauxPlafonds = p.fauxPlafonds || [];
   p.ambiances = p.ambiances || [];
   return p;
 }
