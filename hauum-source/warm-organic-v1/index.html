@@ -17,9 +17,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO -->
-  <title>Architecte d'intérieur & architecture commerciale à Bordeaux et Arcachon | Hauum</title>
-  <meta name="description" content="Studio d'architecture commerciale & design d'intérieur à Bordeaux et sur le Bassin d'Arcachon. Concevons et transformons commerces, hôtels et restaurants en Gironde." />
-  <meta name="keywords" content="architecte d'intérieur Bordeaux, architecture commerciale Bordeaux, agencement commercial Bordeaux, architecte d'intérieur Arcachon, agencement magasin Bordeaux, agencement restaurant Bordeaux, architecte d'intérieur Gironde, design d'intérieur commercial Bordeaux, agencement hôtel Bassin d'Arcachon, mobilier sur-mesure commerce Bordeaux, architecte d'intérieur Cap Ferret, studio architecture commerciale Nouvelle-Aquitaine" />
+  <title>Architecte d'intérieur commercial & agencement de pharmacie à Bordeaux et Arcachon | Hauum</title>
+  <meta name="description" content="Studio d'architecture commerciale & design d'intérieur à Bordeaux et sur le Bassin d'Arcachon : agencement de commerces, pharmacies, hôtels et restaurants. Une approche fondée sur le marketing et la psychologie du consommateur. Organisme certifié Qualiopi." />
+  <meta name="keywords" content="architecte d'intérieur Bordeaux, architecture commerciale Bordeaux, agencement de pharmacie Bordeaux, agencement pharmacie Gironde, agencement pharmacie Bassin d'Arcachon, agencement commercial Bordeaux, architecte d'intérieur Arcachon, agencement magasin Bordeaux, agencement restaurant Bordeaux, architecte d'intérieur Gironde, design d'intérieur commercial Bordeaux, agencement hôtel Bassin d'Arcachon, mobilier sur-mesure commerce Bordeaux, architecte d'intérieur Cap Ferret, formation Qualiopi agencement commercial, studio architecture commerciale Nouvelle-Aquitaine" />
   <meta name="author" content="Hauum" />
   <link rel="canonical" href="https://www.hauum.fr/" />
 
@@ -27,8 +27,8 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:site_name" content="Hauum" />
-  <meta property="og:title" content="Hauum | Architecte d'intérieur commercial Bordeaux & Arcachon" />
-  <meta property="og:description" content="Studio d'architecture commerciale & design d'intérieur à Bordeaux et sur le Bassin d'Arcachon. Concevons et transformons commerces, hôtels et restaurants." />
+  <meta property="og:title" content="Hauum | Architecture commerciale & agencement de pharmacie — Bordeaux & Arcachon" />
+  <meta property="og:description" content="Studio d'architecture commerciale à Bordeaux et sur le Bassin d'Arcachon : commerces, pharmacies, hôtels, restaurants. Approche marketing + psychologie du consommateur." />
   <meta property="og:url" content="https://www.hauum.fr/" />
   <meta property="og:image" content="https://picsum.photos/seed/hauum-studio-og/1200/630" />
 
@@ -74,12 +74,14 @@
     },
     "knowsAbout": [
       "Architecture commerciale",
+      "Agencement de pharmacie",
       "Design d'intérieur commercial",
       "Agencement de commerce",
       "Aménagement de restaurant",
       "Aménagement d'hôtel",
       "Mobilier sur-mesure",
-      "Identité de marque"
+      "Identité de marque",
+      "Formation Qualiopi"
     ],
     "sameAs": [
       "https://www.instagram.com/hauum.studio",
@@ -770,6 +772,33 @@
     .reveal[data-delay="2"] { transition-delay: 0.16s; }
     .reveal[data-delay="3"] { transition-delay: 0.24s; }
 
+    /* ===================== CLIENTS ===================== */
+    .clients-strip { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 40px 0; }
+    .clients-strip .lbl { text-align: center; font-size: 12.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 24px; }
+    .clogos { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+    .clogo { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-sm); min-width: 158px; height: 80px; display: grid; place-items: center; text-align: center; padding: 0 18px; font-family: var(--serif); font-size: 1.1rem; color: var(--ink); line-height: 1.15; }
+    .clogo small { display: block; font-family: var(--sans); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; margin-top: 3px; }
+
+    /* ===================== RÉCOMPENSES ===================== */
+    .awards { margin-top: 8px; }
+    .award { display: flex; align-items: baseline; justify-content: space-between; gap: 22px; padding: 24px 0; border-top: 1px solid var(--hairline); }
+    .awards .award:last-child { border-bottom: 1px solid var(--hairline); }
+    .award .aw-t { font-family: var(--serif); font-size: 1.5rem; line-height: 1.1; }
+    .award .aw-c { font-size: 14px; color: var(--ink-faint); margin-top: 5px; }
+    .award .aw-y { font-size: 14px; color: var(--ink-soft); white-space: nowrap; }
+    .award .aw-y strong { color: var(--ink); }
+
+    /* ===================== FORMATIONS ===================== */
+    .formation-card { display: grid; grid-template-columns: auto 1fr; gap: 34px; align-items: center; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 46px 42px; }
+    .qualiopi-badge { width: 128px; height: 128px; border-radius: var(--radius-sm); background: var(--ink); color: var(--sand); display: grid; place-items: center; text-align: center; font-family: var(--serif); font-size: 1.15rem; line-height: 1.2; padding: 14px; }
+    .formation-card h3 { font-size: 1.9rem; margin-bottom: 12px; }
+    .formation-card h3 em { color: var(--clay); font-style: italic; }
+    .formation-card p { color: var(--ink-soft); margin-bottom: 20px; }
+    @media (max-width: 600px) {
+      .formation-card { grid-template-columns: 1fr; text-align: center; justify-items: center; padding: 34px 24px; }
+      .award { flex-direction: column; gap: 4px; }
+    }
+
     /* ===================== RESPONSIVE ===================== */
     @media (max-width: 1024px) {
       .hero-grid { grid-template-columns: 1fr; gap: 44px; }
@@ -833,7 +862,8 @@
           <li><a href="#offres">Offres</a></li>
           <li><a href="#expertise">Expertise</a></li>
           <li><a href="#realisations">Réalisations</a></li>
-          <li><a href="#studio">Le studio</a></li>
+          <li><a href="#recompenses">Récompenses</a></li>
+          <li><a href="#formations">Formations</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
@@ -851,7 +881,8 @@
       <a href="#offres">Offres</a>
       <a href="#expertise">Expertise</a>
       <a href="#realisations">Réalisations</a>
-      <a href="#studio">Le studio</a>
+      <a href="#recompenses">Récompenses</a>
+      <a href="#formations">Formations</a>
       <a href="#contact">Contact</a>
       <a href="#contact" class="btn">Discutons de votre projet <span class="arrow" aria-hidden="true">↗</span></a>
     </div>
@@ -869,7 +900,7 @@
               Architecture commerciale &amp; design d'intérieur, <em>à&nbsp;Bordeaux et sur le Bassin d'Arcachon.</em>
             </h1>
             <p class="lede reveal" data-delay="2">Attirer, fidéliser et créer du lien par l'expérience que vous offrez.</p>
-            <p class="sub reveal" data-delay="2">Hauum conçoit et transforme commerces, boutiques, restaurants et hôtels en Gironde. Des lieux pensés comme une stratégie&nbsp;: une image de marque forte, une expérience client qui fidélise.</p>
+            <p class="sub reveal" data-delay="2">Hauum conçoit et transforme commerces, <strong>pharmacies</strong>, restaurants et hôtels en Gironde. Des lieux pensés comme une stratégie — fondée sur les sciences du marketing et la psychologie du consommateur&nbsp;: une image de marque forte, une expérience client qui fidélise.</p>
             <div class="hero-actions reveal" data-delay="3">
               <a href="#contact" class="btn">Discutons de votre projet <span class="arrow" aria-hidden="true">↗</span></a>
               <a href="#realisations" class="btn btn-ghost">Voir les réalisations</a>
@@ -898,6 +929,20 @@
                  width="900" height="1120" fetchpriority="high" />
             <span class="hero-badge">L'âme du lieu, révélée &amp; sublimée</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CLIENTS ===================== -->
+    <section class="clients-strip reveal" aria-label="Ils nous font confiance">
+      <div class="wrap">
+        <p class="lbl">Ils nous font confiance</p>
+        <div class="clogos">
+          <div class="clogo">Paris Aéroport</div>
+          <div class="clogo">Lagardère<small>Travel Retail</small></div>
+          <div class="clogo">V and B</div>
+          <div class="clogo">Parc du Bournat</div>
+          <div class="clogo">Inside Pharmacy</div>
         </div>
       </div>
     </section>
@@ -981,6 +1026,7 @@
         <div class="sectors reveal">
           <span class="label">Nos secteurs&nbsp;:</span>
           <span class="chip">Commerces &amp; boutiques (retail)</span>
+          <span class="chip">Pharmacies</span>
           <span class="chip">Hôtellerie &amp; restauration (CHR)</span>
           <span class="chip">Tourisme</span>
         </div>
@@ -1019,10 +1065,10 @@
           </figure>
 
           <figure class="proj d reveal" data-delay="1">
-            <img loading="lazy" src="https://picsum.photos/seed/hauum-concept-store/700/880"
-                 alt="Concept store au mobilier artisanal, scénographie commerciale à Bordeaux"
+            <img loading="lazy" src="https://picsum.photos/seed/hauum-pharmacie-bordeaux/700/880"
+                 alt="Agencement de pharmacie : comptoir conseil et linéaires optimisés, aménagement d'officine à Bordeaux"
                  width="700" height="880" />
-            <figcaption class="proj-cap"><span class="tag">Concept store — Bordeaux</span><span class="place">Retail</span></figcaption>
+            <figcaption class="proj-cap"><span class="tag">Pharmacie — Bordeaux</span><span class="place">Santé</span></figcaption>
           </figure>
 
           <figure class="proj e reveal" data-delay="2">
@@ -1057,13 +1103,48 @@
               Fondatrice du studio · architecture commerciale &amp; design d'intérieur
             </p>
             <p class="quote-artisans">
-              Cette conviction guide chaque projet. Nous travaillons main dans la main avec des artisans locaux de Gironde et du Bassin d'Arcachon&nbsp;: ébénistes, métalliers, tapissiers. Le mobilier sur-mesure et les finitions artisanales donnent à chaque lieu une matière, une chaleur et une singularité qui se ressentent au premier regard.
+              Mon travail est fondé sur les sciences du marketing et la psychologie du consommateur — c'est essentiel dans la réflexion de chaque projet. Avant de dessiner, nous comprenons votre clientèle et ses parcours d'achat. Puis nous travaillons main dans la main avec des artisans locaux de Gironde et du Bassin d'Arcachon&nbsp;: ébénistes, métalliers, tapissiers, pour une matière et une chaleur qui se ressentent au premier regard.
             </p>
           </div>
           <div class="quote-img reveal" data-delay="1">
             <!-- Remplacer par un portrait studio / atelier d'artisan -->
             <img loading="lazy" src="https://picsum.photos/seed/hauum-atelier-artisan/800/900"
                  alt="Atelier d'artisan travaillant le bois pour du mobilier sur-mesure, savoir-faire local en Gironde" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RÉCOMPENSES ===================== -->
+    <section id="recompenses" class="section-pad" aria-labelledby="rec-title" style="padding-top:24px;">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Reconnaissance</p>
+          <h2 id="rec-title">Nos <em>récompenses.</em></h2>
+          <p>Au fil des années, nos projets en stratégie de marque, marketing et expérience client ont été récompensés par plusieurs jurys professionnels — une expertise qui génère de la valeur pour nos clients.</p>
+        </div>
+        <div class="awards reveal">
+          <div class="award"><div><div class="aw-t">Grand prix Stratégies Drive to Store</div><div class="aw-c">Stratégies</div></div><div class="aw-y">Année&nbsp;: <strong>2019</strong></div></div>
+          <div class="award"><div><div class="aw-t">Grand prix Stratégie du Digital</div><div class="aw-c">Stratégies</div></div><div class="aw-y">Année&nbsp;: <strong>2019</strong></div></div>
+          <div class="award"><div><div class="aw-t">Prix du jury &amp; Campagne grand public</div><div class="aw-c">Empreintes</div></div><div class="aw-y">Année&nbsp;: <strong>2023</strong></div></div>
+          <div class="award"><div><div class="aw-t">Communication externe</div><div class="aw-c">Rcom Santé</div></div><div class="aw-y">Année&nbsp;: <strong>2023</strong></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FORMATIONS ===================== -->
+    <section id="formations" class="section-pad" aria-labelledby="form-title" style="padding-top:24px;">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Formations</p>
+          <h2 id="form-title">Se former <em>avec Hauum.</em></h2>
+        </div>
+        <div class="formation-card reveal">
+          <div class="qualiopi-badge" aria-hidden="true">Certifié Qualiopi</div>
+          <div>
+            <h3>Organisme de formation <em>certifié Qualiopi.</em></h3>
+            <p>Nous transmettons notre méthode — agencement commercial, expérience client et stratégie de marque appliquée au point de vente. Public&nbsp;: gérants, équipes de vente, titulaires de pharmacie. Formations finançables (certification Qualiopi pour les actions de formation).</p>
+            <a href="#contact" class="btn btn-ghost">Recevoir le programme <span class="arrow" aria-hidden="true">↗</span></a>
           </div>
         </div>
       </div>
@@ -1146,6 +1227,7 @@
                   <select id="f-sector" name="sector" required>
                     <option value="" selected disabled>Choisir…</option>
                     <option value="commerce">Commerce / boutique</option>
+                    <option value="pharmacie">Pharmacie</option>
                     <option value="restauration">Restaurant / café</option>
                     <option value="hotellerie">Hôtel / hébergement</option>
                     <option value="tourisme">Tourisme</option>
@@ -1188,7 +1270,8 @@
             <li><a href="#offres">Offres</a></li>
             <li><a href="#expertise">Expertise</a></li>
             <li><a href="#realisations">Réalisations</a></li>
-            <li><a href="#studio">Le studio</a></li>
+            <li><a href="#recompenses">Récompenses</a></li>
+            <li><a href="#formations">Formations</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
@@ -1205,7 +1288,7 @@
       </div>
 
       <p class="area-served">
-        <strong>Zone d'intervention&nbsp;:</strong> studio basé entre Bordeaux et le Bassin d'Arcachon, intervenant en Gironde et en Nouvelle-Aquitaine — Arcachon, Cap Ferret, Lège-Cap-Ferret, La Teste-de-Buch, Pyla-sur-Mer, Gujan-Mestras, Andernos-les-Bains, Mérignac, Pessac, Talence, Libourne, Saint-Émilion — ainsi qu'en Occitanie et en projets à distance. Spécialiste des commerces &amp; boutiques, de l'hôtellerie-restauration (CHR) et du tourisme.
+        <strong>Zone d'intervention&nbsp;:</strong> studio basé entre Bordeaux et le Bassin d'Arcachon, intervenant en Gironde et en Nouvelle-Aquitaine — Arcachon, Cap Ferret, Lège-Cap-Ferret, La Teste-de-Buch, Pyla-sur-Mer, Gujan-Mestras, Andernos-les-Bains, Mérignac, Pessac, Talence, Libourne, Saint-Émilion — ainsi qu'en Occitanie et en projets à distance. Spécialiste de l'agencement de commerces &amp; boutiques, de pharmacies, de l'hôtellerie-restauration (CHR) et du tourisme.
       </p>
 
       <div class="foot-bottom">
