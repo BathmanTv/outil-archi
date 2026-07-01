@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Hauum — archive des directions</title>
+  <style>
+    :root{--sand:#FAF6EB;--ink:#1B1614;--muted:#6E625A;--brown:#53362E;--line:rgba(27,22,20,.14);}
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--sand);color:var(--ink);}
+    header{max-width:1000px;margin:0 auto;padding:48px 24px 8px;}
+    h1{font-size:26px;margin:0 0 6px;}
+    p.lead{color:var(--muted);margin:0 0 8px;max-width:60ch;line-height:1.5;}
+    a.back{color:var(--brown);font-size:14px;text-decoration:none;}
+    .grid{max-width:1000px;margin:0 auto;padding:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+    a.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;transition:transform .2s,box-shadow .2s;}
+    a.card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(27,22,20,.1);}
+    a.card h2{margin:0 0 6px;font-size:17px;}
+    a.card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5;}
+    footer{max-width:1000px;margin:0 auto;padding:8px 24px 56px;color:var(--muted);font-size:13px;}
+  </style>
+</head>
+<body>
+  <header>
+    <a class="back" href="../">← Retour au comparateur</a>
+    <h1>Archive — autres directions</h1>
+    <p class="lead">Directions explorées puis mises de côté. Conservées pour référence. La direction retenue = Warm Organic.</p>
+  </header>
+  <main class="grid">
+    <a class="card" href="dark-luxe/"><h2>Dark Luxe</h2><p>Sombre, cinématographique, marron profond.</p></a>
+    <a class="card" href="kinetic/"><h2>Kinetic</h2><p>Énergique, fond animé, galerie horizontale.</p></a>
+    <a class="card" href="editorial-mag/"><h2>Éditorial</h2><p>Magazine déco, gros serif, grille asymétrique.</p></a>
+    <a class="card" href="brutalist-chic/"><h2>Brutalist-chic</h2><p>Typo géante, contraste fort, accent vif.</p></a>
+  </main>
+  <footer>Archive interne — non indexée.</footer>
+</body>
+</html>
