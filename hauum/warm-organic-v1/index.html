@@ -92,11 +92,11 @@
 
   <style>
     :root {
-      --sand: #F4EEE6;
-      --surface: #E6DCCD;
-      --ink: #1A1613;
-      --clay: #8A5A3C;
-      --clay-deep: #5E3D28;
+      --sand: #FAF6EB;        /* crème (fond) */
+      --surface: #DDD2C9;     /* greige chaud (blocs, chips) */
+      --ink: #1A1613;         /* noir chaud (texte, titres, sections sombres) */
+      --clay: #53362E;        /* brun (accent) */
+      --clay-deep: #3E2820;   /* brun profond */
       --ink-soft: rgba(26, 22, 19, 0.72);
       --ink-faint: rgba(26, 22, 19, 0.50);
       --hairline: rgba(26, 22, 19, 0.14);
@@ -776,8 +776,8 @@
     .clients-strip { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); padding: 40px 0; }
     .clients-strip .lbl { text-align: center; font-size: 12.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 24px; }
     .clogos { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
-    .clogo { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-sm); min-width: 158px; height: 80px; display: grid; place-items: center; text-align: center; padding: 0 18px; font-family: var(--serif); font-size: 1.1rem; color: var(--ink); line-height: 1.15; }
-    .clogo small { display: block; font-family: var(--sans); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; margin-top: 3px; }
+    .clogo { background: #fff; border: 1px solid var(--hairline); border-radius: var(--radius-sm); min-width: 150px; height: 88px; display: grid; place-items: center; padding: 16px 22px; }
+    .clogo img { max-height: 50px; max-width: 132px; width: auto; object-fit: contain; }
 
     /* ===================== RÉCOMPENSES ===================== */
     .awards { margin-top: 8px; }
@@ -800,8 +800,8 @@
     }
 
     /* ===================== LOGO / QUADRILLAGE / TERRAIN ===================== */
-    .brand-logo { height: 30px; width: auto; vertical-align: middle; margin-right: 9px; }
-    .foot-brand .brand-logo { height: 34px; }
+    .brand-logo { height: 26px; width: auto; display: block; }
+    .foot-brand .brand-logo { height: 32px; margin-bottom: 4px; }
     /* petite touche quadrillage sur l'image du hero */
     .grid-touch-overlay {
       position: absolute; inset: 0; pointer-events: none;
@@ -872,7 +872,7 @@
   <header class="site" id="top">
     <div class="wrap">
       <nav class="nav" aria-label="Navigation principale">
-        <a href="#top" class="brand" aria-label="Hauum — accueil"><img class="brand-logo" src="assets/logo.svg" alt="" onerror="this.remove()" />Hauum<span>.</span></a>
+        <a href="#top" class="brand" aria-label="Hauum — accueil"><img class="brand-logo" src="assets/logos/hauum-logo.png" alt="Hauum" /></a>
 
         <ul class="nav-links">
           <li><a href="#offres">Offres</a></li>
@@ -955,11 +955,11 @@
       <div class="wrap">
         <p class="lbl">Ils nous font confiance</p>
         <div class="clogos">
-          <div class="clogo">Paris Aéroport</div>
-          <div class="clogo">Lagardère<small>Travel Retail</small></div>
-          <div class="clogo">V and B</div>
-          <div class="clogo">Parc du Bournat</div>
-          <div class="clogo">Inside Pharmacy</div>
+          <div class="clogo"><img src="assets/logos/client-paris-aeroport.webp" alt="Paris Aéroport" /></div>
+          <div class="clogo"><img src="assets/logos/client-lagardere.gif" alt="Lagardère Travel Retail" /></div>
+          <div class="clogo"><img src="assets/logos/client-v-and-b.webp" alt="V and B" /></div>
+          <div class="clogo"><img src="assets/logos/client-bournat.jpg" alt="Parc du Bournat" /></div>
+          <div class="clogo"><img src="assets/logos/client-inside-pharmacy.png" alt="Inside Pharmacy" /></div>
         </div>
       </div>
     </section>
@@ -1294,7 +1294,7 @@
     <div class="wrap">
       <div class="foot-top">
         <div class="foot-brand">
-          <a href="#top" class="brand"><img class="brand-logo" src="assets/logo.svg" alt="" onerror="this.remove()" />Hauum<span>.</span></a>
+          <a href="#top" class="brand"><img class="brand-logo" src="assets/logos/hauum-logo.png" alt="Hauum" /></a>
           <p>Studio d'architecture commerciale &amp; design d'intérieur. Nous concevons et transformons des lieux qui attirent, fidélisent et créent du lien — à Bordeaux et sur le Bassin d'Arcachon.</p>
         </div>
 
