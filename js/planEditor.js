@@ -50,6 +50,7 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   const poteauLayer = new Konva.Layer();  // structural columns
   const consLayer = new Konva.Layer();    // technical-constraint chips, top
   const drawLayer = new Konva.Layer({ listening: false }); // rubber band while drawing
+  const hudLayer = new Konva.Layer({ listening: false });  // live dims label (survives draw redraws)
   stage.add(bgLayer);
   stage.add(gridLayer);
   stage.add(roomLayer);
@@ -57,6 +58,20 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   stage.add(poteauLayer);
   stage.add(consLayer);
   stage.add(drawLayer);
+  stage.add(hudLayer);
+
+  // Floating label showing live dimensions/position during drag & resize.
+  const liveLabel = new Konva.Label({ visible: false, listening: false });
+  liveLabel.add(new Konva.Tag({ fill: '#1f2328', cornerRadius: 4, opacity: 0.9 }));
+  liveLabel.add(new Konva.Text({ text: '', fontSize: 12, fill: '#fff', padding: 5 }));
+  hudLayer.add(liveLabel);
+  function showLive(text, xPx, yPx) {
+    liveLabel.getText().text(text);
+    liveLabel.position({ x: xPx, y: yPx - 32 });
+    liveLabel.visible(true);
+    hudLayer.batchDraw();
+  }
+  function hideLive() { liveLabel.visible(false); hudLayer.batchDraw(); }
 
   const transformer = new Konva.Transformer({ rotateEnabled: false, keepRatio: false });
   roomLayer.add(transformer);
@@ -92,8 +107,62 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   function clearSelection() {
     selectedId = null; selectedConsId = null;
     selectedPoteauId = null; selectedCeilId = null;
+    syncSelection();
+  }
+
+  // Update selection visuals IN PLACE — never destroys the nodes being
+  // interacted with. Destroying on mousedown was killing the drag target
+  // before Konva could latch onto it (rooms were undraggable).
+  function syncSelection() {
+    // rooms: stroke highlight + transformer (rect) / vertex handles (poly)
     transformer.nodes([]);
-    renderRooms(); renderPoteaux(); renderFauxPlafonds(); highlightConstraints();
+    roomLayer.find('.vhandle').forEach((h) => h.destroy());
+    roomLayer.find('.room').forEach((g) => {
+      const sel = g.id() === selectedId;
+      const shape = g.findOne('.roomRect') || g.findOne('.roomPoly');
+      if (shape) { shape.stroke(sel ? '#2f6f4f' : '#222'); shape.strokeWidth(sel ? 5 : 4); }
+    });
+    const selPiece = project.pieces.find((p) => p.id === selectedId);
+    if (selPiece) {
+      if (selPiece.points) {
+        addVertexHandles(selPiece);
+      } else {
+        const g = roomLayer.findOne((n) => n.getClassName() === 'Group' && n.id() === selectedId);
+        const rect = g && g.findOne('.roomRect');
+        if (rect) transformer.nodes([rect]);
+      }
+    }
+    transformer.moveToTop();
+    roomLayer.batchDraw();
+
+    // poteaux: stroke + size label, updated in place
+    poteauLayer.find('.poteau').forEach((g) => {
+      const po = (project.poteaux || []).find((p) => p.id === g.id());
+      if (!po) return;
+      const sel = g.id() === selectedPoteauId;
+      const shape = g.findOne('.poteauShape');
+      if (shape) { shape.stroke(sel ? '#2f6f4f' : '#111827'); shape.strokeWidth(sel ? 3 : 2); }
+      const t = g.findOne('Text');
+      if (sel && !t) {
+        const size = metersToPixels(po.taille);
+        const cm = Math.round(po.taille * 100);
+        g.add(new Konva.Text({
+          text: `${cm}×${cm} cm`, fontSize: 12, fill: '#111827',
+          x: -40, y: size / 2 + 4, width: 80, align: 'center',
+        }));
+      } else if (!sel && t) t.destroy();
+    });
+    poteauLayer.batchDraw();
+
+    // faux plafonds: stroke in place
+    ceilLayer.find('.ceil').forEach((g) => {
+      const sel = g.id() === selectedCeilId;
+      const poly = g.findOne('Line');
+      if (poly) { poly.stroke(sel ? '#6a3fb0' : '#8a6fc0'); poly.strokeWidth(sel ? 3 : 2); }
+    });
+    ceilLayer.batchDraw();
+
+    highlightConstraints();
   }
 
   function drawGrid() {
@@ -106,8 +175,44 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   }
 
   function notify() {
+    pushHistory();
     if (onChange) onChange(project, totalAreaM2(project.pieces));
   }
+
+  // ---- undo / redo (JSON snapshot history) ------------------------------
+  // Snapshots exclude project.fond (its base64 image would blow up memory).
+  const history = [];
+  let hIndex = -1;
+  let restoring = false;
+  function snapshotState() {
+    return JSON.stringify({
+      pieces: project.pieces, contraintes: project.contraintes,
+      poteaux: project.poteaux, fauxPlafonds: project.fauxPlafonds,
+    });
+  }
+  function pushHistory() {
+    if (restoring) return;
+    const s = snapshotState();
+    if (history[hIndex] === s) return;
+    history.splice(hIndex + 1);
+    history.push(s);
+    if (history.length > 40) history.shift();
+    hIndex = history.length - 1;
+  }
+  function applySnapshot(s) {
+    restoring = true;
+    const d = JSON.parse(s);
+    project.pieces = d.pieces || [];
+    project.contraintes = d.contraintes || [];
+    project.poteaux = d.poteaux || [];
+    project.fauxPlafonds = d.fauxPlafonds || [];
+    selectedId = null; selectedConsId = null; selectedPoteauId = null; selectedCeilId = null;
+    render();
+    restoring = false;
+    notify(); // persist the restored state (dedup skips the identical snapshot)
+  }
+  function undo() { if (hIndex > 0) { hIndex--; applySnapshot(history[hIndex]); } }
+  function redo() { if (hIndex < history.length - 1) { hIndex++; applySnapshot(history[hIndex]); } }
 
   // ---- snapping for free-drawn points ----------------------------------
   // Returns the current pointer in meters with OSNAP + ORTHO + grid applied.
@@ -138,6 +243,10 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     let pos = { x: snapToGrid(xMeters), y: snapToGrid(yMeters) };
     pos = snapToNeighbors({ ...pos, ...box }, others);
     pos = resolveNoOverlap({ ...pos, ...box }, others);
+    if (pos.x < 0 || pos.y < 0) {
+      // Don't let the overlap resolver push a room off-canvas into negatives.
+      pos = resolveNoOverlap({ x: Math.max(0, pos.x), y: Math.max(0, pos.y), ...box }, others);
+    }
     return pos;
   }
 
@@ -163,14 +272,25 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     group.on('mousedown touchstart click tap', () => selectRoom(piece.id));
     group.on('dblclick dbltap', () => renameRoom(piece));
 
+    group.on('dragmove', () => {
+      showLive(`x ${pixelsToMeters(group.x()).toFixed(2)} · y ${pixelsToMeters(group.y()).toFixed(2)} m`,
+        group.x(), group.y());
+    });
     group.on('dragend', () => {
+      hideLive();
       const pos = settlePosition(piece, pixelsToMeters(group.x()), pixelsToMeters(group.y()));
       piece.x = pos.x; piece.y = pos.y;
       group.position({ x: metersToPixels(piece.x), y: metersToPixels(piece.y) });
       roomLayer.draw(); notify();
     });
 
+    rect.on('transform', () => {
+      const w = pixelsToMeters(rect.width() * rect.scaleX());
+      const h = pixelsToMeters(rect.height() * rect.scaleY());
+      showLive(`${w.toFixed(2)} × ${h.toFixed(2)} m`, group.x() + rect.x(), group.y() + rect.y());
+    });
     rect.on('transformend', () => {
+      hideLive();
       const absX = group.x() + rect.x();
       const absY = group.y() + rect.y();
       piece.w = Math.max(GRID_M, snapToGrid(pixelsToMeters(rect.width() * rect.scaleX())));
@@ -207,10 +327,16 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     group.on('mousedown touchstart click tap', (e) => { e.cancelBubble = true; selectRoom(piece.id); });
     group.on('dblclick dbltap', () => renameRoom(piece));
 
+    group.on('dragmove', () => {
+      showLive(`Δ ${pixelsToMeters(group.x()).toFixed(2)} ; ${pixelsToMeters(group.y()).toFixed(2)} m`,
+        metersToPixels(c.x) + group.x(), metersToPixels(c.y) + group.y());
+    });
     group.on('dragend', () => {
-      const dx = pixelsToMeters(group.x());
-      const dy = pixelsToMeters(group.y());
-      piece.points = piece.points.map((p) => snapPointToGrid({ x: p.x + dx, y: p.y + dy }));
+      hideLive();
+      // Snap the TRANSLATION delta, not each vertex — keeps off-grid geometry intact.
+      const dx = snapToGrid(pixelsToMeters(group.x()));
+      const dy = snapToGrid(pixelsToMeters(group.y()));
+      piece.points = piece.points.map((p) => ({ x: p.x + dx, y: p.y + dy }));
       group.position({ x: 0, y: 0 });
       renderRooms(); notify();
     });
@@ -228,8 +354,11 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
       });
       h.on('dragmove', () => {
         let m = { x: pixelsToMeters(h.x()), y: pixelsToMeters(h.y()) };
-        const others = piece.points.filter((_, j) => j !== i);
-        m = snapToVertices(m, [...others, ...allVertices()], 0.25);
+        // Exclude the dragged vertex itself from snap candidates (it used to
+        // latch back onto its own previous position — sticky feel).
+        const own = piece.points.filter((_, j) => j !== i);
+        const foreign = allVertices().filter((v) => !piece.points.includes(v));
+        m = snapToVertices(m, [...own, ...foreign], 0.25);
         m = snapPointToGrid(m);
         h.position({ x: metersToPixels(m.x), y: metersToPixels(m.y) });
         piece.points[i] = m;
@@ -259,22 +388,11 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     if (selectedId && !project.pieces.some((p) => p.id === selectedId)) selectedId = null;
     roomLayer.find('.room').forEach((g) => g.destroy());
     roomLayer.find('.vhandle').forEach((h) => h.destroy());
-    let selPiece = null;
     project.pieces.forEach((piece) => {
       roomLayer.add(piece.points ? buildPolyRoom(piece) : buildRectRoom(piece));
-      if (piece.id === selectedId) selPiece = piece;
     });
-    if (selPiece) {
-      if (selPiece.points) {
-        addVertexHandles(selPiece);
-      } else {
-        const g = roomLayer.findOne((n) => n.getClassName() === 'Group' && n.id() === selPiece.id);
-        const rect = g && g.findOne('.roomRect');
-        if (rect) transformer.nodes([rect]);
-      }
-    }
-    transformer.moveToTop();
     roomLayer.draw();
+    syncSelection();
   }
 
   function render() {
@@ -282,6 +400,7 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     renderFauxPlafonds();
     renderPoteaux();
     renderConstraints();
+    syncSelection();
     notify();
   }
 
@@ -306,8 +425,7 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     group.on('click tap', (e) => {
       e.cancelBubble = true;
       selectedConsId = c.id; selectedId = null; selectedPoteauId = null; selectedCeilId = null;
-      transformer.nodes([]);
-      renderRooms(); renderPoteaux(); renderFauxPlafonds(); highlightConstraints();
+      syncSelection();
     });
     if (c.kind === 'note') {
       group.on('dblclick dbltap', () => {
@@ -357,30 +475,19 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
 
   // ---- structural columns (poteaux à l'échelle) ------------------------
   function buildPoteau(po) {
-    const selected = po.id === selectedPoteauId;
     const size = metersToPixels(po.taille);
     const group = new Konva.Group({
       id: po.id, name: 'poteau', x: metersToPixels(po.x), y: metersToPixels(po.y), draggable: true,
     });
-    const common = {
-      fill: '#444b54', stroke: selected ? '#2f6f4f' : '#111827', strokeWidth: selected ? 3 : 2,
-    };
+    const common = { name: 'poteauShape', fill: '#444b54', stroke: '#111827', strokeWidth: 2 };
     const shape = po.forme === 'rond'
       ? new Konva.Circle({ radius: size / 2, ...common })
       : new Konva.Rect({ x: -size / 2, y: -size / 2, width: size, height: size, ...common });
     group.add(shape);
-    if (selected) {
-      const cm = Math.round(po.taille * 100);
-      group.add(new Konva.Text({
-        text: `${cm}×${cm} cm`, fontSize: 12, fill: '#111827',
-        x: -40, y: size / 2 + 4, width: 80, align: 'center',
-      }));
-    }
     group.on('click tap', (e) => {
       e.cancelBubble = true;
       selectedPoteauId = po.id; selectedId = null; selectedConsId = null; selectedCeilId = null;
-      transformer.nodes([]);
-      renderRooms(); renderPoteaux(); renderFauxPlafonds(); highlightConstraints();
+      syncSelection();
     });
     group.on('dragend', () => {
       po.x = snapToGrid(pixelsToMeters(group.x()));
@@ -406,19 +513,18 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     };
     project.poteaux.push(po);
     selectedPoteauId = po.id;
-    renderPoteaux(); notify();
+    renderPoteaux(); syncSelection(); notify();
     return po;
   }
 
   // ---- faux plafonds (dropped-ceiling zones) ---------------------------
   function buildFauxPlafond(f) {
-    const selected = f.id === selectedCeilId;
     const group = new Konva.Group({ id: f.id, name: 'ceil', draggable: true });
     const flat = f.points.flatMap((p) => [metersToPixels(p.x), metersToPixels(p.y)]);
     const poly = new Konva.Line({
       points: flat, closed: true,
-      fill: 'rgba(120,90,200,0.10)', stroke: selected ? '#6a3fb0' : '#8a6fc0',
-      strokeWidth: selected ? 3 : 2, dash: [10, 6],
+      fill: 'rgba(120,90,200,0.10)', stroke: '#8a6fc0',
+      strokeWidth: 2, dash: [10, 6],
     });
     const c = polygonCentroid(f.points);
     const label = new Konva.Text({
@@ -431,19 +537,18 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     group.on('click tap', (e) => {
       e.cancelBubble = true;
       selectedCeilId = f.id; selectedId = null; selectedConsId = null; selectedPoteauId = null;
-      transformer.nodes([]);
-      renderRooms(); renderPoteaux(); renderFauxPlafonds(); highlightConstraints();
+      syncSelection();
     });
     group.on('dblclick dbltap', () => {
       const v = window.prompt('Hauteur sous faux plafond (m) :', f.hauteur || '2.40');
       if (v != null) { f.hauteur = v.trim(); renderFauxPlafonds(); notify(); }
     });
     group.on('dragend', () => {
-      const dx = pixelsToMeters(group.x());
-      const dy = pixelsToMeters(group.y());
-      f.points = f.points.map((p) => snapPointToGrid({ x: p.x + dx, y: p.y + dy }));
+      const dx = snapToGrid(pixelsToMeters(group.x()));
+      const dy = snapToGrid(pixelsToMeters(group.y()));
+      f.points = f.points.map((p) => ({ x: p.x + dx, y: p.y + dy }));
       group.position({ x: 0, y: 0 });
-      renderFauxPlafonds(); notify();
+      renderFauxPlafonds(); syncSelection(); notify();
     });
     return group;
   }
@@ -507,7 +612,9 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
   }
 
   function onDrawKey(e) {
-    if (e.key === 'Enter') { finishDraw(); }
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT')) return;
+    if (e.key === 'Enter') { e.preventDefault(); finishDraw(); }
     else if (e.key === 'Escape') { cancelDraw(); }
     else if (e.key === 'Backspace') { e.preventDefault(); drawPoints.pop(); updateDrawPreview(); }
   }
@@ -639,7 +746,7 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     const piece = project.pieces.find((p) => p.id === id);
     if (!piece) return;
     selectedId = id; selectedConsId = null; selectedPoteauId = null; selectedCeilId = null;
-    renderRooms(); renderPoteaux(); renderFauxPlafonds(); highlightConstraints();
+    syncSelection();
   }
 
   function addRoom({ nom, w, h, type }) {
@@ -684,10 +791,141 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     if (l) { l.visible(visible); l.draw(); }
   }
 
-  function zoom(factor) {
-    const s = Math.min(4, Math.max(0.25, stage.scaleX() * factor));
+  // ---- zoom / navigation ------------------------------------------------
+  function zoomAt(center, factor) {
+    const old = stage.scaleX();
+    const s = Math.min(4, Math.max(0.25, old * factor));
+    const to = { x: (center.x - stage.x()) / old, y: (center.y - stage.y()) / old };
     stage.scale({ x: s, y: s });
-    stage.draw();
+    stage.position({ x: center.x - to.x * s, y: center.y - to.y * s });
+    stage.batchDraw();
+  }
+  function zoom(factor) {
+    zoomAt({ x: stage.width() / 2, y: stage.height() / 2 }, factor);
+  }
+  stage.on('wheel', (e) => {
+    e.evt.preventDefault();
+    const pointer = stage.getPointerPosition();
+    if (!pointer) return;
+    zoomAt(pointer, e.evt.deltaY > 0 ? 1 / 1.08 : 1.08);
+  });
+
+  // Bounding box of everything on the plan, in meters.
+  function contentBounds() {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    const eat = (x, y) => {
+      if (x < minX) minX = x; if (y < minY) minY = y;
+      if (x > maxX) maxX = x; if (y > maxY) maxY = y;
+    };
+    (project.pieces || []).forEach((p) => roomPolygon(p).forEach((pt) => eat(pt.x, pt.y)));
+    (project.fauxPlafonds || []).forEach((f) => (f.points || []).forEach((pt) => eat(pt.x, pt.y)));
+    (project.poteaux || []).forEach((p) => { eat(p.x - p.taille, p.y - p.taille); eat(p.x + p.taille, p.y + p.taille); });
+    (project.contraintes || []).forEach((c) => { eat(c.x, c.y); eat(c.x + 2, c.y + 0.6); });
+    return minX === Infinity ? null : { minX, minY, maxX, maxY };
+  }
+  function fitToContent() {
+    const b = contentBounds();
+    if (!b) { stage.scale({ x: 1, y: 1 }); stage.position({ x: 0, y: 0 }); stage.batchDraw(); return; }
+    const pad = 0.8; // meters of breathing room
+    const wPx = metersToPixels(b.maxX - b.minX + pad * 2);
+    const hPx = metersToPixels(b.maxY - b.minY + pad * 2);
+    const s = Math.min(4, Math.max(0.25, Math.min(stage.width() / wPx, stage.height() / hPx)));
+    stage.scale({ x: s, y: s });
+    stage.position({
+      x: (stage.width() - wPx * s) / 2 - metersToPixels(b.minX - pad) * s,
+      y: (stage.height() - hPx * s) / 2 - metersToPixels(b.minY - pad) * s,
+    });
+    stage.batchDraw();
+  }
+
+  // ---- duplicate / nudge -------------------------------------------------
+  function duplicateSelected() {
+    const dup = (o) => JSON.parse(JSON.stringify(o));
+    if (selectedId) {
+      const p = project.pieces.find((x) => x.id === selectedId); if (!p) return;
+      const c = dup(p); c.id = newId();
+      if (c.points) c.points = c.points.map((pt) => ({ x: pt.x + GRID_M, y: pt.y + GRID_M }));
+      else { c.x += GRID_M; c.y += GRID_M; }
+      project.pieces.push(c); selectedId = c.id;
+      renderRooms(); notify();
+    } else if (selectedPoteauId) {
+      const p = (project.poteaux || []).find((x) => x.id === selectedPoteauId); if (!p) return;
+      const c = dup(p); c.id = newId(); c.x += GRID_M; c.y += GRID_M;
+      project.poteaux.push(c); selectedPoteauId = c.id;
+      renderPoteaux(); syncSelection(); notify();
+    } else if (selectedCeilId) {
+      const f = (project.fauxPlafonds || []).find((x) => x.id === selectedCeilId); if (!f) return;
+      const c = dup(f); c.id = newId();
+      c.points = c.points.map((pt) => ({ x: pt.x + GRID_M, y: pt.y + GRID_M }));
+      project.fauxPlafonds.push(c); selectedCeilId = c.id;
+      renderFauxPlafonds(); syncSelection(); notify();
+    } else if (selectedConsId) {
+      const k = (project.contraintes || []).find((x) => x.id === selectedConsId); if (!k) return;
+      const c = dup(k); c.id = newId(); c.x += GRID_M; c.y += GRID_M;
+      project.contraintes.push(c); selectedConsId = c.id;
+      renderConstraints(); syncSelection(); notify();
+    }
+  }
+
+  function nudgeSelected(dxM, dyM) {
+    if (selectedId) {
+      const p = project.pieces.find((x) => x.id === selectedId); if (!p) return;
+      if (p.points) p.points = p.points.map((pt) => ({ x: pt.x + dxM, y: pt.y + dyM }));
+      else { p.x = Math.max(0, +(p.x + dxM).toFixed(3)); p.y = Math.max(0, +(p.y + dyM).toFixed(3)); }
+      renderRooms(); notify();
+    } else if (selectedPoteauId) {
+      const p = (project.poteaux || []).find((x) => x.id === selectedPoteauId); if (!p) return;
+      p.x = +(p.x + dxM).toFixed(3); p.y = +(p.y + dyM).toFixed(3);
+      renderPoteaux(); syncSelection(); notify();
+    } else if (selectedCeilId) {
+      const f = (project.fauxPlafonds || []).find((x) => x.id === selectedCeilId); if (!f) return;
+      f.points = f.points.map((pt) => ({ x: pt.x + dxM, y: pt.y + dyM }));
+      renderFauxPlafonds(); syncSelection(); notify();
+    } else if (selectedConsId) {
+      const c = (project.contraintes || []).find((x) => x.id === selectedConsId); if (!c) return;
+      c.x = +(c.x + dxM).toFixed(3); c.y = +(c.y + dyM).toFixed(3);
+      renderConstraints(); syncSelection(); notify();
+    }
+  }
+
+  // ---- global keyboard (Suppr, Échap, flèches, Ctrl+Z/Y/D) ----------------
+  function onGlobalKey(e) {
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
+    if (!document.getElementById('view-plan') || !document.getElementById('view-plan').classList.contains('active')) return;
+    if (drawMode || calibrating) return; // draw mode has its own key handler
+    const k = e.key;
+    const mod = e.ctrlKey || e.metaKey;
+    if (mod && !e.shiftKey && k.toLowerCase() === 'z') { e.preventDefault(); undo(); }
+    else if (mod && (k.toLowerCase() === 'y' || (e.shiftKey && k.toLowerCase() === 'z'))) { e.preventDefault(); redo(); }
+    else if (mod && k.toLowerCase() === 'd') { e.preventDefault(); duplicateSelected(); }
+    else if (k === 'Delete' || k === 'Backspace') { e.preventDefault(); deleteSelected(); }
+    else if (k === 'Escape') { clearSelection(); }
+    else if (k.startsWith('Arrow')) {
+      e.preventDefault();
+      const step = e.shiftKey ? 0.1 : GRID_M;
+      nudgeSelected(
+        k === 'ArrowLeft' ? -step : k === 'ArrowRight' ? step : 0,
+        k === 'ArrowUp' ? -step : k === 'ArrowDown' ? step : 0,
+      );
+    }
+  }
+  window.addEventListener('keydown', onGlobalKey);
+
+  // ---- container resize + teardown ---------------------------------------
+  const ro = new ResizeObserver(() => {
+    const w = container.clientWidth, h = container.clientHeight;
+    if (w && h && (w !== stage.width() || h !== stage.height())) {
+      stage.width(w); stage.height(h); stage.batchDraw();
+    }
+  });
+  ro.observe(container);
+
+  function destroy() {
+    window.removeEventListener('keydown', onGlobalKey);
+    window.removeEventListener('keydown', onDrawKey);
+    ro.disconnect();
+    stage.destroy();
   }
 
   render();
@@ -710,7 +948,12 @@ export function createPlanEditor(containerId, project, { onChange } = {}) {
     setLayerVisible,
     selectRoom,
     deleteSelected,
+    duplicateSelected,
+    undo,
+    redo,
     zoom,
+    fitToContent,
+    destroy,
     render,
     getStage: () => stage,
     getTotal: () => totalAreaM2(project.pieces),

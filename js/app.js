@@ -112,11 +112,19 @@ function handleQuota() {
 
 // Persist the current project; on quota error never let it throw into a
 // Konva event handler — surface a clear message + offer a .json export.
-function autosave() {
+// Debounced: sliders/drags fire notify dozens of times per second and each
+// save serializes ALL projects (base64 backgrounds included) synchronously.
+let saveTimer = null;
+function saveNow() {
   if (!currentProject) return;
   try { upsertProject(currentProject); }
   catch (e) { if (e.code === 'QUOTA') handleQuota(); else throw e; }
 }
+function autosave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 400);
+}
+window.addEventListener('beforeunload', () => { clearTimeout(saveTimer); try { saveNow(); } catch (e) { /* best effort */ } });
 
 function renderChecks() {
   const list = $('checksList');
@@ -145,7 +153,9 @@ function renderChecks() {
 function mountPlan() {
   ensureProject();
   $('planProjectName').textContent = currentProject.nom;
-  // (re)create editor bound to current project
+  // (re)create editor bound to current project — destroy the previous stage
+  // first (was leaking one Konva stage + keyboard listeners per tab switch).
+  if (editor && editor.destroy) editor.destroy();
   $('planCanvas').innerHTML = '';
   editor = createPlanEditor('planCanvas', currentProject, {
     onChange: (proj, total) => { $('totalArea').textContent = total; autosave(); renderChecks(); },
@@ -176,8 +186,10 @@ document.querySelectorAll('.cbtn').forEach((b) =>
   b.addEventListener('click', () => editor && editor.addConstraint(b.dataset.kind)));
 
 // AutoCAD-style precise drawing + scaled columns + layers
-$('btnDrawRoom').addEventListener('click', () => editor && editor.startDrawRoom());
-$('btnDrawCeil').addEventListener('click', () => editor && editor.startDrawFauxPlafond());
+// blur(): otherwise the button keeps focus and the Enter that closes the
+// polygon re-clicks it, restarting draw mode in a loop.
+$('btnDrawRoom').addEventListener('click', (e) => { e.currentTarget.blur(); editor && editor.startDrawRoom(); });
+$('btnDrawCeil').addEventListener('click', (e) => { e.currentTarget.blur(); editor && editor.startDrawFauxPlafond(); });
 $('btnAddPoteau').addEventListener('click', () => {
   if (!editor) return;
   editor.addPoteau({ forme: $('poteauForme').value, taille: (+$('poteauTaille').value || 20) / 100 });
@@ -213,6 +225,9 @@ $('fondOpacity').addEventListener('input', (e) => editor && editor.setFondOpacit
 $('btnDelRoom').addEventListener('click', () => editor && editor.deleteSelected());
 $('btnZoomIn').addEventListener('click', () => editor && editor.zoom(1.2));
 $('btnZoomOut').addEventListener('click', () => editor && editor.zoom(1 / 1.2));
+$('btnFit').addEventListener('click', () => editor && editor.fitToContent());
+$('btnUndo').addEventListener('click', () => editor && editor.undo());
+$('btnRedo').addEventListener('click', () => editor && editor.redo());
 $('btnExportPlan').addEventListener('click', () => {
   if (editor && currentProject) exportPlanPdf(currentProject, editor.getStage());
 });

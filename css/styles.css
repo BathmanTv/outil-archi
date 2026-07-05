@@ -84,4 +84,10 @@ fieldset { border: 1px solid var(--line); border-radius: 10px; margin: 0 0 12px;
 .gallery { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 .gallery img { height: 70px; border-radius: 6px; cursor: pointer; }
 .status { color: #555; font-size: 14px; min-height: 20px; }
-@media (max-width: 800px) { .editor { flex-direction: column; } .panel { width: 100%; } }
+.hint kbd { background: #fff; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; font-size: 11px; font-family: inherit; }
+@media (max-width: 800px) {
+  .editor { flex-direction: column; }
+  .panel { width: 100%; }
+  /* Plan first on mobile — it was buried under ~2000px of tool panel. */
+  #planCanvas { order: -1; min-height: 60vh; }
+}

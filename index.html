@@ -103,11 +103,14 @@
           <label class="toggle-inline"><input type="checkbox" id="layCeil" checked /> Faux plafonds</label>
         </fieldset>
         <div class="toolbar">
-          <button id="btnZoomIn">+</button>
-          <button id="btnZoomOut">−</button>
-          <button id="btnDelRoom" class="danger">Supprimer sélection</button>
+          <button id="btnUndo" title="Annuler (Ctrl+Z)">↶</button>
+          <button id="btnRedo" title="Rétablir (Ctrl+Y)">↷</button>
+          <button id="btnZoomIn" title="Zoom avant">+</button>
+          <button id="btnZoomOut" title="Zoom arrière">−</button>
+          <button id="btnFit" title="Recadrer sur tout le plan">⤢ Tout voir</button>
+          <button id="btnDelRoom" class="danger" title="Supprimer (Suppr)">Supprimer sélection</button>
         </div>
-        <p class="hint">Astuce : double-cliquez une pièce pour la renommer. Les pièces ne se chevauchent pas (aimantation au bord le plus proche).</p>
+        <p class="hint">Astuce : double-clic = renommer · molette = zoom · <kbd>Ctrl+Z</kbd> annuler · <kbd>Suppr</kbd> supprimer · <kbd>Ctrl+D</kbd> dupliquer · flèches = déplacer (Shift = pas fin).</p>
         <p class="total">Surface totale : <strong id="totalArea">0</strong> m²</p>
         <div class="checks">
           <div class="checks-head">
