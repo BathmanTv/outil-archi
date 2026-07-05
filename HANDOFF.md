@@ -37,6 +37,15 @@ Installée **globalement** (`~/.claude/skills/ui-ux-pro-max`, via `uipro-cli`) p
 - Source : https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 - **Sur le Mac** : `npm i -g uipro-cli` puis `uipro init --ai claude` (depuis le home `~` pour une install globale, ou dans un projet précis). **Restart Claude Code** pour l'activer.
 
+
+## Documentation de référence (docs/)
+- `docs/CAPACITES.md` — récap complet de ce que l'outil sait faire (à jour lot 1 interactions).
+- `docs/AUDIT-INTERACTIONS.md` — audit multi-agents : bugs, quick wins, chantiers, préalables.
+- `docs/architecture/editor-core.md` — architecture cible v2 de l'éditeur + ordre de migration.
+- `docs/architecture/features.md` — blueprints prêts-à-coder (portes/fenêtres, mobilier, cotations, échelle 1:50, DXF, niveaux…), en 3 vagues.
+- `docs/architecture/plateforme.md` — vision écosystème (site leads, IA, sync, monétisation) + roadmap 3 horizons.
+- `.claude/agents/` — 5 agents projet (plan-editor-dev, plan-qa, hauum-webmaster, seo-local-leads, release-manager) ; règles d'or dans `CLAUDE.md`.
+
 ## En attente / prochaine étape
 - **Choisir UNE direction pour la landing Hauum** (reco : Warm Organic ou Dark Luxe) → finaliser : vraies photos, retrait du `noindex`, repo + domaine `hauum.fr` pour le SEO réel.
 - Les 5 previews Hauum sont en `noindex` (preview interne, pas indexées).
