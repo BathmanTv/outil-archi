@@ -363,6 +363,21 @@ Trois pistes, à arbitrer avec les données des horizons 1-2, pas toutes en mêm
 
 ---
 
+## 9. Pascal — la brique 3D (évaluée 2026-07, gardée en réserve)
+
+**Quoi** : [Pascal](https://editor.pascal.app) ([pascalorg/editor](https://github.com/pascalorg/editor), MIT, ~17k ⭐) — éditeur 3D de bâtiments open source dans le navigateur : murs/mobilier/matériaux, croquis→géométrie par IA, **visite en première personne**, packages npm (`@pascal-app/core|viewer`), import IFC, serveur MCP (pilotage par agent IA).
+
+**Verdict d'intégration** : stack React 19 + Next 16 + Three.js WebGPU + bun → **incompatible avec nos règles d'or** (vanilla, zéro build, simplicité). On ne l'embarque PAS dans l'outil et on ne réécrit RIEN dessus. Notre 2D métier (cotes, ERP, vigilance, exports) reste notre force — Pascal ne la couvre pas.
+
+**Usage retenu — complément « présenter »** :
+- Court terme (0 effort) : l'app hébergée editor.pascal.app est gratuite → la cliente peut y remonter un projet phare à la main pour offrir une **visite 3D immersive** au client final. Effet waouh en réunion, sans rien changer chez nous.
+- Moyen terme (pont à étudier, ~2-3 j) : **export de notre plan → scène Pascal** : nos pièces/polygones + hauteurs (fauxPlafonds) suffisent à générer les murs. Le schéma de scène est en Zod dans `@pascal-app/core` — écrire un `exportPascal(project)` qui produit leur JSON. Notre outil = saisie 2D rapide ; Pascal = présentation 3D. Chaîne complète : plan 2D coté → PDF échelle → visite 3D.
+- À surveiller : leur **serveur MCP** (piloter la scène 3D par agent) — s'alignerait avec nos agents projet le jour où le pont existe.
+
+**Décision** : pas de dépendance ; pont d'export = candidat vague 3 de `features.md`, à déclencher si la cliente demande de la 3D.
+
+---
+
 ## Annexe — décisions prises dans ce document (à contester ici, pas ailleurs)
 
 - Formulaire : **Web3Forms** (pas Formspree — 50/mois trop bas).
