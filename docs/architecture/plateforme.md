@@ -371,6 +371,7 @@ Trois pistes, à arbitrer avec les données des horizons 1-2, pas toutes en mêm
 
 **Usage retenu — complément « présenter »** :
 - Court terme (0 effort) : l'app hébergée editor.pascal.app est gratuite → la cliente peut y remonter un projet phare à la main pour offrir une **visite 3D immersive** au client final. Effet waouh en réunion, sans rien changer chez nous.
+  - Modèle de prix (vérifié 2026-07) : **Community gratuit** (tout l'éditeur, stockage local navigateur mono-appareil — suffisant pour nous) ; **Pro Cloud ~9,90 $/mois** = uniquement le confort serveur (sync cloud, historique, liens de partage privés, exports GLB/OBJ/STL). Le code restant MIT, l'auto-hébergement gratuit reste l'issue de secours.
 - Moyen terme (pont à étudier, ~2-3 j) : **export de notre plan → scène Pascal** : nos pièces/polygones + hauteurs (fauxPlafonds) suffisent à générer les murs. Le schéma de scène est en Zod dans `@pascal-app/core` — écrire un `exportPascal(project)` qui produit leur JSON. Notre outil = saisie 2D rapide ; Pascal = présentation 3D. Chaîne complète : plan 2D coté → PDF échelle → visite 3D.
 - À surveiller : leur **serveur MCP** (piloter la scène 3D par agent) — s'alignerait avec nos agents projet le jour où le pont existe.
 
