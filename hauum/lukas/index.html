@@ -185,9 +185,11 @@
     .fstatus{font-size:14px;color:var(--brown);min-height:20px;margin:12px 0 0}
     @media(max-width:860px){.contact-grid{grid-template-columns:1fr}.fld-row{grid-template-columns:1fr}}
 
-    /* récompenses */
-    .awards .award{display:flex;justify-content:space-between;align-items:baseline;gap:22px;padding:22px 0;border-top:1px solid var(--ink)}
-    .awards .award:last-child{border-bottom:1px solid var(--ink)}
+    /* récompenses : lignes gris clair au repos, la ligne SOUS l'award
+       s'assombrit au survol (mécanique du template) */
+    .awards .award{display:flex;justify-content:space-between;align-items:baseline;gap:22px;padding:22px 0;border-bottom:1px solid var(--line);transition:border-color .35s ease}
+    .awards .award:first-child{border-top:1px solid var(--line)}
+    .awards .award:hover{border-bottom-color:var(--ink)}
     .award .t{font-family:var(--disp);font-weight:700;font-size:clamp(1.2rem,2.4vw,1.7rem);letter-spacing:-.02em}
     .award .c{color:var(--muted);font-size:14px;margin-top:4px}
     .award .y{white-space:nowrap;color:var(--muted);font-size:14.5px}
@@ -292,6 +294,10 @@
     .details:hover span,.offre .details:hover span{transform:translateX(7px)}
     .btn span{display:inline-block;transition:transform .3s}
     .btn:hover span{transform:translateX(5px)}
+    /* pattern "Submit" du template : la flèche n'existe pas au repos,
+       elle apparaît au survol et le bouton s'élargit */
+    .btn .arr2{width:0;opacity:0;overflow:hidden;transform:translateX(-8px);transition:width .35s ease,opacity .3s ease,transform .35s ease}
+    .btn:hover .arr2{width:1.05em;opacity:1;transform:none}
 
     /* ============ déco : étoile qui tourne (équivalent Lottie léger) ============ */
     .spin{display:inline-block;color:var(--brown);animation:spin 16s linear infinite;transform-origin:center}
@@ -682,7 +688,7 @@
                 <label for="f-msg">Votre message</label>
                 <textarea id="f-msg" placeholder="Décrivez votre lieu, votre clientèle, vos envies…"></textarea>
               </div>
-              <button class="btn" type="submit">Envoyer ma demande <span aria-hidden="true">→</span></button>
+              <button class="btn" type="submit">Envoyer ma demande<span class="arr2" aria-hidden="true">→</span></button>
               <p class="fstatus" id="fstatus" role="status" aria-live="polite"></p>
             </form>
           </div>
@@ -699,7 +705,7 @@
           <h3>Restons en contact</h3>
           <form class="nl" id="nl" novalidate>
             <input type="email" id="nlmail" placeholder="Adresse email" aria-label="Adresse email" />
-            <button class="btn" type="submit">Valider</button>
+            <button class="btn" type="submit">Valider<span class="arr2" aria-hidden="true">→</span></button>
           </form>
           <p class="nl-note">Vous pourriez recevoir de temps à autre des e-mails de notre part ; vous pouvez vous désabonner à tout moment en cliquant sur le lien fourni dans chaque e-mail.</p>
           <div class="socials">
