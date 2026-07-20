@@ -231,10 +231,78 @@
     .zone{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.7}
     @media(max-width:800px){.foot-grid{grid-template-columns:1fr}}
 
+    /* ============ animation d'entrée du hero (chargement) ============ */
+    @keyframes riseIn{from{opacity:0;transform:translateY(46px)}to{opacity:1;transform:none}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .hero .nav{animation:fadeIn .7s ease .1s both}
+    .hero-word .word{animation:riseIn 1s cubic-bezier(.22,1,.36,1) .25s both}
+    .stats .stat{animation:riseIn .8s cubic-bezier(.22,1,.36,1) both}
+    .stats .stat:nth-child(1){animation-delay:.55s}
+    .stats .stat:nth-child(2){animation-delay:.7s}
+
+    /* ============ compteurs à rouleau (odomètre) ============ */
+    .odo{display:inline-flex;overflow:hidden;height:1.06em;vertical-align:bottom}
+    .odo .col{display:block;transition:transform 1.8s cubic-bezier(.16,1,.3,1)}
+    .odo .col span{display:block;height:1.06em;line-height:1.06}
+
+    /* ============ strip d'images infini (marquee) ============ */
+    .mq{overflow:hidden;padding:0;display:grid;gap:16px}
+    .mq-row{display:flex;gap:16px;width:max-content;animation:mqL 42s linear infinite}
+    .mq-row.rev{animation:mqR 56s linear infinite}
+    .mq-row:hover{animation-play-state:paused}
+    @keyframes mqL{to{transform:translateX(-50%)}}
+    @keyframes mqR{from{transform:translateX(-50%)}to{transform:none}}
+    .mq img{height:210px;width:auto;border-radius:12px;object-fit:cover;aspect-ratio:4/3}
+    @media(max-width:640px){.mq img{height:140px}}
+
+    /* ============ slider témoignages ============ */
+    .tslider{position:relative;overflow:hidden}
+    .ttrack{display:flex;transition:transform .55s cubic-bezier(.22,1,.36,1)}
+    .tslide{flex:0 0 100%;min-width:100%}
+    .tnav{display:flex;align-items:center;gap:14px;justify-content:center;margin-top:18px}
+    .tarrow{width:42px;height:42px;border-radius:999px;border:1px solid var(--line);background:var(--white);cursor:pointer;display:grid;place-items:center;font-size:17px;transition:background .2s,color .2s}
+    .tarrow:hover{background:var(--ink);color:#fff}
+    .tdots{display:flex;gap:8px}
+    .tdot{width:9px;height:9px;border-radius:999px;background:rgba(17,17,17,.22);border:0;cursor:pointer;padding:0;transition:background .2s,transform .2s}
+    .tdot.on{background:var(--ink);transform:scale(1.25)}
+    .exemple-note{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:8px}
+
+    /* ============ dropdown nav au survol ============ */
+    .ndd{position:relative}
+    .ndd>a::after{content:" ▾";font-size:11px}
+    .ndd-menu{position:absolute;top:calc(100% + 10px);left:-14px;background:#fff;color:var(--ink);border-radius:12px;box-shadow:0 18px 44px rgba(0,0,0,.16);padding:10px;min-width:230px;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .25s,transform .25s,visibility .25s;z-index:50}
+    .ndd:hover .ndd-menu,.ndd:focus-within .ndd-menu{opacity:1;visibility:visible;transform:none}
+    .ndd-menu a{display:block;padding:10px 14px;border-radius:8px;font-size:14.5px;color:var(--ink);opacity:1}
+    .ndd-menu a:hover{background:var(--bg);border-bottom-color:transparent}
+    .ndd-menu::before{content:"";position:absolute;top:-12px;left:0;right:0;height:14px}
+
+    /* ============ hover riche des cartes Details ============ */
+    .details span,.offre .details span{display:inline-block;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+    .details:hover span,.offre .details:hover span{transform:translateX(7px)}
+    .btn span{display:inline-block;transition:transform .3s}
+    .btn:hover span{transform:translateX(5px)}
+
+    /* ============ déco : étoile qui tourne (équivalent Lottie léger) ============ */
+    .spin{display:inline-block;color:var(--brown);animation:spin 16s linear infinite;transform-origin:center}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* ============ footer : reveal séquencé ============ */
+    footer .rv:nth-child(1){transition-delay:.05s}
+    footer .rv:nth-child(2){transition-delay:.18s}
+    footer .rv:nth-child(3){transition-delay:.31s}
+    footer .zone.rv{transition-delay:.45s}
+
     /* reveal */
     .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
     .rv.in{opacity:1;transform:none}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none}*{transition:none!important}}
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .rv{opacity:1;transform:none}
+      .hero .nav,.hero-word .word,.stats .stat{animation:none}
+      .mq-row,.mq-row.rev{animation:none}
+      .spin{animation:none}
+      *{transition:none!important}
+    }
   </style>
 </head>
 <body>
@@ -254,7 +322,15 @@
         <div class="nav-links">
           <a href="#apropos">Vision</a>
           <a href="#expertises">Expertises</a>
-          <a href="#projets">Projets</a>
+          <div class="ndd">
+            <a href="#projets" aria-haspopup="true">Projets</a>
+            <div class="ndd-menu" role="menu">
+              <a href="#projets" role="menuitem">Imaginaire — pharmacie</a>
+              <a href="#projets" role="menuitem">Pourtaou</a>
+              <a href="#projets" role="menuitem">Boutique — Arcachon</a>
+              <a href="#projets" role="menuitem">Restaurant — Bordeaux</a>
+            </div>
+          </div>
           <a href="#recompenses">Récompenses</a>
           <a href="#formations">Formations</a>
         </div>
@@ -264,8 +340,8 @@
     </div>
 
     <div class="stats" aria-label="Chiffres clés">
-      <div class="stat"><div class="k">Total clients</div><div class="v">100+</div></div>
-      <div class="stat"><div class="k">Sur-mesure</div><div class="v">100%</div></div>
+      <div class="stat"><div class="k">Total clients</div><div class="v"><span class="odo" data-odo="100" aria-label="100"></span>+</div></div>
+      <div class="stat"><div class="k">Sur-mesure</div><div class="v"><span class="odo" data-odo="100" aria-label="100"></span>%</div></div>
     </div>
 
     <h1 class="visually">Hauum — studio d'architecture d'intérieur et de design de marque à Bordeaux et sur le Bassin d'Arcachon</h1>
@@ -298,7 +374,7 @@
     <section id="apropos">
       <div class="wrap">
         <div class="about-grid rv">
-          <span class="label">À propos</span>
+          <span class="label"><span class="spin" aria-hidden="true">✳</span> À propos</span>
           <div>
             <p class="big">Nous sommes un studio d'architecture d'intérieur et de design de marque.<br />
             Le studio accompagne les établissements commerciaux à façonner des lieux, des marques &amp; des expériences.<br />
@@ -448,17 +524,54 @@
       </div>
     </section>
 
-    <!-- ============ TÉMOIGNAGE ============ -->
+    <!-- ============ TÉMOIGNAGES (slider) ============ -->
     <section>
       <div class="wrap">
-        <div class="quote-sec rv">
-          <img src="https://picsum.photos/seed/hauum-huilerie/1600/800" alt="Boutique de l'Huilerie Bocerno aménagée par Hauum" loading="lazy" width="1600" height="800" />
-          <div class="quote-card">
-            <blockquote>« Un immense merci pour ton incroyable professionnalisme, ta bienveillance et ton écoute précieuse à chaque étape du projet ! »</blockquote>
-            <p class="who"><b>Léa</b><span>Chargée de marketing — Huilerie Bocerno</span></p>
+        <div class="tslider rv" id="tslider">
+          <div class="ttrack" id="ttrack">
+            <div class="tslide">
+              <div class="quote-sec">
+                <img src="https://picsum.photos/seed/hauum-huilerie/1600/800" alt="Boutique de l'Huilerie Bocerno aménagée par Hauum" loading="lazy" width="1600" height="800" />
+                <div class="quote-card">
+                  <blockquote>« Un immense merci pour ton incroyable professionnalisme, ta bienveillance et ton écoute précieuse à chaque étape du projet ! »</blockquote>
+                  <p class="who"><b>Léa</b><span>Chargée de marketing — Huilerie Bocerno</span></p>
+                </div>
+              </div>
+            </div>
+            <div class="tslide">
+              <div class="quote-sec">
+                <img src="https://picsum.photos/seed/hauum-pharma-avis/1600/800" alt="Officine réagencée par Hauum" loading="lazy" width="1600" height="800" />
+                <div class="quote-card">
+                  <blockquote>« Le parcours client repensé a transformé notre officine — l'équipe comme la patientèle s'y retrouvent. »</blockquote>
+                  <p class="who"><b>Témoignage à venir</b><span>Titulaire de pharmacie — Gironde</span></p>
+                  <p class="exemple-note">(exemple — à remplacer par un témoignage réel)</p>
+                </div>
+              </div>
+            </div>
+            <div class="tslide">
+              <div class="quote-sec">
+                <img src="https://picsum.photos/seed/hauum-resto-avis/1600/800" alt="Salle de restaurant conçue par Hauum" loading="lazy" width="1600" height="800" />
+                <div class="quote-card">
+                  <blockquote>« Une identité et une salle qui nous ressemblent enfin — et des clients qui reviennent. »</blockquote>
+                  <p class="who"><b>Témoignage à venir</b><span>Restaurateur — Bassin d'Arcachon</span></p>
+                  <p class="exemple-note">(exemple — à remplacer par un témoignage réel)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tnav">
+            <button class="tarrow" id="tprev" aria-label="Témoignage précédent">←</button>
+            <div class="tdots" id="tdots" role="tablist"></div>
+            <button class="tarrow" id="tnext" aria-label="Témoignage suivant">→</button>
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- ============ STRIP D'IMAGES INFINI ============ -->
+    <section class="mq" aria-label="Nos univers en images" style="padding:0 0 96px">
+      <div class="mq-row" id="mqrow1"></div>
+      <div class="mq-row rev" id="mqrow2"></div>
     </section>
 
     <!-- ============ FORMATIONS ============ -->
@@ -556,7 +669,7 @@
   <footer>
     <div class="wrap">
       <div class="foot-grid">
-        <div>
+        <div class="rv">
           <h3>Restons en contact</h3>
           <form class="nl" id="nl" novalidate>
             <input type="email" id="nlmail" placeholder="Adresse email" aria-label="Adresse email" />
@@ -572,7 +685,7 @@
             </a>
           </div>
         </div>
-        <nav aria-label="Pages">
+        <nav aria-label="Pages" class="rv">
           <h4>Navigation</h4>
           <ul>
             <li><a href="#top">Accueil</a></li>
@@ -584,7 +697,7 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
-        <nav aria-label="Contact">
+        <nav aria-label="Contact" class="rv">
           <h4>Contact</h4>
           <ul>
             <li><a href="tel:+33785744521">07 85 74 45 21</a></li>
@@ -594,7 +707,7 @@
           </ul>
         </nav>
       </div>
-      <p class="zone"><strong>Hauum</strong> — Studio d'architecture d'intérieur &amp; design de marque, basé entre Bordeaux et le Bassin d'Arcachon. Interventions en Gironde et Nouvelle-Aquitaine — Arcachon, Cap Ferret, Lège-Cap-Ferret, La Teste-de-Buch, Pyla-sur-Mer, Gujan-Mestras, Andernos-les-Bains, Mérignac, Pessac, Talence, Libourne, Saint-Émilion — ainsi qu'en Occitanie et en projets à distance. Spécialiste des commerces &amp; boutiques, <strong>pharmacies</strong>, hôtellerie-restauration et tourisme. © <span id="yy">2026</span></p>
+      <p class="zone rv"><strong>Hauum</strong> — Studio d'architecture d'intérieur &amp; design de marque, basé entre Bordeaux et le Bassin d'Arcachon. Interventions en Gironde et Nouvelle-Aquitaine — Arcachon, Cap Ferret, Lège-Cap-Ferret, La Teste-de-Buch, Pyla-sur-Mer, Gujan-Mestras, Andernos-les-Bains, Mérignac, Pessac, Talence, Libourne, Saint-Émilion — ainsi qu'en Occitanie et en projets à distance. Spécialiste des commerces &amp; boutiques, <strong>pharmacies</strong>, hôtellerie-restauration et tourisme. © <span id="yy">2026</span></p>
     </div>
   </footer>
 
@@ -618,6 +731,82 @@
       } else {
         var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
         rvs.forEach(function(el){io.observe(el);});
+      }
+
+      var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ---- compteurs à rouleau (odomètre) : chaque chiffre = colonne 0-9 ----
+      document.querySelectorAll('.odo').forEach(function(o){
+        var val=String(o.getAttribute('data-odo')||'0');
+        o.textContent='';
+        var cols=[];
+        for(var i=0;i<val.length;i++){
+          var col=document.createElement('span'); col.className='col';
+          for(var d=0;d<=9;d++){var s=document.createElement('span');s.textContent=d;col.appendChild(s);}
+          o.appendChild(col); cols.push({el:col,target:+val[i]});
+        }
+        function run(){
+          cols.forEach(function(c,i){
+            if(reduce){c.el.style.transform='translateY(-'+(c.target*1.06)+'em)';return;}
+            c.el.style.transitionDelay=(0.15*i+0.6)+'s';
+            // setTimeout (pas rAF) : rAF est gelé quand l'onglet n'est pas au premier plan
+            setTimeout(function(){
+              c.el.style.transform='translateY(-'+(c.target*1.06)+'em)';
+            },60);
+          });
+        }
+        run();
+      });
+
+      // ---- strip d'images infini : contenu dupliqué ×2 pour boucle sans couture ----
+      var mqImgs=[
+        'hauum-p-pharma','hauum-p-boutique','hauum-p-resto','hauum-p-hotel','hauum-p-concept','hauum-p-tourisme',
+      ];
+      function fillRow(id,seeds){
+        var row=document.getElementById(id); if(!row)return;
+        var set=seeds.concat(seeds); // duplication = boucle infinie
+        set.forEach(function(seed,i){
+          var im=document.createElement('img');
+          im.src='https://picsum.photos/seed/'+seed+'/420/315';
+          im.alt=''; im.setAttribute('aria-hidden','true');
+          im.width=420; im.height=315;
+          row.appendChild(im);
+        });
+      }
+      fillRow('mqrow1',mqImgs);
+      fillRow('mqrow2',mqImgs.slice().reverse().map(function(s){return s+'-b';}));
+
+      // ---- slider témoignages : flèches + dots + swipe + boucle ----
+      var track=document.getElementById('ttrack');
+      if(track){
+        var slides=track.children.length, idx=0;
+        var dots=document.getElementById('tdots');
+        for(var i=0;i<slides;i++){
+          var b=document.createElement('button'); b.className='tdot'; b.setAttribute('role','tab');
+          b.setAttribute('aria-label','Témoignage '+(i+1));
+          (function(n){b.addEventListener('click',function(){go(n);});})(i);
+          dots.appendChild(b);
+        }
+        function go(n){
+          idx=(n+slides)%slides; // boucle infinie
+          track.style.transform='translateX(-'+(idx*100)+'%)';
+          [].forEach.call(dots.children,function(d,i){d.classList.toggle('on',i===idx);});
+        }
+        document.getElementById('tprev').addEventListener('click',function(){go(idx-1);});
+        document.getElementById('tnext').addEventListener('click',function(){go(idx+1);});
+        // swipe tactile
+        var x0=null;
+        track.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+        track.addEventListener('touchend',function(e){
+          if(x0===null)return;
+          var dx=e.changedTouches[0].clientX-x0; x0=null;
+          if(Math.abs(dx)>40) go(idx+(dx<0?1:-1));
+        },{passive:true});
+        // clavier
+        document.getElementById('tslider').addEventListener('keydown',function(e){
+          if(e.key==='ArrowLeft')go(idx-1); if(e.key==='ArrowRight')go(idx+1);
+        });
+        go(0);
       }
 
       // formulaire de contact qualifiant : statique → assemble un email pré-rempli
