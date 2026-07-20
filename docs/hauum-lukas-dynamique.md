@@ -48,3 +48,14 @@ Déjà en place : reveals au scroll (IntersectionObserver), zoom photo au survol
 **Manquant (à implémenter en vanilla)** : ① compteurs à rouleau des stats · ② strip d'images infini multi-rangées · ③ animation d'entrée du hero (titre + stagger) · ④ slider témoignages (flèches + dots + swipe + boucle) · ⑤ reveal séquencé du footer · ⑥ hover « riche » des cartes Details (fond inversé + icône qui glisse) · ⑦ dropdown Formations au survol (si sous-pages) · ⑧ Lottie décoratif (optionnel — à remplacer par un équivalent CSS léger).
 
 _Éléments du template ignorés volontairement : bannière promo Webflow + bouton « customize » (marketing du vendeur du template)._
+
+## Annexe — mécanique exacte des boutons (relevé style-guide, implémentée)
+Source : https://lukes-template.webflow.io/template-pages/style-guide
+
+| Bouton template | Mécanique relevée | Notre implémentation |
+|---|---|---|
+| `nav-button` (Contact Now) | `overflow:hidden` + `.text-wrapper` + `.nav-button-line` **en translate3d(-100 %)** (soulignement qui balaye) + **2 icônes flèche dupliquées** (swap diagonal : l'une sort ↗, l'autre entre depuis ↙) | `.nav-cta` : `.line` qui balaye vers la droite au survol + `.arr` avec 2 `→` (sortie 120 %,-120 % / entrée -120 %,120 %), .35 s cubic-bezier |
+| `nav-link` | couleur .3 s + ligne | `::after` scaleX(0→1) origin left, .3 s |
+| `primary-button` | radius 8 px, pad 13/16, `all .4 s ease`, hover = fond | `.btn` all .4 s ease, radius 8 px, hover fond brun-2 + lift 2 px + ombre |
+| `service-button-wrapper` (Details) | `all .5 s` fond inversé + icône qui glisse | `.details` all .5 s ease + flèche translateX(7 px) |
+| `pricing-link` | `background-color .4 s` | couvert par `.btn` |

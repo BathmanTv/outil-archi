@@ -64,8 +64,9 @@
     h1,h2,h3{font-family:var(--disp);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:0}
     .wrap{max-width:1280px;margin:0 auto;padding:0 28px}
     .label{font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--muted)}
-    .btn{display:inline-flex;align-items:center;gap:10px;background:var(--brown);color:#fff;font-family:var(--disp);font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:6px;border:0;cursor:pointer;transition:background .2s,transform .2s}
-    .btn:hover{background:var(--brown-2);transform:translateY(-1px)}
+    /* primary-button du template : radius 8, all .4s ease */
+    .btn{display:inline-flex;align-items:center;gap:10px;background:var(--brown);color:#fff;font-family:var(--disp);font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:8px;border:0;cursor:pointer;transition:all .4s ease}
+    .btn:hover{background:var(--brown-2);transform:translateY(-2px);box-shadow:0 10px 24px rgba(83,54,46,.28)}
     .skip{position:absolute;left:-9999px}.skip:focus{position:fixed;left:14px;top:14px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:99}
     a:focus-visible,button:focus-visible,input:focus-visible{outline:2.5px solid var(--brown);outline-offset:3px}
 
@@ -77,10 +78,20 @@
     .nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
     .nav .logo img{height:26px;width:auto}
     .nav-links{display:flex;gap:30px;align-items:center;font-size:15px;font-weight:500}
-    .nav-links a{opacity:.92;padding:4px 0;border-bottom:2px solid transparent;transition:border-color .2s,opacity .2s}
-    .nav-links a:hover{opacity:1;border-bottom-color:#fff}
-    .nav-cta{font-family:var(--disp);font-weight:600;font-size:15px;border-bottom:2px solid #fff;padding-bottom:3px;display:inline-flex;gap:8px;align-items:center}
-    .nav-cta:hover{opacity:.85}
+    /* liens nav : underline sweep gauche→droite (mécanique du template) */
+    .nav-links a{position:relative;opacity:.92;padding:4px 0;transition:opacity .3s}
+    .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+    .nav-links a:hover{opacity:1}
+    .nav-links a:hover::after{transform:scaleX(1)}
+    /* CTA nav : sweep + double flèche qui se remplace en diagonale */
+    .nav-cta{position:relative;font-family:var(--disp);font-weight:600;font-size:15px;padding-bottom:5px;display:inline-flex;gap:9px;align-items:center;overflow:hidden}
+    .nav-cta .line{position:absolute;left:0;right:0;bottom:0;height:2px;background:#fff;transform:none;transition:transform .4s ease}
+    .nav-cta:hover .line{transform:translateX(110%)}
+    .nav-cta .arr{position:relative;width:1em;height:1em;overflow:hidden;display:inline-block}
+    .nav-cta .arr span{position:absolute;inset:0;display:grid;place-items:center;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+    .nav-cta .arr span:nth-child(2){transform:translate(-120%,120%)}
+    .nav-cta:hover .arr span:nth-child(1){transform:translate(120%,-120%)}
+    .nav-cta:hover .arr span:nth-child(2){transform:none}
     .burger{display:none;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:9px 14px;font-size:15px;cursor:pointer}
     .stats{position:absolute;left:28px;top:120px;display:flex;flex-direction:column;gap:12px}
     .stat{background:rgba(30,20,16,.38);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:14px 22px;text-align:center;min-width:150px}
@@ -133,7 +144,7 @@
     .exp-card .tag{font-size:13.5px;color:var(--muted);margin-bottom:10px}
     .exp-card .tag::before{content:"* "}
     .exp-card p.desc{font-family:var(--disp);font-weight:600;font-size:21px;line-height:1.3;letter-spacing:-.015em;margin:0 0 auto}
-    .exp-card .details{margin-top:26px;display:flex;justify-content:space-between;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:14.5px;font-weight:500;transition:background .2s,color .2s}
+    .exp-card .details{margin-top:26px;display:flex;justify-content:space-between;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:14.5px;font-weight:500;transition:all .5s ease}
     .exp-card .details:hover{background:var(--ink);color:#fff}
     @media(max-width:860px){.exp-grid{grid-template-columns:1fr}}
 
@@ -148,7 +159,7 @@
     .offre h3{font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:6px}
     .offre .tag2{font-size:13.5px;color:var(--muted);margin-bottom:14px}
     .offre p{margin:0 0 20px;color:var(--muted);font-size:15px}
-    .offre .details{margin-top:auto;display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:14.5px;font-weight:500;transition:background .2s,color .2s}
+    .offre .details{margin-top:auto;display:flex;justify-content:space-between;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:14.5px;font-weight:500;transition:all .5s ease}
     .offre .details:hover{background:var(--ink);color:#fff}
     @media(max-width:800px){.offres-grid{grid-template-columns:1fr}}
     .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
@@ -334,7 +345,10 @@
           <a href="#recompenses">Récompenses</a>
           <a href="#formations">Formations</a>
         </div>
-        <a class="nav-cta" href="#contact">Prendre contact <span aria-hidden="true">→</span></a>
+        <a class="nav-cta" href="#contact">Prendre contact
+          <span class="arr" aria-hidden="true"><span>→</span><span>→</span></span>
+          <i class="line" aria-hidden="true"></i>
+        </a>
         <button class="burger" id="burger" aria-expanded="false" aria-controls="mmenu">Menu</button>
       </nav>
     </div>
