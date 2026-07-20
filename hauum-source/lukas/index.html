@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<!--
+  HAUUM — variante "Lukas" (retour client 2026-07) : design calqué sur le
+  template Webflow "Lukas X" que la cliente a commencé à utiliser, reconstruit
+  en statique vanilla (0 €, GitHub Pages).
+  Codes du template : hero photo plein écran + wordmark géant en bas, cartes
+  stats en verre, gros grotesk noir serré, cartes expertises numérotées 01/02/03,
+  cartes projets avec pastille "Voir le projet", témoignage sur photo, footer
+  newsletter. Contenu = textes réels posés par la cliente dans son back-office.
+  PLACEHOLDERS : photos picsum → vraies photos Hauum (hero = photo moodboard/table
+  de travail). Logos réels réutilisés depuis ../warm-organic-v1/assets/logos/.
+  noindex : preview interne (retirer au lancement sur hauum.fr).
+-->
+<html lang="fr">
+<head>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Hauum — Studio d'architecture d'intérieur & design de marque à Bordeaux et Arcachon | Commerces, pharmacies</title>
+  <meta name="description" content="Hauum, studio d'architecture d'intérieur et de design de marque à Bordeaux et sur le Bassin d'Arcachon. Boutiques, restaurants, pharmacies, concept stores : des lieux, des marques et des expériences fondés sur les sciences du marketing et la psychologie du consommateur." />
+  <meta name="keywords" content="architecte d'intérieur Bordeaux, architecture commerciale Bordeaux, design de marque Bordeaux, agencement de pharmacie Bordeaux, agencement pharmacie Gironde, agencement commerce Arcachon, concept store Bordeaux, stratégie de marque commerce, formation Qualiopi agencement, studio design Bassin d'Arcachon" />
+  <link rel="canonical" href="https://www.hauum.fr/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="Hauum" />
+  <meta property="og:title" content="Hauum — Studio d'architecture d'intérieur & design de marque" />
+  <meta property="og:description" content="Des lieux, des marques & des expériences. Bordeaux · Bassin d'Arcachon. Approche fondée sur le marketing et la psychologie du consommateur." />
+  <meta name="theme-color" content="#111111" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": "https://www.hauum.fr/#studio",
+    "name": "Hauum",
+    "description": "Studio d'architecture d'intérieur et de design de marque à Bordeaux et sur le Bassin d'Arcachon : boutiques, restaurants, pharmacies, concept stores. Organisme de formation certifié Qualiopi.",
+    "url": "https://www.hauum.fr/",
+    "telephone": "+33785744521",
+    "email": "hauum.studio@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Bordeaux", "addressRegion": "Nouvelle-Aquitaine", "addressCountry": "FR" },
+    "areaServed": ["Bordeaux", "Arcachon", "Bassin d'Arcachon", "Gironde", "Nouvelle-Aquitaine"],
+    "knowsAbout": ["architecture d'intérieur", "design de marque", "agencement de pharmacie", "agencement de commerce", "stratégie de marque", "marketing du point de vente", "formation Qualiopi"],
+    "sameAs": ["https://www.instagram.com/hauum.studio", "https://www.linkedin.com/company/hauum"]
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#F6F5F2; --card:#EFEEEA; --white:#fff; --ink:#111111; --muted:#6b6b66;
+      --brown:#53362E; --brown-2:#3E2820; --line:rgba(17,17,17,.10);
+      --disp:'Archivo',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+      --r:10px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    h1,h2,h3{font-family:var(--disp);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin:0}
+    .wrap{max-width:1280px;margin:0 auto;padding:0 28px}
+    .label{font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--muted)}
+    .btn{display:inline-flex;align-items:center;gap:10px;background:var(--brown);color:#fff;font-family:var(--disp);font-weight:600;font-size:14.5px;padding:13px 22px;border-radius:6px;border:0;cursor:pointer;transition:background .2s,transform .2s}
+    .btn:hover{background:var(--brown-2);transform:translateY(-1px)}
+    .skip{position:absolute;left:-9999px}.skip:focus{position:fixed;left:14px;top:14px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;z-index:99}
+    a:focus-visible,button:focus-visible,input:focus-visible{outline:2.5px solid var(--brown);outline-offset:3px}
+
+    /* ============ HERO plein écran ============ */
+    .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;color:#fff;isolation:isolate}
+    .hero-bg{position:absolute;inset:0;z-index:-2}
+    .hero-bg img{width:100%;height:100%;object-fit:cover}
+    .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.38) 0%,rgba(0,0,0,.10) 40%,rgba(0,0,0,.35) 100%)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+    .nav .logo img{height:26px;width:auto}
+    .nav-links{display:flex;gap:30px;align-items:center;font-size:15px;font-weight:500}
+    .nav-links a{opacity:.92;padding:4px 0;border-bottom:2px solid transparent;transition:border-color .2s,opacity .2s}
+    .nav-links a:hover{opacity:1;border-bottom-color:#fff}
+    .nav-cta{font-family:var(--disp);font-weight:600;font-size:15px;border-bottom:2px solid #fff;padding-bottom:3px;display:inline-flex;gap:8px;align-items:center}
+    .nav-cta:hover{opacity:.85}
+    .burger{display:none;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:9px 14px;font-size:15px;cursor:pointer}
+    .stats{position:absolute;left:28px;top:120px;display:flex;flex-direction:column;gap:12px}
+    .stat{background:rgba(30,20,16,.38);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:14px 22px;text-align:center;min-width:150px}
+    .stat .k{font-size:12.5px;opacity:.85}
+    .stat .v{font-family:var(--disp);font-weight:800;font-size:30px;line-height:1.1}
+    .hero-word{margin-top:auto;padding-bottom:2vh;overflow:hidden}
+    .hero-word .word{font-family:var(--disp);font-weight:800;letter-spacing:-.04em;line-height:.9;font-size:clamp(4.5rem,19vw,17rem);color:#fff;text-align:center;display:block}
+    .hero h1.visually{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+    @media(max-width:920px){
+      .nav-links,.nav .nav-cta{display:none}
+      .burger{display:block}
+      .stats{top:96px}
+    }
+    .mmenu{display:none;position:fixed;inset:0;z-index:60;background:rgba(17,17,17,.96);color:#fff;flex-direction:column;padding:90px 28px;gap:6px}
+    .mmenu.open{display:flex}
+    .mmenu a{font-family:var(--disp);font-weight:700;font-size:32px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+    .mclose{position:absolute;top:22px;right:24px;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:8px;padding:8px 14px;font-size:15px;cursor:pointer}
+
+    /* ============ sections communes ============ */
+    section{padding:96px 0}
+    .sec-head{display:grid;grid-template-columns:180px 1fr;gap:32px;align-items:start;margin-bottom:48px}
+    .sec-head h2{font-size:clamp(2.4rem,5.2vw,4.2rem)}
+    .sec-head .intro{max-width:52ch;color:var(--muted);font-size:15.5px;margin-top:10px}
+    @media(max-width:800px){.sec-head{grid-template-columns:1fr;gap:10px}}
+
+    /* logos clients */
+    .clients{padding:38px 0;background:var(--white)}
+    .clogos{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+    .clogo{background:var(--card);border-radius:12px;height:104px;display:grid;place-items:center;padding:20px}
+    .clogo img{max-height:56px;max-width:150px;object-fit:contain;filter:grayscale(1);opacity:.85;transition:filter .25s,opacity .25s}
+    .clogo:hover img{filter:none;opacity:1}
+    @media(max-width:900px){.clogos{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:560px){.clogos{grid-template-columns:repeat(2,1fr)}}
+
+    /* à propos */
+    .about-grid{display:grid;grid-template-columns:180px 1fr;gap:32px;align-items:start}
+    .about-grid .big{font-family:var(--disp);font-weight:600;font-size:clamp(1.5rem,2.9vw,2.3rem);line-height:1.28;letter-spacing:-.015em;max-width:30ch}
+    .about-grid .big strong{font-weight:800}
+    .about-cta{margin-top:28px}
+    .terrain{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px}
+    .terrain img{border-radius:12px;aspect-ratio:1/1.05;object-fit:cover;width:100%}
+    @media(max-width:800px){.about-grid{grid-template-columns:1fr;gap:12px}.terrain{grid-template-columns:repeat(2,1fr)}}
+
+    /* expertises */
+    .exp{background:var(--white)}
+    .exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .exp-card{background:var(--bg);border-radius:14px;padding:26px 26px 18px;display:flex;flex-direction:column;min-height:300px;transition:transform .25s,box-shadow .25s}
+    .exp-card:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(17,17,17,.09)}
+    .exp-card .num{font-size:14px;color:var(--muted);margin-bottom:44px}
+    .exp-card .tag{font-size:13.5px;color:var(--muted);margin-bottom:10px}
+    .exp-card .tag::before{content:"* "}
+    .exp-card p.desc{font-family:var(--disp);font-weight:600;font-size:21px;line-height:1.3;letter-spacing:-.015em;margin:0 0 auto}
+    .exp-card .details{margin-top:26px;display:flex;justify-content:space-between;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:8px;padding:12px 16px;font-size:14.5px;font-weight:500;transition:background .2s,color .2s}
+    .exp-card .details:hover{background:var(--ink);color:#fff}
+    @media(max-width:860px){.exp-grid{grid-template-columns:1fr}}
+
+    /* récompenses */
+    .awards .award{display:flex;justify-content:space-between;align-items:baseline;gap:22px;padding:22px 0;border-top:1px solid var(--ink)}
+    .awards .award:last-child{border-bottom:1px solid var(--ink)}
+    .award .t{font-family:var(--disp);font-weight:700;font-size:clamp(1.2rem,2.4vw,1.7rem);letter-spacing:-.02em}
+    .award .c{color:var(--muted);font-size:14px;margin-top:4px}
+    .award .y{white-space:nowrap;color:var(--muted);font-size:14.5px}
+    .award .y b{color:var(--ink)}
+    @media(max-width:640px){.awards .award{flex-direction:column;gap:4px}}
+
+    /* réalisations */
+    .works{background:var(--white)}
+    .works-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 22px}
+    .work{display:block}
+    .work .ph{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/11;background:var(--card)}
+    .work .ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+    .work:hover .ph img{transform:scale(1.045)}
+    .work .dot{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .3s}
+    .work:hover .dot{opacity:1}
+    .work .dot span{background:#fff;border-radius:999px;width:104px;height:104px;display:grid;place-items:center;font-size:13.5px;font-weight:600;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+    .work .cap{display:flex;justify-content:space-between;gap:18px;align-items:baseline;margin-top:14px}
+    .work .cap .t{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:-.02em}
+    .work .cap .d{font-size:13.5px;color:var(--muted);max-width:32ch;text-align:right}
+    @media(max-width:800px){.works-grid{grid-template-columns:1fr}.work .cap{flex-direction:column;gap:4px}.work .cap .d{text-align:left}}
+
+    /* témoignage */
+    .quote-sec{position:relative;border-radius:18px;overflow:hidden;min-height:440px;display:flex;align-items:center}
+    .quote-sec>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .quote-card{position:relative;background:#fff;border-radius:14px;max-width:440px;margin:56px;padding:36px 34px;box-shadow:0 24px 60px rgba(0,0,0,.18)}
+    .quote-card blockquote{margin:0;font-family:var(--disp);font-weight:600;font-size:20px;line-height:1.42;letter-spacing:-.01em}
+    .quote-card .who{margin-top:22px;font-size:14.5px}
+    .quote-card .who b{display:block;font-weight:600}
+    .quote-card .who span{color:var(--muted);font-size:13.5px}
+    @media(max-width:640px){.quote-card{margin:20px}}
+
+    /* formations */
+    .form-band{background:var(--ink);color:#fff;border-radius:18px;padding:52px 48px;display:grid;grid-template-columns:auto 1fr auto;gap:36px;align-items:center}
+    .form-band .badge{background:var(--brown);border-radius:12px;width:110px;height:110px;display:grid;place-items:center;text-align:center;font-family:var(--disp);font-weight:700;font-size:14.5px;line-height:1.25;padding:10px}
+    .form-band h3{font-size:clamp(1.5rem,3vw,2.1rem);margin-bottom:8px}
+    .form-band p{margin:0;color:rgba(255,255,255,.75);font-size:15px;max-width:60ch}
+    @media(max-width:860px){.form-band{grid-template-columns:1fr;text-align:center;justify-items:center}}
+
+    /* footer / newsletter */
+    footer{background:var(--white);border-top:1px solid var(--line);padding:72px 0 36px}
+    .foot-grid{display:grid;grid-template-columns:1.2fr .6fr .6fr;gap:48px}
+    .foot-grid h3{font-size:clamp(1.4rem,2.6vw,1.9rem);margin-bottom:18px}
+    .nl{display:flex;gap:10px;max-width:420px}
+    .nl input{flex:1;padding:13px 16px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-family:var(--body);font-size:15px}
+    .nl-note{font-size:12.5px;color:var(--muted);max-width:46ch;margin-top:12px;line-height:1.5}
+    .foot-grid h4{font-family:var(--body);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}
+    .foot-grid ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:15px}
+    .foot-grid ul a:hover{color:var(--brown)}
+    .socials{display:flex;gap:10px;margin-top:20px}
+    .socials a{width:38px;height:38px;border:1px solid var(--line);border-radius:999px;display:grid;place-items:center;transition:background .2s,color .2s}
+    .socials a:hover{background:var(--ink);color:#fff}
+    .zone{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.7}
+    @media(max-width:800px){.foot-grid{grid-template-columns:1fr}}
+
+    /* reveal */
+    .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+    .rv.in{opacity:1;transform:none}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none}*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#apropos">Aller au contenu</a>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero-bg">
+      <!-- Remplacer par la vraie photo "table de travail / moodboard" de la cliente -->
+      <img src="https://picsum.photos/seed/hauum-moodboard-desk/1920/1200" alt="Table de travail du studio Hauum : plans, échantillons de matériaux et moodboard" fetchpriority="high" width="1920" height="1200" />
+    </div>
+    <div class="wrap">
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="logo" href="#top" aria-label="Hauum — accueil">
+          <img src="../warm-organic-v1/assets/logos/hauum-logo-white.png" alt="Hauum" />
+        </a>
+        <div class="nav-links">
+          <a href="#apropos">Vision</a>
+          <a href="#expertises">Expertises</a>
+          <a href="#projets">Projets</a>
+          <a href="#recompenses">Récompenses</a>
+          <a href="#formations">Formations</a>
+        </div>
+        <a class="nav-cta" href="mailto:hauum.studio@gmail.com">Prendre contact <span aria-hidden="true">→</span></a>
+        <button class="burger" id="burger" aria-expanded="false" aria-controls="mmenu">Menu</button>
+      </nav>
+    </div>
+
+    <div class="stats" aria-label="Chiffres clés">
+      <div class="stat"><div class="k">Total clients</div><div class="v">100+</div></div>
+      <div class="stat"><div class="k">Sur-mesure</div><div class="v">100%</div></div>
+    </div>
+
+    <h1 class="visually">Hauum — studio d'architecture d'intérieur et de design de marque à Bordeaux et sur le Bassin d'Arcachon</h1>
+    <div class="hero-word" aria-hidden="true"><span class="word">Hauum</span></div>
+  </header>
+
+  <div class="mmenu" id="mmenu">
+    <button class="mclose" id="mclose">Fermer</button>
+    <a href="#apropos">Vision</a>
+    <a href="#expertises">Expertises</a>
+    <a href="#projets">Projets</a>
+    <a href="#recompenses">Récompenses</a>
+    <a href="#formations">Formations</a>
+    <a href="mailto:hauum.studio@gmail.com">Prendre contact →</a>
+  </div>
+
+  <main>
+    <!-- ============ LOGOS CLIENTS ============ -->
+    <div class="clients" aria-label="Ils nous font confiance">
+      <div class="wrap clogos">
+        <div class="clogo"><img src="../warm-organic-v1/assets/logos/client-paris-aeroport.webp" alt="Paris Aéroport" /></div>
+        <div class="clogo"><img src="../warm-organic-v1/assets/logos/client-lagardere.gif" alt="Lagardère Travel Retail" /></div>
+        <div class="clogo"><img src="../warm-organic-v1/assets/logos/client-v-and-b.webp" alt="V and B" /></div>
+        <div class="clogo"><img src="../warm-organic-v1/assets/logos/client-bournat.jpg" alt="Parc du Bournat" /></div>
+        <div class="clogo"><img src="../warm-organic-v1/assets/logos/client-inside-pharmacy.png" alt="Inside Pharmacy" /></div>
+      </div>
+    </div>
+
+    <!-- ============ À PROPOS ============ -->
+    <section id="apropos">
+      <div class="wrap">
+        <div class="about-grid rv">
+          <span class="label">À propos</span>
+          <div>
+            <p class="big">Nous sommes un studio d'architecture d'intérieur et de design de marque.<br />
+            Le studio accompagne les établissements commerciaux à façonner des lieux, des marques &amp; des expériences.<br />
+            <strong>Notre approche est fondée sur les sciences du marketing et la psychologie du consommateur.</strong></p>
+            <div class="about-cta"><a class="btn" href="#expertises">En savoir plus</a></div>
+          </div>
+        </div>
+        <div class="terrain rv">
+          <img src="https://picsum.photos/seed/hauum-t1/560/600" alt="Salon professionnel du design — le studio Hauum en repérage" loading="lazy" width="560" height="600" />
+          <img src="https://picsum.photos/seed/hauum-t2/560/600" alt="Prise de vue en studio pour un projet Hauum" loading="lazy" width="560" height="600" />
+          <img src="https://picsum.photos/seed/hauum-t3/560/600" alt="Agencement de pharmacie réalisé en Gironde" loading="lazy" width="560" height="600" />
+          <img src="https://picsum.photos/seed/hauum-t4/560/600" alt="Visite de chantier sur le Bassin d'Arcachon" loading="lazy" width="560" height="600" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERTISES ============ -->
+    <section id="expertises" class="exp">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="label">Expertises</span>
+          <div>
+            <h2>Le design global, sous un même toit</h2>
+            <p class="intro">Hauum réunit l'ensemble des expertises du design global au sein d'un unique studio pour aider les établissements à construire un projet cohérent sur tous les points de contact clients.</p>
+            <p style="margin-top:18px"><a class="btn" href="mailto:hauum.studio@gmail.com">Nous contacter</a></p>
+          </div>
+        </div>
+        <div class="exp-grid">
+          <article class="exp-card rv">
+            <div class="num">01</div>
+            <div class="tag">Architecture d'intérieur</div>
+            <p class="desc">Conception de boutiques, restaurants, pharmacies, concept stores… De l'étude à la livraison.</p>
+            <a class="details" href="mailto:hauum.studio@gmail.com">Détails <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="exp-card rv">
+            <div class="num">02</div>
+            <div class="tag">Stratégie de marque</div>
+            <p class="desc">Direction artistique, nom, identité visuelle, charte. Une marque tient debout avant d'être belle.</p>
+            <a class="details" href="mailto:hauum.studio@gmail.com">Détails <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="exp-card rv">
+            <div class="num">03</div>
+            <div class="tag">Marketing</div>
+            <p class="desc">Lancement, supports de com', campagnes, production photo et vidéo. La marque vit au-delà du lieu.</p>
+            <a class="details" href="mailto:hauum.studio@gmail.com">Détails <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RÉCOMPENSES ============ -->
+    <section id="recompenses">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="label">Reconnaissance</span>
+          <div>
+            <h2>Nos récompenses</h2>
+            <p class="intro">Au fil des années, nos projets en stratégie de marque, marketing et expérience client ont été récompensés par plusieurs jurys professionnels. Ces distinctions témoignent de notre expertise dans la conception de marques fortes et d'expériences qui génèrent de la valeur pour nos clients.</p>
+            <p style="margin-top:18px"><a class="btn" href="mailto:hauum.studio@gmail.com">Nous contacter</a></p>
+          </div>
+        </div>
+        <div class="awards rv">
+          <div class="award"><div><div class="t">Grand prix Stratégies Drive to Store</div><div class="c">Stratégies</div></div><div class="y">Année : <b>2019</b></div></div>
+          <div class="award"><div><div class="t">Grand prix Stratégie du Digital</div><div class="c">Stratégies</div></div><div class="y">Année : <b>2019</b></div></div>
+          <div class="award"><div><div class="t">Prix du jury &amp; Campagne grand public</div><div class="c">Empreintes</div></div><div class="y">Année : <b>2023</b></div></div>
+          <div class="award"><div><div class="t">Communication externe</div><div class="c">Rcom Santé</div></div><div class="y">Année : <b>2023</b></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RÉALISATIONS ============ -->
+    <section id="projets" class="works">
+      <div class="wrap">
+        <div class="sec-head rv">
+          <span class="label">Projets</span>
+          <div>
+            <h2>Dernières réalisations</h2>
+            <p class="intro">Découvrez une sélection de projets en architecture d'intérieur, stratégie de marque et marketing. Chaque réalisation illustre notre approche : concevoir des expériences cohérentes, esthétiques et performantes qui répondent aux enjeux réels des entreprises et des lieux que nous accompagnons.</p>
+            <p style="margin-top:18px"><a class="btn" href="mailto:hauum.studio@gmail.com">Voir plus de projets</a></p>
+          </div>
+        </div>
+        <div class="works-grid">
+          <a class="work rv" href="#projets" aria-label="Voir le projet Imaginaire">
+            <div class="ph">
+              <img src="https://picsum.photos/seed/hauum-pharmacie-imaginaire/900/640" alt="Pharmacie L'Imaginaire — façade et agencement par Hauum" loading="lazy" width="900" height="640" />
+              <div class="dot"><span>Voir le<br />projet</span></div>
+            </div>
+            <div class="cap"><div class="t">Imaginaire</div><div class="d">Pharmacie — identité, agencement et parcours patient repensés.</div></div>
+          </a>
+          <a class="work rv" href="#projets" aria-label="Voir le projet Pourtaou">
+            <div class="ph">
+              <img src="https://picsum.photos/seed/hauum-pourtaou/900/640" alt="Projet Pourtaou — architecture d'intérieur et image de marque" loading="lazy" width="900" height="640" />
+              <div class="dot"><span>Voir le<br />projet</span></div>
+            </div>
+            <div class="cap"><div class="t">Pourtaou</div><div class="d">Concept, agencement et supports de marque d'un lieu de vie.</div></div>
+          </a>
+          <a class="work rv" href="#projets" aria-label="Voir le projet boutique Arcachon">
+            <div class="ph">
+              <img src="https://picsum.photos/seed/hauum-boutique-arc/900/640" alt="Boutique agencée sur le Bassin d'Arcachon" loading="lazy" width="900" height="640" />
+              <div class="dot"><span>Voir le<br />projet</span></div>
+            </div>
+            <div class="cap"><div class="t">Boutique — Arcachon</div><div class="d">Retail : vitrine, parcours d'achat et mobilier sur-mesure.</div></div>
+          </a>
+          <a class="work rv" href="#projets" aria-label="Voir le projet restaurant Bordeaux">
+            <div class="ph">
+              <img src="https://picsum.photos/seed/hauum-resto-bdx/900/640" alt="Restaurant conçu par Hauum à Bordeaux" loading="lazy" width="900" height="640" />
+              <div class="dot"><span>Voir le<br />projet</span></div>
+            </div>
+            <div class="cap"><div class="t">Restaurant — Bordeaux</div><div class="d">CHR : ambiance, flux de salle et identité gourmande.</div></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TÉMOIGNAGE ============ -->
+    <section>
+      <div class="wrap">
+        <div class="quote-sec rv">
+          <img src="https://picsum.photos/seed/hauum-huilerie/1600/800" alt="Boutique de l'Huilerie Bocerno aménagée par Hauum" loading="lazy" width="1600" height="800" />
+          <div class="quote-card">
+            <blockquote>« Un immense merci pour ton incroyable professionnalisme, ta bienveillance et ton écoute précieuse à chaque étape du projet ! »</blockquote>
+            <p class="who"><b>Léa</b><span>Chargée de marketing — Huilerie Bocerno</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FORMATIONS ============ -->
+    <section id="formations" style="padding-top:0">
+      <div class="wrap">
+        <div class="form-band rv">
+          <div class="badge">Certifié<br />QUALIOPI</div>
+          <div>
+            <h3>Se former avec Hauum</h3>
+            <p>Organisme de formation certifié Qualiopi : agencement commercial, expérience client et stratégie de marque appliquée au point de vente. Public : gérants, équipes de vente, titulaires de pharmacie. Formations finançables.</p>
+          </div>
+          <a class="btn" href="mailto:hauum.studio@gmail.com">Recevoir le programme</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <h3>Restons en contact</h3>
+          <form class="nl" id="nl" novalidate>
+            <input type="email" id="nlmail" placeholder="Adresse email" aria-label="Adresse email" />
+            <button class="btn" type="submit">Valider</button>
+          </form>
+          <p class="nl-note">Vous pourriez recevoir de temps à autre des e-mails de notre part ; vous pouvez vous désabonner à tout moment en cliquant sur le lien fourni dans chaque e-mail.</p>
+          <div class="socials">
+            <a href="https://www.instagram.com/hauum.studio" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/hauum" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-4 0v6h-4V8h4v1.5"/><rect x="2" y="9" width="4" height="11"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+          </div>
+        </div>
+        <nav aria-label="Pages">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#top">Accueil</a></li>
+            <li><a href="#apropos">Vision</a></li>
+            <li><a href="#expertises">Expertises</a></li>
+            <li><a href="#projets">Projets</a></li>
+            <li><a href="#formations">Formations</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Contact">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="tel:+33785744521">07 85 74 45 21</a></li>
+            <li><a href="mailto:hauum.studio@gmail.com">hauum.studio@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/hauum.studio" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.linkedin.com/company/hauum" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </nav>
+      </div>
+      <p class="zone"><strong>Hauum</strong> — Studio d'architecture d'intérieur &amp; design de marque, basé entre Bordeaux et le Bassin d'Arcachon. Interventions en Gironde et Nouvelle-Aquitaine (Arcachon, Cap Ferret, La Teste-de-Buch, Mérignac, Pessac), Occitanie et projets à distance. Spécialiste des commerces &amp; boutiques, <strong>pharmacies</strong>, hôtellerie-restauration et tourisme. © <span id="yy">2026</span></p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      'use strict';
+      document.getElementById('yy').textContent = new Date().getFullYear();
+
+      // menu mobile
+      var b=document.getElementById('burger'),m=document.getElementById('mmenu'),c=document.getElementById('mclose');
+      function set(o){m.classList.toggle('open',o);b.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':'';}
+      b.addEventListener('click',function(){set(true);});
+      c.addEventListener('click',function(){set(false);});
+      m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){set(false);});});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});
+
+      // reveal au scroll
+      var rvs=document.querySelectorAll('.rv');
+      if(!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        rvs.forEach(function(el){el.classList.add('in');});
+      } else {
+        var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+        rvs.forEach(function(el){io.observe(el);});
+      }
+
+      // newsletter statique : ouvre un email d'inscription (pas de backend)
+      document.getElementById('nl').addEventListener('submit',function(e){
+        e.preventDefault();
+        var v=document.getElementById('nlmail').value.trim();
+        location.href='mailto:hauum.studio@gmail.com?subject='+encodeURIComponent('Inscription newsletter')+'&body='+encodeURIComponent('Bonjour, je souhaite m\'inscrire à la newsletter. Mon email : '+v);
+      });
+    })();
+  </script>
+</body>
+</html>
