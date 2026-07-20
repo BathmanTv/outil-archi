@@ -297,6 +297,18 @@
     .spin{display:inline-block;color:var(--brown);animation:spin 16s linear infinite;transform-origin:center}
     @keyframes spin{to{transform:rotate(360deg)}}
 
+    /* ============ text-roll des liens footer (mécanique exacte du template :
+       wrapper overflow hidden + texte dupliqué qui monte au survol) ============ */
+    .froll{display:inline-block;overflow:hidden;height:1.55em;vertical-align:top}
+    .froll .stack{display:block;transition:transform .35s cubic-bezier(.22,1,.36,1)}
+    .froll .stack span{display:block;height:1.55em;line-height:1.55}
+    .froll .stack span:nth-child(2){color:var(--brown)}
+    .froll:hover .stack,.froll:focus-visible .stack{transform:translateY(-1.55em)}
+
+    /* champs de formulaire façon template : fond gris, sans bordure, radius 8 */
+    .nl input,.fld input,.fld select,.fld textarea{background:var(--card);border:1px solid transparent;border-radius:8px;transition:border-color .25s,box-shadow .25s,background .25s}
+    .nl input:focus,.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;background:#fff;border-color:var(--brown);box-shadow:0 0 0 3px rgba(83,54,46,.14)}
+
     /* ============ footer : reveal séquencé ============ */
     footer .rv:nth-child(1){transition-delay:.05s}
     footer .rv:nth-child(2){transition-delay:.18s}
@@ -822,6 +834,14 @@
         });
         go(0);
       }
+
+      // ---- text-roll des liens footer : duplique le libellé dans un wrapper masqué ----
+      document.querySelectorAll('.foot-grid ul a').forEach(function(a){
+        var txt=a.textContent.trim();
+        if(!txt)return;
+        a.classList.add('froll');
+        a.innerHTML='<span class="stack"><span>'+txt.replace(/</g,'&lt;')+'</span><span>'+txt.replace(/</g,'&lt;')+'</span></span>';
+      });
 
       // formulaire de contact qualifiant : statique → assemble un email pré-rempli
       // (à brancher sur Web3Forms au lancement sur hauum.fr, cf. docs/architecture/plateforme.md)

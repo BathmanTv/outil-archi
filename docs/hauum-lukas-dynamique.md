@@ -59,3 +59,5 @@ Source : https://lukes-template.webflow.io/template-pages/style-guide
 | `primary-button` | radius 8 px, pad 13/16, `all .4 s ease`, hover = fond | `.btn` all .4 s ease, radius 8 px, hover fond brun-2 + lift 2 px + ombre |
 | `service-button-wrapper` (Details) | `all .5 s` fond inversé + icône qui glisse | `.details` all .5 s ease + flèche translateX(7 px) |
 | `pricing-link` | `background-color .4 s` | couvert par `.btn` |
+| `footer-link` (Home, About, Works… ×16) | **Text-roll** : `.footer-link-wrapper` `overflow:hidden` hauteur 1 ligne contenant le lien **dupliqué à l'identique**, les 2 copies montent en % au survol | `.froll` généré en JS (libellé dupliqué dans `.stack`), montée d'une ligne en .35 s, 2ᵉ copie en brun — appliqué aux 11 liens footer |
+| `footer-text-field` (Stay in touch!) | Fond gris `#E3EBE8`, **sans bordure**, radius 8, pad 8/12 | `.nl input` + champs du formulaire : fond `--card`, sans bordure, radius 8, focus = fond blanc + ring brun |
